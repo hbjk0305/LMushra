@@ -1,0 +1,35 @@
+schema_version: 1
+seed: 20261101
+include_identity: true
+input:
+  sample_rates: [44100, 48000]
+  channels: [1, 2]
+  min_duration_s: 1
+  max_duration_s: 30
+  source_peak_limit: 0.35
+  output_peak_limit: 0.999
+splits: {train: 0.7, validation: 0.15, test: 0.15}
+stft: {n_fft: 2048, hop_length: 512}
+artifacts:
+  LP:
+    defaults: {filter_design: butterworth, transition_hz: 1500, attenuation_db: 60}
+    sampling:
+      count: 3
+      parameters:
+        cutoff_hz: {uniform: [5000, 16000]}
+  SH:
+    defaults: {start_hz: 4000, attenuation_db: 80}
+    sampling:
+      count: 3
+      parameters:
+        hole_probability: {uniform: [0.05, 0.5]}
+        band_width_hz: {choice: [250, 500, 1000]}
+        run_frames: {randint: [1, 8]}  # Inclusive endpoints.
+  UN:
+    defaults: {tonal_threshold_db: 6, channel_mode: linked}
+    sampling:
+      count: 3
+      parameters:
+        crossover_hz: {uniform: [3000, 12000]}
+        strength: {uniform: [0.1, 1.0]}
+        smoothing_hz: {loguniform: [250, 1000]}

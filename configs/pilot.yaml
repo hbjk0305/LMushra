@@ -1,0 +1,36 @@
+schema_version: 1
+seed: 20261101
+include_identity: true
+input:
+  sample_rates: [44100, 48000]  # Every configured rate must be >=44100.
+  channels: [1, 2]
+  min_duration_s: 1.0
+  max_duration_s: 30.0
+  source_peak_limit: 0.5
+  output_peak_limit: 0.999
+splits: {train: 0.7, validation: 0.15, test: 0.15}
+stft: {n_fft: 2048, hop_length: 512}
+artifacts:
+  LP:
+    defaults:
+      filter_design: butterworth
+      transition_hz: 1500
+      passband_ripple_db: 0.5
+      attenuation_db: 60
+    settings:
+      - {cutoff_hz: 5000, parameter_tier: strong}
+      - {cutoff_hz: 10000, parameter_tier: moderate}
+      - {cutoff_hz: 16000, parameter_tier: subtle}
+  SH:
+    defaults: {start_hz: 4000, band_width_hz: 500, attenuation_db: 80}
+    settings:
+      - {hole_probability: 0.1, run_frames: 2, parameter_tier: subtle}
+      - {hole_probability: 0.3, run_frames: 4, parameter_tier: moderate}
+      - {hole_probability: 0.7, run_frames: 8, parameter_tier: strong}
+  UN:
+    defaults: {smoothing_hz: 500, tonal_threshold_db: 6, channel_mode: linked}
+    settings:
+      - {crossover_hz: 3000, strength: 1.0, parameter_tier: strong}
+      - {crossover_hz: 7000, strength: 0.5, parameter_tier: moderate}
+      - {crossover_hz: 10500, strength: 0.25, parameter_tier: subtle}
+# PE and TM must not appear here: they are held out from project augmentation.

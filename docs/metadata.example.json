@@ -1,0 +1,293 @@
+{
+  "audio": {
+    "degraded": {
+      "path": "audio/604abfb7a39169b34c65a26d/degraded.wav",
+      "sha256": "7192082e4c637f4f5a24f1a9f193269763511f555a0b74e9fa318966f23e4fd8",
+      "subtype": "DOUBLE"
+    },
+    "reference": {
+      "path": "audio/reference/160e3b7e0d438d1ef86d5f5676cf6b9b2be69e74e39488d1cb850a8b2979e95b.wav",
+      "sha256": "160e3b7e0d438d1ef86d5f5676cf6b9b2be69e74e39488d1cb850a8b2979e95b",
+      "subtype": "DOUBLE"
+    },
+    "residual": {
+      "path": "audio/604abfb7a39169b34c65a26d/residual.wav",
+      "sha256": "5e0504f333257f95e33914e3038b587ded2544ad4bb660a936e97f3dcb0907de",
+      "subtype": "DOUBLE"
+    }
+  },
+  "degradation": {
+    "algorithm": "deepmushra_data.sh",
+    "algorithm_version": "1.0",
+    "artifact_type": "SH",
+    "evidence": {
+      "algorithm_version": "1.0",
+      "band_edges_hz": [
+        [
+          4005.17578125,
+          4478.90625
+        ],
+        [
+          4500.439453125,
+          4995.703125
+        ],
+        [
+          5017.236328125,
+          5490.966796875
+        ],
+        [
+          5512.5,
+          5986.23046875
+        ],
+        [
+          6007.763671875,
+          6481.494140625
+        ],
+        [
+          6503.02734375,
+          6998.291015625
+        ],
+        [
+          7019.82421875,
+          7493.5546875
+        ],
+        [
+          7515.087890625,
+          7988.818359375
+        ],
+        [
+          8010.3515625,
+          8484.08203125
+        ],
+        [
+          8505.615234375,
+          8979.345703125
+        ],
+        [
+          9000.87890625,
+          9496.142578125
+        ],
+        [
+          9517.67578125,
+          9991.40625
+        ],
+        [
+          10012.939453125,
+          10486.669921875
+        ],
+        [
+          10508.203125,
+          10981.93359375
+        ],
+        [
+          11003.466796875,
+          11498.73046875
+        ],
+        [
+          11520.263671875,
+          11993.994140625
+        ],
+        [
+          12015.52734375,
+          12489.2578125
+        ],
+        [
+          12510.791015625,
+          12984.521484375
+        ],
+        [
+          13006.0546875,
+          13479.78515625
+        ],
+        [
+          13501.318359375,
+          13996.58203125
+        ],
+        [
+          14018.115234375,
+          14491.845703125
+        ],
+        [
+          14513.37890625,
+          14987.109375
+        ],
+        [
+          15008.642578125,
+          15482.373046875
+        ],
+        [
+          15503.90625,
+          15999.169921875
+        ],
+        [
+          16020.703125,
+          16494.43359375
+        ],
+        [
+          16515.966796875,
+          16989.697265625
+        ],
+        [
+          17011.23046875,
+          17484.9609375
+        ],
+        [
+          17506.494140625,
+          17980.224609375
+        ],
+        [
+          18001.7578125,
+          18497.021484375
+        ],
+        [
+          18518.5546875,
+          18992.28515625
+        ],
+        [
+          19013.818359375,
+          19487.548828125
+        ],
+        [
+          19509.08203125,
+          19982.8125
+        ],
+        [
+          20004.345703125,
+          20499.609375
+        ],
+        [
+          20521.142578125,
+          20994.873046875
+        ],
+        [
+          21016.40625,
+          21490.13671875
+        ],
+        [
+          21511.669921875,
+          21985.400390625
+        ],
+        [
+          22006.93359375,
+          22050.0
+        ]
+      ],
+      "coverage_denominator": "all analyzed time-frequency-channel cells, including boundary padding",
+      "mask_kind": "exact_applied_stft_gain",
+      "perceptual_equivalence_to_odaq": "unverified",
+      "selection_policy": "independent Bernoulli decisions per band and nonoverlapping run block; linked across channels",
+      "stft": {
+        "axis_order": "time,frequency,channel",
+        "boundary": "zeros",
+        "hop_length": 512,
+        "n_fft": 2048,
+        "padded": true,
+        "scaling": "spectrum",
+        "window": "periodic_hann"
+      },
+      "transformation_applied": true
+    },
+    "frequency_regions_hz": [
+      [
+        3994.4091796875,
+        22050.0
+      ]
+    ],
+    "mask": {
+      "axis_order": "time,frequency,channel",
+      "format": "npz",
+      "path": "evidence/604abfb7a39169b34c65a26d.npz",
+      "selection_array": "selected_mask",
+      "sha256": "b9e9937822682e4be14896eae701c41f80df8be2e4f22390e5ea5694536a01a2"
+    },
+    "parameter_severity": {
+      "status": "provisional_parameter_based",
+      "tier": "moderate"
+    },
+    "parameters": {
+      "attenuation_db": 80,
+      "band_width_hz": 500,
+      "hole_probability": 0.3,
+      "run_frames": 4,
+      "start_hz": 4000
+    },
+    "random_seed": 17830872796002653235,
+    "region_interpretation": "projections of processing selections with STFT window support; not audible-event annotations; see full mask for joint structure",
+    "time_regions_s": [
+      [
+        0.0,
+        4.0
+      ]
+    ]
+  },
+  "descriptions": {
+    "attributes": {
+      "artifact": "SH",
+      "audibility": "unknown",
+      "content_attribution": "unknown",
+      "perceived_severity": "unknown"
+    },
+    "perceptual_candidate": "The processed audio may have intermittent gaps or fluctuations in high-frequency detail.",
+    "perceptual_candidate_status": "unverified",
+    "technical": "Selected STFT regions above 4 kHz are attenuated by 80 dB, using 500 Hz bands and 4-frame selection blocks. These are processing-grid selections, not verified audible events.",
+    "technical_status": "processing_facts",
+    "template_version": "1.0"
+  },
+  "measurements": {
+    "affected_frame_ratio": 1.0,
+    "affected_tf_ratio": 0.24734245030311575,
+    "audibility_interpretation": "none; objective measurements only",
+    "degraded_energy": 2142.9739459604675,
+    "degraded_peak": 0.3454106677670598,
+    "degraded_rms": 0.11021968235510707,
+    "measured_change_definition": "magnitude change >=1 dB; floor=max(reference peak STFT magnitude *1e-4,1e-15); all analyzed cells",
+    "measured_changed_tf_ratio": 0.03978288453404765,
+    "measurement_grid_cells": 354650,
+    "net_energy_change": -244.36584974711513,
+    "normalized_spectral_magnitude_error": 0.2679395835359057,
+    "reference_energy": 2387.3397957075827,
+    "reference_peak": 0.35,
+    "reference_rms": 0.11633431269951043,
+    "relative_residual_energy": 0.08147716933673373,
+    "residual_energy": 194.51368879919002,
+    "residual_peak": 0.15384570579254278,
+    "residual_rms": 0.033206705808511094,
+    "rms_change_db": -0.4689734659506761,
+    "selected_reference_spectral_energy_fraction": 0.09192724284064767
+  },
+  "perceptual_annotation": {
+    "audibility": null,
+    "description_attributes": null,
+    "natural_language_description": null,
+    "perceived_severity": null,
+    "provenance": null,
+    "quality_category": null,
+    "status": "unverified"
+  },
+  "provenance": {
+    "configuration_sha256": "581a749834ec32e4dac47e910db1b8812a04f56c3afb52ad48c028937c2fe3b9",
+    "generator_source_sha256": "f4d8a184c71508f468a5b77f34d15b09aaa3e71f8dcc89dad5eba849027962b8",
+    "generator_version": "0.1.0",
+    "git_dirty": true,
+    "git_revision": "68e3d1691ba54c259438f77aa10085c0feee496c",
+    "master_seed": 20261101
+  },
+  "sample_id": "604abfb7a39169b34c65a26d",
+  "schema_version": "1.0",
+  "source": {
+    "channels": 1,
+    "content_category": "functional_test_tonal",
+    "content_category_provenance": "source_manifest",
+    "declared_source_id": "tonal_44100_1ch",
+    "duration_s": 4.0,
+    "is_functional_test_signal": true,
+    "original_peak": 0.35,
+    "sample_count": 176400,
+    "sample_rate": 44100,
+    "shared_source_gain": 1.0,
+    "source_checksum_sha256": "160e3b7e0d438d1ef86d5f5676cf6b9b2be69e74e39488d1cb850a8b2979e95b",
+    "source_file": "demo_sources/tonal_44100_1ch.wav",
+    "source_id": "tonal_44100_1ch",
+    "split": "train"
+  }
+}
