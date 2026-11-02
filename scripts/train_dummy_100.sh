@@ -2,10 +2,13 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-export CUDA_VISIBLE_DEVICES=0,1
-export NPROC_PER_NODE=2
+PYTHON_BIN="${SWIFT_PYTHON:-python}"
+export PYTHONPATH="${PWD}/ms-swift:${PWD}${PYTHONPATH:+:${PYTHONPATH}}"
+export NUMBA_CACHE_DIR="${NUMBA_CACHE_DIR:-/tmp/lmushra-numba}"
+export CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-0,1}"
+export NPROC_PER_NODE="${NPROC_PER_NODE:-2}"
 
-swift sft \
+"${PYTHON_BIN}" -m swift.cli.main sft \
   --model Qwen/Qwen2-Audio-7B-Instruct \
   --use_hf true \
   --tuner_type lora \
@@ -33,4 +36,5 @@ swift sft \
   --save_steps 50 \
   --save_total_limit 2 \
   --output_dir ./output/dummy-100 \
-  --report_to tensorboard
+  --report_to tensorboard \
+  "$@"

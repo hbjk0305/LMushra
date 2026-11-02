@@ -44,7 +44,7 @@ than transcribing speech, summarizing its meaning, or choosing an A/B winner.
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--data-root', type=Path, default=Path('/home/hwangbo5/data'))
+    parser.add_argument('--data-root', type=Path, default=Path('data'))
     parser.add_argument('--output', type=Path, default=Path('data/dummy'))
     parser.add_argument('--train-size', type=int, default=128)
     parser.add_argument('--val-size', type=int, default=16)
