@@ -132,3 +132,55 @@ DAC requires the official 44 kHz/8 kbps checkpoint, tag `0.0.1`; EnCodec
 requires the official 24 kHz mono state dict. Use the same codec weights for
 training and inference. Local codec weights alone do not provide an offline
 copy of the Qwen model.
+## NISQA quality-description pretraining
+
+Use the published single-audio MOS captions and two-audio A/B captions for SFT
+before training on reference/degraded descriptions. This does not implement
+ALLD preference optimization or reproduce the paper's training configuration.
+Keep the original task prompts: A/B inputs are two evaluated samples, not a
+reference/degraded pair. MOS targets are not MUSHRA ratings.
+
+Prepare the full local caption dataset (defaults point to `/home/hwangbo5/data`):
+
+```bash
+python scripts/prepare_nisqa_pretrain.py \
+  --corpus /home/hwangbo5/data/NISQA_Corpus \
+  --captions /home/hwangbo5/data/speech-quality-descriptive-caption \
+  --output ./data/nisqa-pretrain
+```
+
+This requires `train_nisqa_llama_10k.json` and
+`train_nisqa_abtest_llama_10k.json`, plus their NISQA audio. It relocates original
+annotation paths, checks audio headers (mono, up to 30 seconds), and holds out
+approximately 5% of reference utterances using a stable hash. A/B pairs spanning
+train and validation are excluded. `report.json` records retained counts and
+limitations; provenance files retain task and source identities. This split is
+not speaker-disjoint. Official NISQA test partitions are not used for training.
+Original audio and annotations are never changed.
+
+Choose an encoder (one epoch by default; this starts a full training run):
+
+```bash
+bash scripts/train_nisqa_pretrain.sh baseline
+bash scripts/train_nisqa_pretrain.sh dac
+bash scripts/train_nisqa_pretrain.sh encodec
+```
+
+Codec encoders stay frozen; DAC/EnCodec train the new projector and LLM LoRA.
+The baseline freezes its original encoder/projector and trains LLM LoRA.
+The learning rate is an initial experiment setting, not a reproduced paper value.
+Use the active environment's Python, or explicitly set `SWIFT_PYTHON` if needed.
+For a short execution check:
+
+```bash
+CUDA_VISIBLE_DEVICES=0 NPROC_PER_NODE=1 bash scripts/train_nisqa_pretrain.sh dac \
+  --max_steps 2 --eval_strategy no --save_steps 2 --logging_steps 1 \
+  --output_dir ./output/nisqa-pretrain-dac-smoke
+```
+
+`NISQA_DATASET_DIR` selects a different prepared dataset directory. Extra Swift
+arguments override defaults. Resume an interrupted pretraining run with
+`--resume_from_checkpoint PATH_TO_CHECKPOINT`. To start the later reference-pair
+stage with a fresh optimizer/schedule, pass the pretrained checkpoint through
+`--adapters PATH_TO_CHECKPOINT` to the corresponding training script rather than
+resuming the old training state.
