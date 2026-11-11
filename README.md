@@ -20,7 +20,7 @@ source .venv/bin/activate
 python -m pip install --cache-dir .cache/pip -e '.[dev]'
 ```
 
-For the tested dependency versions (Python 3.12.5 on macOS arm64):
+For the original functional-pilot dependency versions (Python 3.12.5 on macOS arm64):
 
 ```bash
 python -m pip install --cache-dir .cache/pip -r requirements-tested.txt
@@ -142,3 +142,249 @@ record is in [the metadata example](docs/metadata.example.json), with paths
 relative to the generated dataset root. No generated audio should be
 committed. A future metadata-to-LLM paraphrasing stage can use the pure
 `describe(artifact, parameters, evidence)` interface; no LLM is used here.
+
+## Phase 1: real-recording research pilot (KNN)
+
+All project execution and artifacts belong on KNN for this workspace. Do not
+create environments, checkouts, or downloads on the coordinating Mac.
+The existing Linux environment is Python 3.10.12; use it as follows:
+
+```bash
+ssh tingyup2@knn.cs.illinois.edu
+cd /data/tingyup2/projects/AudioLM/LMushra
+source /data/tingyup2/projects/AudioLM/env.sh
+python -m pip install --no-deps --no-build-isolation -e .  # existing tested env
+python -m pytest -q
+```
+
+For a fresh compatible remote environment, install the pinned dependencies in
+`requirements-phase1-knn.txt`, then `python -m pip install --no-deps -e .`.
+SciPy >=1.14 is required for the QN minimum-phase FIR factorization.
+
+Read the upstream noncommercial/share-alike source conditions before acquisition:
+[MUSDB18-HQ](https://zenodo.org/records/3338373),
+[MUSDB licenses](https://sigsep.github.io/datasets/musdb.html), and
+[MedleyDB distribution](https://medleydb.weebly.com/downloads.html).
+Only eight MedleyDB tracks are selected, from distinct original recordings and
+artists. WAVs and downloaded documentation stay under gitignored `data/`.
+Do not redistribute dataset audio through Git. Source attribution, the license,
+original member, crop, integrity checks, and content-category basis are retained.
+
+```bash
+# Acquisition refuses to overwrite a completed source manifest.
+python scripts/prepare_phase1_sources.py --output data/phase1_sources
+python -m deepmushra_data generate --config configs/phase1.yaml \
+  --manifest data/phase1_sources/sources.jsonl --output outputs/phase1-pilot
+python -m deepmushra_data generate --config configs/phase1.yaml \
+  --manifest data/phase1_sources/sources.jsonl --output outputs/phase1-repeat --no-diagnostics
+python scripts/analyze_phase1.py --dataset outputs/phase1-pilot --repeat outputs/phase1-repeat
+python -m deepmushra_data validate --dataset outputs/phase1-pilot
+```
+
+Use fresh source/run paths when reproducing completed work; outputs are never
+overwritten. The ZIP is 22.7 GB, but acquisition reads its directory and only
+the eight selected compressed WAV members (initial run: 284 MB of HTTP ranges).
+No ODAQ download or input is involved. Manifest `source_provenance` mappings
+are carried into each complete generated record.
+
+**QN status: Implemented.** The generator is
+[`_quantization_like_noise()`](src/deepmushra_data/degradations.py), exposed through
+`apply_effect("QN", ...)` and configured in [`configs/phase1.yaml`](configs/phase1.yaml).
+[`tests/test_phase1.py`](tests/test_phase1.py) covers target SNR, additive-noise
+consistency, reproducibility, mono/stereo behavior, causal onset, silence,
+parameter validation, and saved triplet/metadata integrity.
+
+`configs/phase1.yaml` has three settings each for LP/SH/UN and additive
+signal-shaped QN-like noise, with eight identities: **104 triplets** total.
+QN adds noise to the retained waveform at a specified per-channel waveform SNR;
+it is neither ODAQ's psychoacoustic NMR method nor tonal replacement.
+All perception fields and description candidates remain unverified. Stereo
+width processing, PE, and TM are not implemented.
+
+The completed experiment and limitations are documented in
+[the Phase 1 team report](docs/synthetic_dataset_phase1_report.md).
+Its `phase1_analysis/` directory contains per-source metrics, parameter curves,
+content comparisons, spectrogram triplets, and analytical temporal probes.
+These objective diagnostics do not establish human audibility or quality.
+
+## Synthetic Dataset Design
+
+### Overview
+
+DeepMUSHRA aims to train a reference-aware Large Audio-Language Model (LALM) to identify and describe perceptually meaningful differences between reference and degraded audio.
+
+We construct a synthetic dataset of controlled audio degradations, where the processing parameters and affected signal regions are known. The dataset supports supervised fine-tuning (SFT) with metadata-derived natural-language descriptions.
+
+Our current training design targets **44.1 kHz mono audio**, with four training artifact families and two held-out artifact families for zero-shot evaluation. The existing generator preserves native mono or stereo inputs; the completed real-recording pilot uses 44.1 kHz stereo excerpts. A dedicated mono training export remains to be prepared.
+
+### 1. Artifact Selection
+
+The artifact selection is informed by the [ODAQ-Collection](https://arxiv.org/abs/2610.37959), which reports 17 processing-method groups across several listening-test subsets. These groups consolidate into fewer distinct degradation mechanisms.
+
+#### Training Artifacts
+
+| Artifact | Description | Perceptual dimension | Implementation status |
+|---|---|---|---|
+| **LP — Bandwidth Limitation** | Low-pass filtering that attenuates high-frequency content | Brightness, spectral detail | Implemented; perceptual validation pending |
+| **SH — Spectral Holes** | Removal or attenuation of selected time-frequency components | Spectral completeness, temporal consistency | Implemented; perceptual validation pending |
+| **UN — Unmasked Noise** | Replacement of tonal components with noise-like components | Tonality, spectral texture | Implemented; perceptual validation pending |
+| **QN — Quantization-like Noise** | Addition of signal-shaped noise while preserving underlying content | Noisiness, roughness | Implemented; perceptual validation pending |
+
+**Rationale for including QN:** Unlike UN, which replaces existing tonal information with noise, QN introduces additive noise while largely retaining the original signal structure. This provides an additional controlled degradation mechanism relevant to audio coding.
+
+QN is also represented in the ODAQ 2025 stereo extension through QNLR, QNMS, and QNmix. These are stereo-processing and listening-test variations of the same underlying artifact family, not three separate artifact families.
+
+Our QN implementation provides controllable signal-shaped additive noise. It should not be claimed as an exact reproduction of ODAQ's psychoacoustic Noise-to-Mask Ratio (NMR) processing without further verification.
+
+The implementation is `_quantization_like_noise()` in [`src/deepmushra_data/degradations.py`](src/deepmushra_data/degradations.py), exposed through `apply_effect("QN", ...)`. Existing behavior and integration tests are in [`tests/test_phase1.py`](tests/test_phase1.py); all 28 tests in that file passed during the status check.
+
+#### Held-Out Artifacts for Zero-Shot Evaluation
+
+| Artifact | Description | Evaluation objective |
+|---|---|---|
+| **PE — Pre-Echo** | Noise-like energy spreading before transient attacks | Generalization to unseen temporal distortions |
+| **TM — Tonality Mismatch** | Replacement of noise-like components with artificial tonal components | Generalization to unseen spectral-texture transformations |
+
+PE and TM are excluded from our synthetic training and calibration datasets, including augmentation, description templates, and model-specific fine-tuning examples.
+
+Here, **zero-shot refers to artifact families unseen during DeepMUSHRA-specific training**, not necessarily unseen during the base model's original pretraining.
+
+The current SH/UN implementations exhibit incidental pre-onset spreading in analytical probes. The team must resolve how this affects the PE holdout definition before claiming a perceptually isolated holdout.
+
+#### Deferred Artifacts
+
+| Artifact | Reason for exclusion |
+|---|---|
+| ICC — Interaural Cross-Correlation Distortion | Requires stereo/spatial information |
+| ILD — Interaural Level Difference Distortion | Requires stereo/spatial information |
+| Other stereo-specific processing | Not compatible with the current mono input setting |
+
+The selected DAC training path uses **44.1 kHz mono audio**. Spatial effects may be reconsidered if future model architectures support stereo or spatial audio representations.
+
+### 2. Audio and Dataset Format
+
+**Target training audio specification:**
+
+- Sample rate: 44,100 Hz
+- Channels: Mono
+- Input: Reference and degraded audio, with residual audio available
+- Residual definition: `residual = degraded - reference`
+- Reference and degraded signals must have identical sample counts and alignment.
+- Audio generation must be reproducible through fixed random seeds and recorded processing configurations.
+
+Each synthetic sample should provide:
+
+```text
+sample_id/
+├── reference.wav
+├── degraded.wav
+├── residual.wav
+└── metadata.json
+```
+
+This illustrates the logical contents of a sample. The current implementation shares reference WAVs across variants and links them through a manifest. The final storage layout and training manifest may be optimized for large-scale generation.
+
+**Important:** The `hwangbo/train` branch currently uses 44.1 kHz mono for DAC, 16 kHz mono for the Qwen2-Audio baseline, and 24 kHz mono for EnCodec. We must verify the selected model's complete preprocessing path. This is critical for bandwidth-related artifacts, especially high-frequency LP distortions.
+
+A mono export must apply consistent channel conversion to the reference and degraded signals, recompute the residual from the saved exported pair, and update the distortion measurements.
+
+### 3. Metadata and Description Design
+
+Metadata should distinguish three categories:
+
+**A. Objective generation metadata**
+
+- Artifact type and implementation version
+- Processing parameters and random seed
+- Affected time-frequency regions or masks
+- Source recording identifier
+- Sample rate, duration, and audio format
+
+**B. Measured signal properties**
+
+- RMS and energy changes
+- Spectral differences
+- Artifact-specific distortion measurements
+- Actual signal modifications and their locations
+
+**C. Perceptual annotations and descriptions**
+
+- Perceptual attributes
+- Audibility, when assessed
+- Perceived severity, when assessed
+- Technical descriptions generated from metadata
+- Candidate natural-language descriptions
+
+Processing strength must not be treated as equivalent to perceptual severity.
+
+Metadata-derived descriptions should distinguish verifiable signal-processing facts from unverified claims about what listeners hear. Human MUSHRA scores and perceptual judgments must never be fabricated from processing parameters.
+
+### 4. Severity and Parameter Sampling
+
+We plan to generate multiple parameter settings per artifact, ranging from subtle to clearly measurable degradation.
+
+Initial parameter ranges are provisional and must be validated using independently sourced audio.
+
+Severity calibration will consider:
+
+1. The relationship between processing parameters and objective signal differences.
+2. Content dependence across speech, music, and different instruments.
+3. A small listening study to estimate audibility and perceived quality.
+4. Uncertainty in predicted or estimated perceptual severity.
+
+The completed engineering pilot covers generator validation and parameter exploration. Formal perceptual calibration will follow before full-scale dataset generation.
+
+### 5. Dataset Splitting and Evaluation Policy
+
+The synthetic dataset uses source-disjoint training, validation, and test splits. All versions derived from the same original recording must remain within the same split.
+
+**ODAQ-Collection is reserved for external evaluation.**
+
+- No ODAQ audio, ratings, or listener comments will be used for SFT, synthetic severity calibration, or training-description generation.
+- LP, SH, UN, and QN can support seen-family external evaluation.
+- PE and TM are reserved for zero-shot artifact-family evaluation.
+- Dialogue enhancement (DE) and neural codec outputs can support evaluation on compound, real-world processing degradations.
+- Stereo ODAQ conditions require careful interpretation when converted to mono, because the original subjective scores were obtained under stereo listening conditions.
+
+ODAQ processing methods should not be assumed identical to our synthetic approximations.
+
+### 6. Current Implementation Status and Next Steps
+
+**Current status (verified in the `pt/data` working tree):**
+
+- LP, SH, UN, and QN generators have been implemented; perceptual validation remains pending.
+- The real-recording pilot contains 104 triplets from eight 44.1 kHz stereo excerpts, including 24 examples per artifact and eight identity controls.
+- Existing tests cover waveform alignment, residual correctness, metadata, reproducibility, and artifact-specific behavior.
+- A dedicated 44.1 kHz mono training export remains pending.
+- PE and TM remain held out.
+- Stereo/spatial artifacts remain deferred.
+
+**Next steps:**
+
+1. Resolve the documented LP phase/boundary behavior and SH/UN pre-onset spreading.
+2. Review the QN noise-envelope tail and calibrate candidate settings on independent recordings.
+3. Prepare a 44.1 kHz mono training export and broaden source coverage across speech, music, and instruments.
+4. Analyze parameter-dependent distortion through objective measurements and spectrograms.
+5. Verify waveform alignment, residual correctness, and metadata reproducibility after export.
+6. Review candidate natural-language descriptions for factual accuracy and conduct independent perceptual validation.
+7. Coordinate with the model and evaluation teams on output structure, severity labels, and benchmark protocols.
+
+### 7. Open Questions for Team Discussion
+
+- Does the audio encoder preserve the full 44.1 kHz bandwidth?
+- Will the LALM consume reference and degraded audio only, or also the residual?
+- What structured description format should be used for SFT?
+- How should perceptual severity be annotated or calibrated?
+- Should additional non-spatial temporal or nonlinear artifact families be added in a later ablation?
+- How should ODAQ stereo-to-mono evaluation and human MUSHRA score comparisons be reported?
+
+### References
+
+- [Original ODAQ (2024)](https://arxiv.org/abs/2401.00197)
+- [ODAQ Stereo Extension (2025)](https://arxiv.org/abs/2512.14259)
+- [ODAQ-Collection (2026)](https://arxiv.org/abs/2610.37959)
+- [Official ODAQ Repository](https://github.com/Fraunhofer-IIS/ODAQ)
+
+---
+
+*This section records the current Phase 1 synthetic dataset design. Artifact selection and target training audio format are the current working decisions; implementation details, parameter ranges, and perceptual calibration remain subject to experimental validation and team review.*
