@@ -1,6 +1,6 @@
 """Pure metadata-to-text interface; candidates never become human annotations."""
 
-TEMPLATE_VERSION = "1.0"
+TEMPLATE_VERSION = "1.1"
 
 
 def describe(artifact, parameters, evidence):
@@ -27,6 +27,12 @@ def describe(artifact, parameters, evidence):
                      f"with envelope-shaped noise at replacement strength {parameters['strength']:g}. "
                      "Selected-band STFT energy is normalized before waveform reconstruction.")
         candidate = "High-frequency tonal detail may sound noisier or less clearly defined."
+    elif artifact == "QN":
+        technical = (f"Signal-shaped noise is added at a {parameters['snr_db']:g} dB reference-to-noise "
+                     f"energy ratio per channel, using {parameters['smoothing_hz']:g} Hz spectral smoothing "
+                     f"and a causal {parameters['envelope_ms']:g} ms RMS envelope. "
+                     "The original waveform is retained; this is not a psychoacoustic NMR simulation.")
+        candidate = "Additional background noise or hiss may be present, following the signal's spectral color."
     else:
         raise ValueError(f"No description template for {artifact}")
     return {"template_version": TEMPLATE_VERSION, "technical": technical,

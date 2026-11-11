@@ -199,7 +199,7 @@ def _generate(root, config, sources, split_map):
             record = {
                 "schema_version": SCHEMA_VERSION, "sample_id": sample_id,
                 "source": {"source_id": source["source_id"], "declared_source_id": source["declared_source_id"],
-                           "source_file": source["source_file"], "source_checksum_sha256": source["checksum"],
+                           "source_file": source["source_file"], "source_provenance": source["source_provenance"], "source_checksum_sha256": source["checksum"],
                            "content_category": source["content_category"], "content_category_provenance": "source_manifest" if source["content_category"] != "unknown" else "unknown",
                            "sample_rate": sr, "sample_count": len(reference), "duration_s": len(reference) / sr,
                            "channels": reference.shape[1], "split": split_map[source["source_id"]],

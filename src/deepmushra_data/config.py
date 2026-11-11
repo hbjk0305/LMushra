@@ -98,7 +98,7 @@ def validate_config(raw):
     c["stft"] = {"n_fft": stft.n_fft, "hop_length": stft.hop_length}
     artifacts = c.get("artifacts")
     if not isinstance(artifacts, dict) or not artifacts:
-        raise ValueError("artifacts must be a nonempty mapping of LP, SH, UN")
+        raise ValueError("artifacts must be a nonempty mapping of LP, SH, UN, QN")
     for artifact, spec in artifacts.items():
         if artifact not in TRAINING_ARTIFACTS:
             raise ValueError(f"{artifact} is not a training augmentation; PE and TM are held out")

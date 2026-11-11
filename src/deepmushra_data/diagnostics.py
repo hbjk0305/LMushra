@@ -21,7 +21,7 @@ def plot_dataset(dataset):
     destination = root / "diagnostics"
     destination.mkdir(exist_ok=True)
     generated = []
-    for artifact in ("LP", "SH", "UN"):
+    for artifact in ("LP", "SH", "UN", "QN"):
         candidates = [r for r in records if r["degradation"]["artifact_type"] == artifact]
         if not candidates:
             continue

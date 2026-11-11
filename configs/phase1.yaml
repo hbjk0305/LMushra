@@ -1,0 +1,75 @@
+# Research pilot only; no ODAQ inputs or perceptual calibration. PE/TM excluded.
+schema_version: 1
+seed: 20261102
+include_identity: true
+input:
+  sample_rates:
+  - 44100
+  - 48000
+  channels:
+  - 1
+  - 2
+  min_duration_s: 8
+  max_duration_s: 8
+  source_peak_limit: 0.5
+  output_peak_limit: 0.999
+splits:
+  train: 0.7
+  validation: 0.15
+  test: 0.15
+stft:
+  n_fft: 2048
+  hop_length: 512
+artifacts:
+  LP:
+    defaults:
+      filter_design: butterworth
+      transition_hz: 1500
+      passband_ripple_db: 0.5
+      attenuation_db: 60
+    settings:
+    - cutoff_hz: 5000
+      parameter_tier: unspecified
+    - cutoff_hz: 10000
+      parameter_tier: unspecified
+    - cutoff_hz: 16000
+      parameter_tier: unspecified
+  SH:
+    defaults:
+      start_hz: 4000
+      band_width_hz: 500
+      attenuation_db: 80
+      run_frames: 4
+    settings:
+    - hole_probability: 0.1
+      parameter_tier: unspecified
+    - hole_probability: 0.3
+      parameter_tier: unspecified
+    - hole_probability: 0.7
+      parameter_tier: unspecified
+  UN:
+    defaults:
+      smoothing_hz: 500
+      tonal_threshold_db: 6
+      channel_mode: linked
+      crossover_hz: 7000
+    settings:
+    - strength: 0.25
+      parameter_tier: unspecified
+    - strength: 0.5
+      parameter_tier: unspecified
+    - strength: 1.0
+      parameter_tier: unspecified
+  QN:
+    defaults:
+      smoothing_hz: 500
+      envelope_ms: 5
+      fir_taps: 129
+      channel_mode: independent
+    settings:
+    - snr_db: 40
+      parameter_tier: unspecified
+    - snr_db: 30
+      parameter_tier: unspecified
+    - snr_db: 20
+      parameter_tier: unspecified

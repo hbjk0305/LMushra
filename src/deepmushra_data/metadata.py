@@ -86,7 +86,37 @@ def measure(reference, degraded, sample_rate, config, arrays, artifact, paramete
         "measured_change_definition": "magnitude change >=1 dB; floor=max(reference peak STFT magnitude *1e-4,1e-15); all analyzed cells",
         "audibility_interpretation": "none; objective measurements only",
     }
+    frequencies = arrays["frequencies_hz"]
+    def spectral_ratio(mask):
+        before = float(np.sum(rm[:, mask] ** 2))
+        after = float(np.sum(dm[:, mask] ** 2))
+        return 10 * float(np.log10(after / before)) if before and after else None
+    stats["spectral_energy_change_db_by_band"] = {
+        f"{lo:g}-{hi:g}Hz": spectral_ratio((frequencies >= lo) & (frequencies < hi))
+        for lo, hi in ((0, 4000), (4000, 10000), (10000, sample_rate/2+1))}
+    if artifact == "LP":
+        stats["stopband_spectral_energy_change_db"] = spectral_ratio(frequencies >= parameters["cutoff_hz"] + parameters["transition_hz"])
+        low = frequencies < parameters["cutoff_hz"] * 0.8
+        low_energy = float(np.sum(rm[:, low] ** 2))
+        stats["passband_magnitude_relative_error"] = float(np.linalg.norm(dm[:, low]-rm[:, low])/np.sqrt(low_energy)) if low_energy else None
+    if reference.shape[1] == 2:
+        for label, audio in (("reference", reference), ("degraded", degraded)):
+            stats[f"{label}_channel_correlation"] = float(np.corrcoef(audio.T)[0, 1]) if np.all(np.std(audio,axis=0)>0) else None
+    if artifact == "QN":
+        stats["measured_snr_db"] = 10 * float(np.log10(ref_energy / err_energy)) if ref_energy and err_energy else None
+        stats["per_channel_snr_db"] = [10 * float(np.log10(np.sum(r**2)/np.sum(e**2))) if np.any(r) and np.any(e) else None for r,e in zip(reference.T,residual.T)]
+        stats["stored_noise_residual_max_abs_error"] = float(np.max(np.abs(residual-arrays["added_noise"])))
+        sigma = max(parameters["smoothing_hz"]/(sample_rate/config.n_fft),0.5)
+        _, _, nz = analyze(residual,sample_rate,config)
+        color_r = gaussian_filter1d(np.mean(rm**2,axis=(0,2)),sigma)
+        color_n = gaussian_filter1d(np.mean(np.abs(nz)**2,axis=(0,2)),sigma)
+        norm = np.linalg.norm(color_r)*np.linalg.norm(color_n)
+        stats["smoothed_noise_reference_psd_cosine"] = float(np.dot(color_r,color_n)/norm) if norm else None
     if artifact == "SH":
+        eligible = frequencies >= parameters["start_hz"]
+        stats["eligible_tf_selection_ratio"] = float(selected[:,eligible].mean())
+        before = float(np.sum(rm[selected]**2)); after = float(np.sum(dm[selected]**2))
+        stats["selected_cell_energy_change_db_after_istft"] = 10*float(np.log10(after/before)) if before and after else None
         stats["selected_reference_spectral_energy_fraction"] = float(np.sum(rm[selected] ** 2) / denominator) if denominator else None
     if artifact == "UN":
         sigma = max(parameters["smoothing_hz"] / (sample_rate / config.n_fft), 0.5)

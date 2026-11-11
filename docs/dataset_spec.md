@@ -8,7 +8,7 @@ is **residual = degraded − reference**, so degraded = reference + residual.
 
 Synthesis operators are known; their human perceptual consequences are not.
 This dataset must not be described as containing human MUSHRA ground truth.
-It supports LP, SH, and UN only. PE (pre-echo) and TM (tonality mismatch) remain
+It supports LP, SH, UN, and additive signal-shaped QN-like noise. PE (pre-echo) and TM (tonality mismatch) remain
 held out from training and development augmentation for subsequent ODAQ tests.
 The residual, metadata, and text must remain in the same source-level partition.
 
@@ -47,7 +47,7 @@ the peak values or waveform bytes. This chunk name refers to peak amplitude,
 
 Top-level keys are `schema_version`, `seed`, `input`, `splits`, `stft`,
 `artifacts`, and `include_identity`. Unknown keys are rejected. Artifact names
-are uppercase `LP`, `SH`, and `UN`; optional identity controls are produced by
+are uppercase `LP`, `SH`, `UN`, and `QN`; optional identity controls are produced by
 the pipeline rather than declared as a degradation.
 
 Each artifact has `defaults` and exactly one of:
@@ -222,3 +222,43 @@ Generation uses a private staging directory, independently validates saved
 outputs, and then renames that directory into the requested new output path.
 On failure the staging directory is removed and no final dataset is published.
 Diagnostics and all generated data remain outside version control.
+
+## Phase 1 extension (generator 0.2.0, algorithm/template 1.1)
+
+Schema 1.0 keeps the same top-level groups; the permitted artifact enumeration
+now also includes QN. Consumers must accept this value. Optional manifest
+`source_provenance` is a finite JSON mapping and is copied into source metadata;
+use it for licenses, attribution, original recordings, crops, and integrity
+qualifications. Missing provenance is `{}`, not a claim of a license grant.
+Existing LP/SH/UN recipes keep their numerical behavior.
+
+QN is additive signal-shaped noise, not a quantizer or a masking/NMR model.
+It uses whole-excerpt mean STFT power (offline spectral analysis), Gaussian
+frequency smoothing, a finite minimum-phase FIR, seeded white noise and a
+past-only exponential RMS envelope. FIR filtering and RMS initialization are
+causal and zero-state. It can trail signal offsets; it adds exactly no noise
+before the first nonzero sample. Per-channel normalization targets waveform
+reference/noise SNR. The original waveform is not filtered or replaced.
+
+| QN parameter | Accepted range/default | Phase 1 |
+|---|---|---|
+| `snr_db` | 0–100 dB / 30 | 40, 30, 20 dB |
+| `smoothing_hz` | 1–Nyquist/2 / 500 Hz (Gaussian sigma) | 500 Hz |
+| `envelope_ms` | 0.1–1000 / 5 ms (exponential time constant) | 5 ms |
+| `fir_taps` | odd integer 17–2049 / 129 | 129 |
+| `channel_mode` | independent (default) or linked | independent |
+
+QN evidence stores actual `added_noise`, FIR coefficients, and the causal RMS
+envelope. Its boolean TF support is **derived from noise magnitude**, thresholded
+at max(noise peak STFT magnitude x 1e-4, 1e-15); it is not an applied gain mask.
+Centered diagnostic STFT support can project earlier than the causal waveform.
+Measured SNR and noise/reference PSD cosine are objective implementation checks.
+QN noise is not a removed-energy measurement; net and residual energy remain
+distinct quantities. Finite colored noise can have nonzero correlation with the
+reference, so output energy change need not equal added-noise energy exactly.
+
+For SH/UN, centered analysis and overlap-add can create pre-onset residual energy
+within roughly one full analysis-window length. Excluding a PE generator does
+not establish the absence of incidental PE-like smearing. See the measured
+onset probes and the required holdout-definition decision in the Phase 1 report.
+Do not turn processing-region projections into verified audible-event labels.

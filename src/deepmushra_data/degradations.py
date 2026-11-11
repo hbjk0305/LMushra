@@ -1,4 +1,4 @@
-"""Three controlled approximations; no PE or TM training generators."""
+"""Four controlled approximations; no PE or TM training generators."""
 
 from dataclasses import dataclass
 import numbers
@@ -10,8 +10,10 @@ from scipy.ndimage import gaussian_filter1d
 from . import MIN_SAMPLE_RATE, TRAINING_ARTIFACTS
 from .stft import STFTConfig, analyze, synthesize, validate_audio
 
-ALGORITHM_VERSION = "1.0"
+ALGORITHM_VERSION = "1.1"
 DEFAULTS = {
+    "QN": {"snr_db": 30.0, "smoothing_hz": 500.0, "envelope_ms": 5.0,
+           "fir_taps": 129, "channel_mode": "independent"},
     "LP": {"filter_design": "butterworth", "transition_hz": 1500.0,
            "passband_ripple_db": 0.5, "attenuation_db": 60.0},
     "SH": {"start_hz": 4000.0, "hole_probability": 0.1, "band_width_hz": 500.0,
@@ -68,11 +70,20 @@ def resolve_parameters(artifact, supplied, sample_rate):
         _number(p, "run_frames", 1, 100000, integer=True)
         if p["attenuation_db"] != "zero":
             _number(p, "attenuation_db", 0, 200)
-    else:
+    elif artifact == "UN":
         _number(p, "crossover_hz", 0, nyquist, False)
         _number(p, "strength", 0, 1)
         _number(p, "smoothing_hz", 1, nyquist / 2)
         _number(p, "tonal_threshold_db", 0, 60)
+        if p["channel_mode"] not in ("linked", "independent"):
+            raise ValueError("channel_mode must be linked or independent")
+    else:
+        _number(p, "snr_db", 0, 100)
+        _number(p, "smoothing_hz", 1, nyquist / 2)
+        _number(p, "envelope_ms", 0.1, 1000)
+        _number(p, "fir_taps", 17, 2049, integer=True)
+        if p["fir_taps"] % 2 != 1:
+            raise ValueError("fir_taps must be odd")
         if p["channel_mode"] not in ("linked", "independent"):
             raise ValueError("channel_mode must be linked or independent")
     return p
@@ -196,6 +207,50 @@ def _unmasked_noise(audio, sr, p, seed, config):
                          "times_s": times, "reference_envelope": envelope})
 
 
+def _quantization_like_noise(audio, sr, p, seed, config):
+    """Add spectral-colored, causal-envelope noise; not quantization or NMR masking."""
+    frequencies, times, z = analyze(audio, sr, config)
+    sigma = max(p["smoothing_hz"] / (sr / config.n_fft), 0.5)
+    # Offline whole-excerpt spectral color, not a framewise masking threshold.
+    power = gaussian_filter1d(np.mean(np.abs(z) ** 2, axis=0), sigma, axis=0, mode="nearest")
+    rng = np.random.default_rng(seed)
+    white = rng.standard_normal((len(audio), 1 if p["channel_mode"] == "linked" else audio.shape[1]))
+    if white.shape[1] == 1:
+        white = np.repeat(white, audio.shape[1], axis=1)
+    alpha = float(np.exp(-1 / (sr * p["envelope_ms"] / 1000)))
+    envelope = np.sqrt(np.maximum(signal.lfilter([1-alpha], [1, -alpha], audio ** 2, axis=0), 0))
+    noise = np.zeros_like(audio)
+    filters = []
+    for channel in range(audio.shape[1]):
+        amplitude = np.sqrt(power[:, channel])
+        amplitude /= max(float(amplitude.max()), 1e-30)
+        # A small spectral floor keeps the minimum-phase factorization well conditioned.
+        linear = signal.firwin2(p["fir_taps"], frequencies, np.maximum(amplitude, 1e-6), fs=sr)
+        causal = signal.minimum_phase(linear, method="homomorphic", half=False)
+        filters.append(causal)
+        shaped = signal.lfilter(causal, [1.0], white[:, channel]) * envelope[:, channel]
+        target = float(np.sum(audio[:, channel] ** 2)) * 10 ** (-p["snr_db"] / 10)
+        energy = float(np.sum(shaped ** 2))
+        if target and energy:
+            noise[:, channel] = shaped * np.sqrt(target / energy)
+    _, _, nz = analyze(noise, sr, config)
+    floor = max(float(np.max(np.abs(nz))) * 1e-4, 1e-15)
+    selected = np.abs(nz) > floor
+    evidence = _base_evidence(config, "derived_added_noise_stft_support_not_an_applied_gain_mask")
+    evidence.update({"phase_policy": "reference unchanged; added noise uses causal minimum-phase FIR and past-only exponential RMS",
+        "spectral_color": "whole-excerpt mean STFT power, Gaussian frequency smoothing, finite FIR approximation",
+        "smoothing_definition": "Gaussian standard deviation in Hz",
+        "temporal_envelope": "sqrt of causal exponential mean reference power; zero state; may trail offsets",
+        "envelope_alpha": alpha, "snr_definition": "reference-to-added-noise waveform energy, calibrated independently per channel",
+        "support_definition": "noise STFT magnitude > max(noise peak STFT magnitude*1e-4,1e-15); centered analysis can project before actual waveform support",
+        "noise_waveform_array": "added_noise", "no_tonal_replacement": True,
+        "psychoacoustic_masking_model": None, "reference_phase_modified": False,
+        "transformation_applied": bool(np.any(noise))})
+    return EffectResult(audio + noise, p, evidence,
+        {"selected_mask": selected, "frequencies_hz": frequencies, "times_s": times,
+         "added_noise": noise, "noise_fir_coefficients": np.stack(filters), "causal_rms_envelope": envelope})
+
+
 def apply_effect(artifact, audio, sample_rate, parameters, seed, stft_config=None):
     audio = validate_audio(audio)
     p = resolve_parameters(artifact, parameters, sample_rate)
@@ -204,8 +259,10 @@ def apply_effect(artifact, audio, sample_rate, parameters, seed, stft_config=Non
         result = _lowpass(audio, sample_rate, p, config)
     elif artifact == "SH":
         result = _holes(audio, sample_rate, p, seed, config)
-    else:
+    elif artifact == "UN":
         result = _unmasked_noise(audio, sample_rate, p, seed, config)
+    else:
+        result = _quantization_like_noise(audio, sample_rate, p, seed, config)
     result.audio = validate_audio(result.audio)
     if result.audio.shape != audio.shape:
         raise ValueError("Effect changed waveform shape")

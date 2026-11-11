@@ -1,0 +1,193 @@
+{
+  "audio": {
+    "degraded": {
+      "path": "audio/c84a6c950c4e0a8e812b62e3/degraded.wav",
+      "sha256": "eccedb0c34ab7944b26336eb4c467b9e48132951a8af3d1e99a0062967bf01af",
+      "subtype": "DOUBLE"
+    },
+    "reference": {
+      "path": "audio/reference/11fd27bdc757c684868d990b3baab6263644d4f5aed4cafa5935934b0acbe8ea.wav",
+      "sha256": "11fd27bdc757c684868d990b3baab6263644d4f5aed4cafa5935934b0acbe8ea",
+      "subtype": "DOUBLE"
+    },
+    "residual": {
+      "path": "audio/c84a6c950c4e0a8e812b62e3/residual.wav",
+      "sha256": "93ee84fe47157cd7b71fe44d54ad4d8d276b84f3e832ad070517a4a97e7b2fb1",
+      "subtype": "DOUBLE"
+    }
+  },
+  "degradation": {
+    "algorithm": "deepmushra_data.qn",
+    "algorithm_version": "1.1",
+    "artifact_type": "QN",
+    "evidence": {
+      "algorithm_version": "1.1",
+      "coverage_denominator": "all analyzed time-frequency-channel cells, including boundary padding",
+      "envelope_alpha": 0.9954751208601006,
+      "mask_kind": "derived_added_noise_stft_support_not_an_applied_gain_mask",
+      "no_tonal_replacement": true,
+      "noise_waveform_array": "added_noise",
+      "perceptual_equivalence_to_odaq": "unverified",
+      "phase_policy": "reference unchanged; added noise uses causal minimum-phase FIR and past-only exponential RMS",
+      "psychoacoustic_masking_model": null,
+      "reference_phase_modified": false,
+      "smoothing_definition": "Gaussian standard deviation in Hz",
+      "snr_definition": "reference-to-added-noise waveform energy, calibrated independently per channel",
+      "spectral_color": "whole-excerpt mean STFT power, Gaussian frequency smoothing, finite FIR approximation",
+      "stft": {
+        "axis_order": "time,frequency,channel",
+        "boundary": "zeros",
+        "hop_length": 512,
+        "n_fft": 2048,
+        "padded": true,
+        "scaling": "spectrum",
+        "window": "periodic_hann"
+      },
+      "support_definition": "noise STFT magnitude > max(noise peak STFT magnitude*1e-4,1e-15); centered analysis can project before actual waveform support",
+      "temporal_envelope": "sqrt of causal exponential mean reference power; zero state; may trail offsets",
+      "transformation_applied": true
+    },
+    "frequency_regions_hz": [
+      [
+        0.0,
+        22050.0
+      ]
+    ],
+    "mask": {
+      "axis_order": "time,frequency,channel",
+      "format": "npz",
+      "path": "evidence/c84a6c950c4e0a8e812b62e3.npz",
+      "selection_array": "selected_mask",
+      "sha256": "ee37383b180ff1ea6be4d658c28d8044f00779bfe0585c183d6f9c17142e483a"
+    },
+    "parameter_severity": {
+      "status": "provisional_parameter_based",
+      "tier": "unspecified"
+    },
+    "parameters": {
+      "channel_mode": "independent",
+      "envelope_ms": 5,
+      "fir_taps": 129,
+      "smoothing_hz": 500,
+      "snr_db": 30
+    },
+    "random_seed": 7063811228729895671,
+    "region_interpretation": "projections of processing selections with STFT window support; not audible-event annotations; see full mask for joint structure",
+    "time_regions_s": [
+      [
+        0.0,
+        8.0
+      ]
+    ]
+  },
+  "descriptions": {
+    "attributes": {
+      "artifact": "QN",
+      "audibility": "unknown",
+      "content_attribution": "unknown",
+      "perceived_severity": "unknown"
+    },
+    "perceptual_candidate": "Additional background noise or hiss may be present, following the signal's spectral color.",
+    "perceptual_candidate_status": "unverified",
+    "technical": "Signal-shaped noise is added at a 30 dB reference-to-noise energy ratio per channel, using 500 Hz spectral smoothing and a causal 5 ms RMS envelope. The original waveform is retained; this is not a psychoacoustic NMR simulation.",
+    "technical_status": "processing_facts",
+    "template_version": "1.1"
+  },
+  "measurements": {
+    "affected_frame_ratio": 1.0,
+    "affected_tf_ratio": 0.9971317637923123,
+    "audibility_interpretation": "none; objective measurements only",
+    "degraded_channel_correlation": 0.8901583204557161,
+    "degraded_energy": 1767.2829409055855,
+    "degraded_peak": 0.42785294812766844,
+    "degraded_rms": 0.05004650531283069,
+    "measured_change_definition": "magnitude change >=1 dB; floor=max(reference peak STFT magnitude *1e-4,1e-15); all analyzed cells",
+    "measured_changed_tf_ratio": 0.24155659877872296,
+    "measured_snr_db": 30.0,
+    "measurement_grid_cells": 1416550,
+    "net_energy_change": 1.105139193169407,
+    "normalized_spectral_magnitude_error": 0.022835485539279433,
+    "per_channel_snr_db": [
+      30.0,
+      30.0
+    ],
+    "reference_channel_correlation": 0.8910112710748099,
+    "reference_energy": 1766.177801712416,
+    "reference_peak": 0.427978515625,
+    "reference_rms": 0.05003085501642021,
+    "relative_residual_energy": 0.0009999999999999996,
+    "residual_energy": 1.7661778017124155,
+    "residual_peak": 0.012716031776478905,
+    "residual_rms": 0.0015821145513754869,
+    "rms_change_db": 0.0027166333741282644,
+    "smoothed_noise_reference_psd_cosine": 0.9661114303589025,
+    "spectral_energy_change_db_by_band": {
+      "0-4000Hz": 0.002719430545808307,
+      "10000-22051Hz": 0.005375319516986962,
+      "4000-10000Hz": 0.005126446720578997
+    },
+    "stored_noise_residual_max_abs_error": 2.7159264420761886e-17
+  },
+  "perceptual_annotation": {
+    "audibility": null,
+    "description_attributes": null,
+    "natural_language_description": null,
+    "perceived_severity": null,
+    "provenance": null,
+    "quality_category": null,
+    "status": "unverified"
+  },
+  "provenance": {
+    "configuration_sha256": "758f3609248042ba89718c84d7175df1c6a0ac4292a655da8f9030d23340847d",
+    "generator_source_sha256": "8b42e04fd0721bb599460e3eed37e5b682da2b6746defaf604178da939afc5b3",
+    "generator_version": "0.2.0",
+    "git_dirty": true,
+    "git_revision": "11d1f0d4cbed3a2e1bab0f46db9d6c2aef36c68a",
+    "master_seed": 20261102
+  },
+  "sample_id": "c84a6c950c4e0a8e812b62e3",
+  "schema_version": "1.0",
+  "source": {
+    "channels": 2,
+    "content_category": "tonal_instrument_stem",
+    "content_category_provenance": "source_manifest",
+    "declared_source_id": "musdb18hq:Aimee Norwich - Child",
+    "duration_s": 8.0,
+    "is_functional_test_signal": false,
+    "original_peak": 0.427978515625,
+    "sample_count": 352800,
+    "sample_rate": 44100,
+    "shared_source_gain": 1.0,
+    "source_checksum_sha256": "11fd27bdc757c684868d990b3baab6263644d4f5aed4cafa5935934b0acbe8ea",
+    "source_file": "reference_01.wav",
+    "source_id": "musdb18hq:Aimee Norwich - Child",
+    "source_provenance": {
+      "archive_member": "train/Aimee Norwich - Child/other.wav",
+      "archive_member_crc32": "68de40cf",
+      "artist_and_track": "Aimee Norwich - Child",
+      "category_basis": "MUSDB stem designation; other is a multi-instrument tonal-content proxy, not a verified solo instrument",
+      "dataset": "MUSDB18-HQ / MedleyDB",
+      "excerpt_duration_s": 8,
+      "excerpt_start_s": 60,
+      "full_member_crc_verified": true,
+      "genre": "Singer/Songwriter",
+      "integrity_note": "Selected compressed member fully read and CRC verified; whole-archive MD5 not verified",
+      "license": "CC BY-NC-SA 4.0",
+      "license_evidence": "https://sigsep.github.io/datasets/musdb.html",
+      "license_url": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+      "modifications": "Excerpting and lossless DOUBLE WAV conversion; generator records any subsequent shared gain",
+      "original_header": {
+        "channels": 2,
+        "sample_count": 8346782,
+        "sample_rate": 44100,
+        "subtype": "PCM_16"
+      },
+      "perceptual_cleanliness": "unverified; uncompressed release, not a human-quality certification",
+      "permitted_use": "Noncommercial research; retain attribution and share-alike obligations; no audio in Git",
+      "record_url": "https://zenodo.org/records/3338373",
+      "selection_rule": "Highest mean-square energy of fixed 8-second windows starting at 20,40,60 s; ties prefer earlier",
+      "stem": "other"
+    },
+    "split": "validation"
+  }
+}

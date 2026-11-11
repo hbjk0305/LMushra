@@ -60,7 +60,12 @@ def discover_sources(input_dir=None, manifest=None, policy=None):
         category = entry.get("content_category", "unknown")
         if not isinstance(source_id, str) or not source_id or not isinstance(category, str):
             raise ValueError("source_id and content_category must be strings")
-        sources.append({"path": path, "source_file": entry["source_file"],
+        provenance = entry.get("source_provenance", {})
+        if not isinstance(provenance, dict):
+            raise ValueError("source_provenance must be a JSON mapping")
+        import json
+        json.dumps(provenance, allow_nan=False)
+        sources.append({"source_provenance": provenance,"path": path, "source_file": entry["source_file"],
                         "declared_source_id": source_id, "checksum": checksum,
                         "content_category": category, "sample_rate": sr,
                         "sample_count": len(audio), "channels": audio.shape[1],

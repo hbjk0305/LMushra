@@ -113,3 +113,24 @@ Future LLM paraphrasing, human-test tooling, score prediction, full ODAQ
 evaluation, training adapters, real codec runs, and large-scale generation remain
 separate workstreams. No external corpora or model weights are downloaded by
 the demo command.
+
+
+## Phase 1 decisions (2026-11-02)
+
+- Add QN-like noise in the time domain with an unchanged reference component,
+  causal coloring FIR and causal RMS envelope. Offline long-term color avoids
+  a claim of online masking or exact ODAQ NMR replication. A short FIR limits
+  spectral resolution; exact SNR is distinct from exact spectral matching.
+- Pilot uses eight native 44.1 kHz stereo MedleyDB recordings from MUSDB18-HQ,
+  two content proxies each (other/drums/vocals/mixture), not ODAQ assets. Retain
+  NC/share-alike provenance. Other stems are not verified isolated instruments.
+- Hold crossover, band width, run length and smoothing fixed while sweeping one
+  parameter per effect. Different variants have independent deterministic seeds;
+  this pilot is not an estimate of stochastic variability or perceptual severity.
+- Keep the existing causal LP and centered SH/UN implementations visible. Measure
+  phase delay, pre-onset spreading, envelope error and stereo correlation rather
+  than hiding incidental artifacts. No stereo-width operator is approved.
+- Repeat whole pilot generation for byte-level audio/evidence/metadata checks.
+  Objective probes and source-content plots are not human quality annotations.
+- No full-scale generation, ODAQ calibration, model training or listening-test
+  infrastructure was implemented. Human severity calibration remains proposed.
