@@ -1,0 +1,28 @@
+{
+  "deterministic_deliverable_files": 9,
+  "heldout_ratings_read": false,
+  "html_self_contained": true,
+  "label_policy": "transferred_estimated_quality_0_to_100_plus_five_categories",
+  "mapping_generators_and_calibration_unchanged": true,
+  "no_new_audio_or_fitting": true,
+  "parameter_rows_verified": 12,
+  "png_dimensions": {
+    "01_parameter_quality_curves.png": [
+      2227,
+      1534
+    ],
+    "02_supported_quality_and_defaults.png": [
+      2227,
+      957
+    ],
+    "03_qn_coordinate_and_sensitivity.png": [
+      2227,
+      923
+    ]
+  },
+  "renderer_sha256": "b6f18bc538d6f32c1333dea12c5b3fa0b1a043b2cba168408528552b50ea00c3",
+  "repeat_check_status": "previous version only; policy wording updated",
+  "sampling_policy": "not_finalized;50/65/75_are_engineering_pilot_settings",
+  "svg_xml_valid": true,
+  "valid": true
+}

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "deepmushra-data"
-version = "0.2.0"
+version = "0.4.0"
 description = "Reproducible, metadata-grounded synthetic audio degradations"
 requires-python = ">=3.10"
 dependencies = [
@@ -19,7 +19,7 @@ dependencies = [
 dev = ["pytest>=8,<10"]
 
 [project.scripts]
-deepmushra-data = "deepmushra_data.cli:main"
+deepmushra-data = "deepmushra_mapped.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
@@ -27,3 +27,6 @@ where = ["src"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-ra"
+
+[tool.setuptools.package-data]
+deepmushra_mapped = ["mapping_table.json", "profile.json", "profile-v2.json", "training_contract.json"]

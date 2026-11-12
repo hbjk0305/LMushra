@@ -1,0 +1,270 @@
+{
+  "artifacts": {
+    "LP": {
+      "axis": "cutoff_hz",
+      "calibration_listeners": 9,
+      "conditional_listener_weight_95_bands": [
+        [
+          18.24901553767337,
+          26.70958891461597
+        ],
+        [
+          49.02450981529278,
+          62.19272861871626
+        ],
+        [
+          61.680089450812524,
+          70.41991754258846
+        ],
+        [
+          84.81553120995471,
+          92.62406475476523
+        ],
+        [
+          97.51144025202197,
+          98.39366733380486
+        ]
+      ],
+      "leave_one_listener_max_change": [
+        2.7222222222222214,
+        3.7916666666666714,
+        3.0714285714285694,
+        2.535714285714292,
+        0.2857142857142918
+      ],
+      "qn_mono_snr_source_ranges": null,
+      "quality_mean": [
+        22.77777777777777,
+        55.511904761904766,
+        65.89682539682539,
+        88.81349206349206,
+        97.94841269841267
+      ],
+      "reference_group": "LP_original",
+      "reference_sources": 4,
+      "released_parameter_knots": [
+        5.0,
+        9.0,
+        10.5,
+        12.0,
+        15.0
+      ],
+      "transfer_interval_95": null,
+      "x": [
+        5000.0,
+        9000.0,
+        10500.0,
+        12000.0,
+        15000.0
+      ]
+    },
+    "QN": {
+      "axis": "waveform_snr_db",
+      "calibration_listeners": 3,
+      "conditional_listener_weight_95_bands": [
+        [
+          19.18154064234459,
+          20.91978943875846
+        ],
+        [
+          34.78878239403717,
+          35.05620528579313
+        ],
+        [
+          52.77076125987329,
+          59.05519921613878
+        ],
+        [
+          71.84944647179896,
+          77.59903864455251
+        ],
+        [
+          92.12387957614864,
+          93.19357114317255
+        ]
+      ],
+      "leave_one_listener_max_change": [
+        14.8203125,
+        16.078125,
+        10.2265625,
+        5.4140625,
+        0.65625
+      ],
+      "qn_mono_snr_source_ranges": [
+        [
+          2.135629454655252,
+          2.2449623969059687
+        ],
+        [
+          6.558003188976801,
+          6.68931665709799
+        ],
+        [
+          11.989156325573433,
+          12.235722312171998
+        ],
+        [
+          17.56262625318017,
+          18.04444237552959
+        ],
+        [
+          22.49198971594104,
+          23.980051055276967
+        ]
+      ],
+      "quality_mean": [
+        20.0546875,
+        34.921875,
+        55.8984375,
+        74.7109375,
+        92.65625
+      ],
+      "reference_group": "QNMS",
+      "reference_sources": 4,
+      "released_parameter_knots": [
+        0.0,
+        6.0,
+        12.0,
+        18.0,
+        24.0
+      ],
+      "transfer_interval_95": null,
+      "x": [
+        2.228506302815756,
+        6.661260379445558,
+        12.06516953880947,
+        17.724421587884798,
+        23.205954857698543
+      ]
+    },
+    "SH": {
+      "axis": "hole_probability",
+      "calibration_listeners": 9,
+      "conditional_listener_weight_95_bands": [
+        [
+          74.08672644221474,
+          82.96064882014856
+        ],
+        [
+          60.99840553344472,
+          72.1813310493986
+        ],
+        [
+          45.455824044040135,
+          58.37266948543773
+        ],
+        [
+          28.1328788652412,
+          37.470494908263895
+        ],
+        [
+          19.411745067230814,
+          30.879254365358996
+        ]
+      ],
+      "leave_one_listener_max_change": [
+        2.7777777777777715,
+        3.0,
+        3.541666666666657,
+        2.263888888888893,
+        3.1904761904761934
+      ],
+      "qn_mono_snr_source_ranges": null,
+      "quality_mean": [
+        78.78174603174602,
+        66.57142857142858,
+        51.60714285714285,
+        32.93253968253967,
+        25.20634920634921
+      ],
+      "reference_group": "SH_original",
+      "reference_sources": 4,
+      "released_parameter_knots": [
+        10.0,
+        20.0,
+        30.0,
+        50.0,
+        70.0
+      ],
+      "transfer_interval_95": null,
+      "x": [
+        0.1,
+        0.2,
+        0.3,
+        0.5,
+        0.7000000000000001
+      ]
+    },
+    "UN": {
+      "axis": "crossover_hz",
+      "calibration_listeners": 9,
+      "conditional_listener_weight_95_bands": [
+        [
+          40.76268134586402,
+          50.97627309783648
+        ],
+        [
+          55.6292748424165,
+          62.75973526006809
+        ],
+        [
+          62.791580506035196,
+          73.08753924576375
+        ],
+        [
+          79.89288980152097,
+          88.45778105678058
+        ],
+        [
+          87.8008681336305,
+          91.3750838485237
+        ]
+      ],
+      "leave_one_listener_max_change": [
+        2.5,
+        2.3333333333333357,
+        3.892857142857139,
+        3.000000000000014,
+        1.4166666666666714
+      ],
+      "qn_mono_snr_source_ranges": null,
+      "quality_mean": [
+        45.80555555555556,
+        59.22222222222221,
+        67.92857142857142,
+        83.5952380952381,
+        89.95238095238095
+      ],
+      "reference_group": "UN_original",
+      "reference_sources": 4,
+      "released_parameter_knots": [
+        3.0,
+        5.0,
+        7.0,
+        9.0,
+        10.5
+      ],
+      "transfer_interval_95": null,
+      "x": [
+        3000.0,
+        5000.0,
+        7000.0,
+        9000.0,
+        10500.0
+      ]
+    }
+  },
+  "assumptions": [
+    "Original stereo quality means are transferred provisionally to mono.",
+    "Synthetic operators approximate the ODAQ artifact family.",
+    "QN uses measured mono QNMS median SNR, not an NMR-to-SNR identity."
+  ],
+  "provenance": {
+    "listener_split_sha256": "60c1f20d7335d595d282e2c7341fb8ed6be90302b26002b1eaf0bc5aac15f654",
+    "models_sha256": "3ee63890861e144aeb237c48e760abfcf7a418d3cc8d79a83359e30f1d39e328",
+    "qn_coordinates_sha256": "eff2c6e6720fb047181548ae5c250669b20317031b12a055e281740d842a0350"
+  },
+  "split_seed": 20261110,
+  "status": "provisional_stereo_to_mono_operator_transfer",
+  "version": "odaq-transferred-poc-1"
+}

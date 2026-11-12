@@ -1,0 +1,54 @@
+{
+  "config": {
+    "artifacts": {
+      "LP": {
+        "quality_targets": [
+          50,
+          65,
+          75
+        ]
+      },
+      "QN": {
+        "quality_targets": [
+          50,
+          65,
+          75
+        ]
+      },
+      "SH": {
+        "quality_targets": [
+          50,
+          65,
+          75
+        ]
+      },
+      "UN": {
+        "quality_targets": [
+          50,
+          65,
+          75
+        ]
+      }
+    },
+    "input": {
+      "channels": [
+        1
+      ],
+      "max_duration_s": 30,
+      "min_duration_s": 1,
+      "output_peak_limit": 0.999,
+      "sample_rates": [
+        44100
+      ],
+      "source_peak_limit": 0.15
+    },
+    "schema_version": "mapped-poc-1",
+    "seed": 20261111,
+    "splits": {
+      "test": 0.15,
+      "train": 0.7,
+      "validation": 0.15
+    }
+  },
+  "profile_id": "mapped-poc-1"
+}

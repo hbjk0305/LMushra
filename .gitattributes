@@ -1,0 +1,10 @@
+*.py text eol=lf
+*.json text eol=lf
+*.jsonl text eol=lf
+*.yaml text eol=lf
+*.toml text eol=lf
+*.md text eol=lf
+
+# Generated figure paths and embedded SVG retain renderer whitespace.
+docs/figures/**/*.svg -whitespace
+docs/*.html -whitespace

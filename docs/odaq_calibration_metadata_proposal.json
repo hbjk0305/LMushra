@@ -1,0 +1,73 @@
+{
+  "record_type": "proposed_calibration_companion_annotation",
+  "schema_version": "proposal-1",
+  "synthetic_sample_id": null,
+  "status": "proposal_only",
+  "estimator": {
+    "id": "odaq-calibration-poc-v1/LP_original/isotonic",
+    "fit_models_sha256": "3ee63890861e144aeb237c48e760abfcf7a418d3cc8d79a83359e30f1d39e328",
+    "split_sha256": "60c1f20d7335d595d282e2c7341fb8ed6be90302b26002b1eaf0bc5aac15f654",
+    "training_role": "calibration",
+    "parameter_name": "cutoff_khz",
+    "parameter_value": 12.0
+  },
+  "reference_domain_estimate": {
+    "dataset": "ODAQ-Collection/23425817",
+    "playback_channels": 2,
+    "context": "original LP trials",
+    "source_conditioning": "average of four released source items",
+    "estimated_mushra_quality": 88.81349206349206,
+    "estimated_quality_loss_proxy_points": 11.186507936507937,
+    "observed_listener_weight_95_interval": [
+      84.81553120995471,
+      92.62406475476523
+    ],
+    "interval_interpretation": "conditional resampling interval; population uncertainty and synthetic transfer are additional",
+    "calibration_listener_count": 9,
+    "quality_category": null,
+    "audibility": null,
+    "human_severity_label": null,
+    "approximate_population_mean_t95": {
+      "lower": 77.5249542000052,
+      "upper": 100.10202992697893,
+      "method": "cohort-weighted Satterthwaite t on listener source averages"
+    },
+    "leave_one_calibration_listener_max_abs_change": 2.535714285714292
+  },
+  "synthetic_transfer": {
+    "status": "unverified",
+    "operator_version": null,
+    "mono_transfer_validated": false,
+    "synthetic_quality_estimate": null,
+    "synthetic_perceptual_severity": null,
+    "transfer_uncertainty": null,
+    "required_evidence": "matching parameter semantics, operator response, source and playback validation"
+  },
+  "qn_application_rule": "A waveform snr_db value cannot be passed as an ODAQ nmr_label_db value",
+  "additional_reference_examples": [
+    {
+      "mapping_id": "odaq-calibration-poc-v1/QNLR/isotonic",
+      "reference_domain": "ODAQ stereo LR, separated presentation",
+      "parameter_name": "odaq_nmr_label_db",
+      "parameter_value": 12.0,
+      "estimated_quality": 61.875,
+      "conditional_observed_listener_weight_95_interval": [
+        61.608814788074326,
+        62.143660571586274
+      ],
+      "approximate_population_mean_t95": null,
+      "population_interval_status": "unidentifiable within-cohort variance: one E-cohort calibration listener",
+      "unweighted_source_average_t95_diagnostic": [
+        16.63745305212892,
+        114.19588028120442
+      ],
+      "leave_one_listener_max_abs_change": 14.875,
+      "calibration_listener_count": 3,
+      "singleton_cohort_weight": 0.4375,
+      "synthetic_parameter_name": "snr_db",
+      "synthetic_transfer_status": "unverified",
+      "synthetic_quality_estimate": null,
+      "human_perceived_severity": null
+    }
+  ]
+}

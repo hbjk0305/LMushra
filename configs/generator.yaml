@@ -1,0 +1,18 @@
+# Label policy: transferred estimated quality 0–100 plus Bad/Poor/Fair/Good/Excellent.
+# The 50/65/75 requests below are provisional engineering pilot settings, not a final sampling decision.
+# No separate 1–5 severity labels. PE/TM excluded.
+schema_version: mapped-poc-1
+seed: 20261111
+input:
+  sample_rates: [44100]
+  channels: [1]
+  min_duration_s: 1
+  max_duration_s: 30
+  source_peak_limit: 0.15
+  output_peak_limit: 0.999
+splits: {train: 0.7, validation: 0.15, test: 0.15}
+artifacts:
+  LP: {quality_targets: [50, 65, 75]}
+  SH: {quality_targets: [50, 65, 75]}
+  UN: {quality_targets: [50, 65, 75]}
+  QN: {quality_targets: [50, 65, 75]}

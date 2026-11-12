@@ -1,0 +1,36 @@
+{
+  "calibration_listeners": 3,
+  "group": "QNMS",
+  "heldout_ratings_used": false,
+  "mapping_table_sha256": "a3c8a64d935b8ef9a70ee8e4783b2ca4468f0f400b2ddcbe129ee2bd5b2a7dd5",
+  "model": "isotonic",
+  "points": [
+    {
+      "leave_one_listener_max": 34.875,
+      "leave_one_listener_min": 19.140625,
+      "released_condition_label": 0.0
+    },
+    {
+      "leave_one_listener_max": 51.0,
+      "leave_one_listener_min": 34.78125,
+      "released_condition_label": 6.0
+    },
+    {
+      "leave_one_listener_max": 66.125,
+      "leave_one_listener_min": 52.59375,
+      "released_condition_label": 12.0
+    },
+    {
+      "leave_one_listener_max": 80.125,
+      "leave_one_listener_min": 71.6875,
+      "released_condition_label": 18.0
+    },
+    {
+      "leave_one_listener_max": 93.21875,
+      "leave_one_listener_min": 92.0,
+      "released_condition_label": 24.0
+    }
+  ],
+  "reference_sources": 4,
+  "source_calibration_predictions_sha256": "86b3a6aa4e7ef69394421ccb799ce02bae285c38b56de03980fc07b3c2bae647"
+}

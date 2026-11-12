@@ -1,0 +1,404 @@
+{
+  "audio": {
+    "degraded": {
+      "path": "audio/32beb744036d4f64f544a2a4/degraded.wav",
+      "sha256": "24545f0ea96bebbe05f22a1e078f24d0c5d0df4a47ed85bbb3c4f53781501792",
+      "subtype": "DOUBLE"
+    },
+    "reference": {
+      "path": "audio/reference/b8d085fe6a3e2b0c83545acda363f886dada73df43a58d56553bda5a0bce1149.wav",
+      "sha256": "b8d085fe6a3e2b0c83545acda363f886dada73df43a58d56553bda5a0bce1149",
+      "subtype": "DOUBLE"
+    },
+    "residual": {
+      "path": "audio/32beb744036d4f64f544a2a4/residual.wav",
+      "sha256": "7f82c6439c8b887c138496e86bd269c7ce6270101f8a27498838912451c6021f",
+      "subtype": "DOUBLE"
+    }
+  },
+  "calibration_estimate": {
+    "assumptions": [
+      "Original stereo quality means are transferred provisionally to mono.",
+      "Synthetic operators approximate the ODAQ artifact family.",
+      "QN uses measured mono QNMS median SNR, not an NMR-to-SNR identity."
+    ],
+    "band_interpretation": "conditional stereo-reference band; linearly interpolated between knots; not a mono/synthetic population CI",
+    "calibration_curve_provenance": {
+      "listener_split_sha256": "60c1f20d7335d595d282e2c7341fb8ed6be90302b26002b1eaf0bc5aac15f654",
+      "models_sha256": "3ee63890861e144aeb237c48e760abfcf7a418d3cc8d79a83359e30f1d39e328",
+      "qn_coordinates_sha256": "eff2c6e6720fb047181548ae5c250669b20317031b12a055e281740d842a0350"
+    },
+    "calibration_listeners": 9,
+    "conditional_reference_listener_weight_95_band": [
+      29.62206259188786,
+      39.82234069841007
+    ],
+    "estimated_quality_category": "Poor",
+    "estimated_quality_loss_proxy": 65.12536479693487,
+    "estimated_quality_mean": 34.874635203065125,
+    "has_actual_human_ratings": false,
+    "human_mushra_score": null,
+    "mapping_id": "odaq-transferred-poc-1/LP",
+    "mono_transfer_validated": false,
+    "operator_transfer_validated": false,
+    "parameter_axis": "cutoff_hz",
+    "parameter_interpolation_used": true,
+    "parameter_value": 6478.195209684767,
+    "quality_domain": "ODAQ stereo reference-domain prior; synthetic mono transfer unverified",
+    "reference_group": "LP_original",
+    "reference_sources": 4,
+    "status": "odaq_informed_provisional_transfer",
+    "support_status": "inside",
+    "supported_parameter_range": [
+      5000.0,
+      15000.0
+    ],
+    "supported_quality_range": [
+      22.77777777777777,
+      97.94841269841267
+    ],
+    "synthetic_transfer_interval_95": null,
+    "table_sha256": "a3c8a64d935b8ef9a70ee8e4783b2ca4468f0f400b2ddcbe129ee2bd5b2a7dd5"
+  },
+  "degradation": {
+    "algorithm_evidence": {
+      "algorithm_version": "1.1",
+      "coverage_denominator": "all analyzed time-frequency-channel cells, including boundary padding",
+      "cutoff_definition": "passband edge",
+      "filter_order": 32,
+      "mapped_profile_version": "mapped-poc-1",
+      "mask_kind": "filter_response_projection_not_applied_stft_mask",
+      "operator_transfer": "approximate_family",
+      "perceptual_equivalence_to_odaq": "unverified",
+      "phase_policy": "causal IIR; frequency-dependent group delay; no delay compensation or look-ahead",
+      "response_passband_loss_max_db": 0.4960261549201079,
+      "response_stopband_attenuation_min_db": 60.44073201168926,
+      "sos_coefficients": [
+        [
+          2.1024678173630067e-14,
+          4.2049356347260133e-14,
+          2.1024678173630067e-14,
+          1.0,
+          -0.6424818341338016,
+          0.10368046089367666
+        ],
+        [
+          1.0,
+          2.0,
+          1.0,
+          1.0,
+          -0.6452668209418271,
+          0.10846462032132555
+        ],
+        [
+          1.0,
+          2.0,
+          1.0,
+          1.0,
+          -0.6508824517802245,
+          0.11811137094157807
+        ],
+        [
+          1.0,
+          2.0,
+          1.0,
+          1.0,
+          -0.6594215246828574,
+          0.1327801248519336
+        ],
+        [
+          1.0,
+          2.0,
+          1.0,
+          1.0,
+          -0.6710270209368083,
+          0.1527165009079653
+        ],
+        [
+          1.0,
+          2.0,
+          1.0,
+          1.0,
+          -0.6858968619022412,
+          0.17826049617480527
+        ],
+        [
+          1.0,
+          2.0,
+          1.0,
+          1.0,
+          -0.7042906263239218,
+          0.20985802518799507
+        ],
+        [
+          1.0,
+          2.0,
+          1.0,
+          1.0,
+          -0.7265385811347236,
+          0.24807643342148555
+        ],
+        [
+          1.0,
+          2.0,
+          1.0,
+          1.0,
+          -0.753053508840123,
+          0.2936248148320069
+        ],
+        [
+          1.0,
+          2.0,
+          1.0,
+          1.0,
+          -0.7843459758699921,
+          0.3473802404318436
+        ],
+        [
+          1.0,
+          2.0,
+          1.0,
+          1.0,
+          -0.8210438877968582,
+          0.4104213510087447
+        ],
+        [
+          1.0,
+          2.0,
+          1.0,
+          1.0,
+          -0.8639174283081034,
+          0.48407119826923606
+        ],
+        [
+          1.0,
+          2.0,
+          1.0,
+          1.0,
+          -0.9139107866476678,
+          0.5699517474807523
+        ],
+        [
+          1.0,
+          2.0,
+          1.0,
+          1.0,
+          -0.9721824432950447,
+          0.6700530817890172
+        ],
+        [
+          1.0,
+          2.0,
+          1.0,
+          1.0,
+          -1.0401561882485013,
+          0.7868210434233638
+        ],
+        [
+          1.0,
+          2.0,
+          1.0,
+          1.0,
+          -1.119585431567633,
+          0.9232677088657963
+        ]
+      ],
+      "stft": {
+        "axis_order": "time,frequency,channel",
+        "boundary": "zeros",
+        "hop_length": 512,
+        "n_fft": 2048,
+        "padded": true,
+        "scaling": "spectrum",
+        "window": "periodic_hann"
+      },
+      "transformation_applied": true
+    },
+    "artifact_type": "LP",
+    "mask": {
+      "path": "evidence/32beb744036d4f64f544a2a4.npz",
+      "sha256": "771c4917d4245e984918b99d3165ab536e6f2288944cfa8382f847d0cdc6ef72"
+    },
+    "parameters": {
+      "attenuation_db": 60,
+      "cutoff_hz": 6478.195209684767,
+      "filter_design": "butterworth",
+      "passband_ripple_db": 0.5,
+      "transition_hz": 1500
+    },
+    "profile_version": "mapped-poc-1",
+    "random_seed": 14025766353999844221,
+    "regions": {
+      "frequency_regions_hz": [
+        [
+          6535.3271484375,
+          22050.0
+        ]
+      ],
+      "region_interpretation": "projections of processing selections with STFT window support; not audible-event annotations; see full mask for joint structure",
+      "time_regions_s": [
+        [
+          0.0,
+          4.0
+        ]
+      ]
+    }
+  },
+  "descriptions": {
+    "perceptual_candidate": "High-frequency detail may be reduced.",
+    "perceptual_candidate_status": "unverified",
+    "technical": "Low-pass filtering has a passband edge of 6.48 kHz."
+  },
+  "measurements": {
+    "affected_frame_ratio": 1.0,
+    "affected_tf_ratio": 0.7034146341463414,
+    "audibility_interpretation": "none; objective measurements only",
+    "degraded_energy": 24.9218070218455,
+    "degraded_peak": 0.13066674424833957,
+    "degraded_rms": 0.011886129948719822,
+    "measured_change_definition": "magnitude change >=1 dB; floor=max(reference peak STFT magnitude *1e-4,1e-15); all analyzed cells",
+    "measured_changed_tf_ratio": 0.22570421542365712,
+    "measurement_grid_cells": 354650,
+    "net_energy_change": -0.8225115240176457,
+    "normalized_spectral_magnitude_error": 0.16077961122855167,
+    "passband_magnitude_relative_error": 0.01825463624858375,
+    "reference_energy": 25.744318545863145,
+    "reference_peak": 0.13778078733929275,
+    "reference_rms": 0.012080680812746065,
+    "relative_residual_energy": 1.0986946372518733,
+    "residual_energy": 28.285144726043782,
+    "residual_peak": 0.1731697133603956,
+    "residual_rms": 0.012662804801112872,
+    "rms_change_db": -0.14101871701986401,
+    "spectral_energy_change_db_by_band": {
+      "0-4000Hz": -7.484705888001283e-06,
+      "10000-22051Hz": -55.336340398087025,
+      "4000-10000Hz": -4.529074831257213
+    },
+    "stopband_spectral_energy_change_db": -62.40826025984765
+  },
+  "perceptual_annotation": {
+    "audibility": null,
+    "human_mushra_score": null,
+    "perceived_severity": null,
+    "quality_category": null,
+    "status": "unverified"
+  },
+  "provenance": {
+    "configuration_sha256": "ef57cf0bca5f040476b4ece29eb1188239e186a87eca58e8f92a7cf4be3b38a0",
+    "generator_profile_fingerprint": "e31cab47d872acf27560d14193ecc1d6b781180c5e62b4049290a63340928386",
+    "mapped_source_sha256": "8e111e14f88a991daf81912fe0e1b73d380f4dc4b65b128a954c54d05382f683",
+    "mapping_table_sha256": "a3c8a64d935b8ef9a70ee8e4783b2ca4468f0f400b2ddcbe129ee2bd5b2a7dd5"
+  },
+  "request": {
+    "kind": "quality_targets",
+    "value": 34.874635203065125
+  },
+  "sample_id": "32beb744036d4f64f544a2a4",
+  "sampling": {
+    "chosen_parameter": 6478.195209684767,
+    "component": "quality_target",
+    "deduplication_policy": {
+      "atol": 1e-06,
+      "enabled": true,
+      "rtol": 0.0,
+      "unit": "Hz"
+    },
+    "inverse_mapped_parameter": 6478.195209684767,
+    "inverse_policy": "bounded_piecewise_linear; exact plateau -> lowest parameter",
+    "nominal_condition_id": null,
+    "origins": [
+      {
+        "component": "quality_target",
+        "condition_id": null,
+        "forward_estimated_quality": 34.874635203065125,
+        "inverse_mapped_parameter": 6478.195209684767,
+        "inverse_policy": "bounded_piecewise_linear; exact plateau -> lowest parameter",
+        "parameter": 6478.195209684767,
+        "parameter_unit": "Hz",
+        "quality_interval": [
+          22.77777777777777,
+          37.81190476190475
+        ],
+        "requested_quality_target": 34.874635203065125,
+        "sampling_seed": 13445422693297769947,
+        "strategy": "continuous_stratified",
+        "target_forward_difference": 0.0,
+        "target_forward_status": "verified",
+        "target_index": 0
+      }
+    ],
+    "parameter_axis": "cutoff_hz",
+    "parameter_interpolation_used": true,
+    "parameter_unit": "Hz",
+    "profile_id": "mapped-poc-v2",
+    "requested_quality_target": 34.874635203065125,
+    "sampling_mode": "hybrid",
+    "supported_parameter_range": [
+      5000.0,
+      15000.0
+    ],
+    "supported_quality_range": [
+      22.77777777777777,
+      97.94841269841267
+    ],
+    "target_forward_difference": 0.0,
+    "target_forward_tolerance": 1e-08
+  },
+  "sampling_mode": "hybrid",
+  "schema_version": "mapped-poc-v2",
+  "source": {
+    "channels": 1,
+    "content_category": "speech",
+    "duration_s": 4.0,
+    "is_functional_test_signal": false,
+    "sample_count": 176400,
+    "sample_rate": 44100,
+    "shared_source_gain": 1.0,
+    "source_checksum_sha256": "b8d085fe6a3e2b0c83545acda363f886dada73df43a58d56553bda5a0bce1149",
+    "source_file": "clips/1d82c55320000a994c7b7b02.wav",
+    "source_id": "sampling-pilot-v2:ears:ears_emo_confusion_sentences",
+    "source_provenance": {
+      "archive_bytes": 592079092,
+      "archive_member": "p001/emo_confusion_sentences.wav",
+      "benchmark_overlap_screen": "Passed prior known-source-ID exclusion; no exhaustive audio identity guarantee",
+      "crop_samples": 192000,
+      "crop_start_sample": 0,
+      "dataset": "ears",
+      "dataset_id": "sampling-v2-hybrid",
+      "download_bytes": 1391430,
+      "excluded_ids_ledger_sha256": "955e8992bd874295fc5c973a747326eae69cd50d7b864bf35d3e17b406872d91",
+      "license": "CC BY-NC 4.0",
+      "member_crc_verified": true,
+      "original_header": {
+        "channels": 1,
+        "sample_count": 324742,
+        "sample_rate": 48000,
+        "subtype": "FLOAT"
+      },
+      "original_recording_sha256": "15088d005c531f6af772368385abc9cd2bf7b0b2f511c2f8c09082833733515c",
+      "original_source_checksum_sha256": "017d6575e8563047cfc3ae41c2886139f20323e3bd3721d4829b0147a99dee85",
+      "original_source_file": "inputs/ears_emo_confusion_sentences.wav",
+      "path": "data/external/clean_corpus_survey/samples/ears_emo_confusion_sentences.wav",
+      "perceptual_cleanliness": "unverified source recording, not listening-certified",
+      "preparation": {
+        "downmix": "arithmetic channel mean",
+        "input_channels": 1,
+        "input_rate": 48000,
+        "input_samples": 192000,
+        "output_rate": 44100,
+        "output_samples": 176400,
+        "resampling": "resample_poly Kaiser5 constant; rational exact ratio",
+        "shared_preparation_gain": 1.0,
+        "start_sample": 0,
+        "version": "prepare-v1"
+      },
+      "prepared_sha256": "b8d085fe6a3e2b0c83545acda363f886dada73df43a58d56553bda5a0bce1149",
+      "prior_lossy_coding": "unknown",
+      "recording_id": "ears:ears_emo_confusion_sentences",
+      "scope": "single archive member only; archive checksum not verified",
+      "url": "https://github.com/facebookresearch/ears_dataset/releases/download/dataset/p001.zip"
+    },
+    "split": "train"
+  }
+}

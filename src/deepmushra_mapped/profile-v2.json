@@ -1,0 +1,58 @@
+{
+  "profile_id": "mapped-poc-v2",
+  "config": {
+    "artifacts": {
+      "LP": {},
+      "SH": {},
+      "UN": {},
+      "QN": {}
+    },
+    "input": {
+      "channels": [
+        1
+      ],
+      "max_duration_s": 30,
+      "min_duration_s": 1,
+      "output_peak_limit": 0.999,
+      "sample_rates": [
+        44100
+      ],
+      "source_peak_limit": 0.15
+    },
+    "schema_version": "mapped-poc-v2",
+    "seed": 20261111,
+    "splits": {
+      "test": 0.15,
+      "train": 0.7,
+      "validation": 0.15
+    },
+    "sampling": {
+      "mode": "hybrid",
+      "odaq_knots": {
+        "conditions": [
+          "Q1",
+          "Q2",
+          "Q3",
+          "Q4",
+          "Q5"
+        ]
+      },
+      "quality_target": {
+        "strategy": "continuous_stratified",
+        "targets_per_artifact": 5,
+        "allow_extrapolation": false,
+        "unsupported_target_policy": "skip_with_report"
+      },
+      "hybrid": {
+        "deduplicate_parameters": true,
+        "parameter_atol": {
+          "LP": 1e-06,
+          "SH": 1e-12,
+          "UN": 1e-06,
+          "QN": 1e-09
+        },
+        "parameter_rtol": 0.0
+      }
+    }
+  }
+}

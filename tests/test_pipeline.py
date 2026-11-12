@@ -22,9 +22,9 @@ REPO = Path(__file__).resolve().parents[1]
 
 def test_example_configs_and_sampled_ranges():
     for name in ("pilot", "sampled"):
-        config = load_config(REPO / f"configs/{name}.yaml")
+        config = load_config(REPO / f"docs/archive/configs/{name}.yaml")
         assert min(config["input"]["sample_rates"]) >= 44100
-    config = load_config(REPO / "configs/sampled.yaml")
+    config = load_config(REPO / "docs/archive/configs/sampled.yaml")
     for artifact in config["artifacts"]:
         a = list(recipes(config, artifact, "source"))
         assert a == list(recipes(config, artifact, "source"))
@@ -266,7 +266,9 @@ def test_cli_generate_validate_and_figures(tmp_path, small_config, source_manife
     # JSON is a subset of YAML, exercising the same configuration parser.
     config_file.write_text(json.dumps(small_config))
     output = tmp_path / "cli"
-    assert main(["generate", "--config", str(config_file), "--manifest", str(source_manifest), "--output", str(output)]) == 0
+    # Historical schemas are no longer accepted by the public generator.
+    assert main(["generate", "--config", str(config_file), "--manifest", str(source_manifest), "--output", str(output)]) == 1
+    generate_dataset(small_config, output, manifest=source_manifest, diagnostics=True)
     assert main(["validate", "--dataset", str(output)]) == 0
     assert main(["generate", "--config", str(config_file), "--manifest", str(source_manifest), "--output", str(output)]) == 1
     for artifact in ("LP", "SH", "UN"):

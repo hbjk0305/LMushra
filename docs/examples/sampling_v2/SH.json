@@ -1,0 +1,425 @@
+{
+  "audio": {
+    "degraded": {
+      "path": "audio/28bf0f2191c0b2b4ba7c978f/degraded.wav",
+      "sha256": "c34b5760ea814eab1758322fe8ac4d728e21305c227d72a1a58431f021826069",
+      "subtype": "DOUBLE"
+    },
+    "reference": {
+      "path": "audio/reference/f3586cf2c35057515bf5ffd6e8a9fa9568c98116b1323d3406cc2ab2c13e5336.wav",
+      "sha256": "1131ccdad4a4da063b01d1eebb1e6cc1ee2e71c5dda24c500440f01b78a89765",
+      "subtype": "DOUBLE"
+    },
+    "residual": {
+      "path": "audio/28bf0f2191c0b2b4ba7c978f/residual.wav",
+      "sha256": "2b2b683f4655c39218623d0e7c9fde46f00595949e3b8bc79f938bf5d1cdd54e",
+      "subtype": "DOUBLE"
+    }
+  },
+  "calibration_estimate": {
+    "assumptions": [
+      "Original stereo quality means are transferred provisionally to mono.",
+      "Synthetic operators approximate the ODAQ artifact family.",
+      "QN uses measured mono QNMS median SNR, not an NMR-to-SNR identity."
+    ],
+    "band_interpretation": "conditional stereo-reference band; linearly interpolated between knots; not a mono/synthetic population CI",
+    "calibration_curve_provenance": {
+      "listener_split_sha256": "60c1f20d7335d595d282e2c7341fb8ed6be90302b26002b1eaf0bc5aac15f654",
+      "models_sha256": "3ee63890861e144aeb237c48e760abfcf7a418d3cc8d79a83359e30f1d39e328",
+      "qn_coordinates_sha256": "eff2c6e6720fb047181548ae5c250669b20317031b12a055e281740d842a0350"
+    },
+    "calibration_listeners": 9,
+    "conditional_reference_listener_weight_95_band": [
+      45.455824044040135,
+      58.37266948543773
+    ],
+    "estimated_quality_category": "Fair",
+    "estimated_quality_loss_proxy": 48.39285714285715,
+    "estimated_quality_mean": 51.60714285714285,
+    "has_actual_human_ratings": false,
+    "human_mushra_score": null,
+    "mapping_id": "odaq-transferred-poc-1/SH",
+    "mono_transfer_validated": false,
+    "operator_transfer_validated": false,
+    "parameter_axis": "hole_probability",
+    "parameter_interpolation_used": false,
+    "parameter_value": 0.3,
+    "quality_domain": "ODAQ stereo reference-domain prior; synthetic mono transfer unverified",
+    "reference_group": "SH_original",
+    "reference_sources": 4,
+    "status": "odaq_informed_provisional_transfer",
+    "support_status": "inside",
+    "supported_parameter_range": [
+      0.1,
+      0.7000000000000001
+    ],
+    "supported_quality_range": [
+      25.20634920634921,
+      78.78174603174602
+    ],
+    "synthetic_transfer_interval_95": null,
+    "table_sha256": "a3c8a64d935b8ef9a70ee8e4783b2ca4468f0f400b2ddcbe129ee2bd5b2a7dd5"
+  },
+  "degradation": {
+    "algorithm_evidence": {
+      "algorithm_version": "1.1",
+      "band_edges_hz": [
+        [
+          4005.17578125,
+          4478.90625
+        ],
+        [
+          4500.439453125,
+          4995.703125
+        ],
+        [
+          5017.236328125,
+          5490.966796875
+        ],
+        [
+          5512.5,
+          5986.23046875
+        ],
+        [
+          6007.763671875,
+          6481.494140625
+        ],
+        [
+          6503.02734375,
+          6998.291015625
+        ],
+        [
+          7019.82421875,
+          7493.5546875
+        ],
+        [
+          7515.087890625,
+          7988.818359375
+        ],
+        [
+          8010.3515625,
+          8484.08203125
+        ],
+        [
+          8505.615234375,
+          8979.345703125
+        ],
+        [
+          9000.87890625,
+          9496.142578125
+        ],
+        [
+          9517.67578125,
+          9991.40625
+        ],
+        [
+          10012.939453125,
+          10486.669921875
+        ],
+        [
+          10508.203125,
+          10981.93359375
+        ],
+        [
+          11003.466796875,
+          11498.73046875
+        ],
+        [
+          11520.263671875,
+          11993.994140625
+        ],
+        [
+          12015.52734375,
+          12489.2578125
+        ],
+        [
+          12510.791015625,
+          12984.521484375
+        ],
+        [
+          13006.0546875,
+          13479.78515625
+        ],
+        [
+          13501.318359375,
+          13996.58203125
+        ],
+        [
+          14018.115234375,
+          14491.845703125
+        ],
+        [
+          14513.37890625,
+          14987.109375
+        ],
+        [
+          15008.642578125,
+          15482.373046875
+        ],
+        [
+          15503.90625,
+          15999.169921875
+        ],
+        [
+          16020.703125,
+          16494.43359375
+        ],
+        [
+          16515.966796875,
+          16989.697265625
+        ],
+        [
+          17011.23046875,
+          17484.9609375
+        ],
+        [
+          17506.494140625,
+          17980.224609375
+        ],
+        [
+          18001.7578125,
+          18497.021484375
+        ],
+        [
+          18518.5546875,
+          18992.28515625
+        ],
+        [
+          19013.818359375,
+          19487.548828125
+        ],
+        [
+          19509.08203125,
+          19982.8125
+        ],
+        [
+          20004.345703125,
+          20499.609375
+        ],
+        [
+          20521.142578125,
+          20994.873046875
+        ],
+        [
+          21016.40625,
+          21490.13671875
+        ],
+        [
+          21511.669921875,
+          21985.400390625
+        ],
+        [
+          22006.93359375,
+          22050.0
+        ]
+      ],
+      "coverage_denominator": "all analyzed time-frequency-channel cells, including boundary padding",
+      "mapped_profile_version": "mapped-poc-1",
+      "mask_kind": "exact_applied_stft_gain",
+      "operator_transfer": "approximate_family",
+      "perceptual_equivalence_to_odaq": "unverified",
+      "selection_policy": "independent Bernoulli decisions per band and nonoverlapping run block; linked across channels",
+      "stft": {
+        "axis_order": "time,frequency,channel",
+        "boundary": "zeros",
+        "hop_length": 512,
+        "n_fft": 2048,
+        "padded": true,
+        "scaling": "spectrum",
+        "window": "periodic_hann"
+      },
+      "transformation_applied": true
+    },
+    "artifact_type": "SH",
+    "mask": {
+      "path": "evidence/28bf0f2191c0b2b4ba7c978f.npz",
+      "sha256": "bee30f99d2cf787ddae1f159fd536bc05fbc8a7b2139871eb11cb6533e5a2b3e"
+    },
+    "parameters": {
+      "attenuation_db": "zero",
+      "band_width_hz": 500,
+      "hole_probability": 0.3,
+      "run_frames": 4,
+      "start_hz": 4000
+    },
+    "profile_version": "mapped-poc-1",
+    "random_seed": 1739419680144526829,
+    "regions": {
+      "frequency_regions_hz": [
+        [
+          3994.4091796875,
+          22050.0
+        ]
+      ],
+      "region_interpretation": "projections of processing selections with STFT window support; not audible-event annotations; see full mask for joint structure",
+      "time_regions_s": [
+        [
+          0.0,
+          4.0
+        ]
+      ]
+    }
+  },
+  "descriptions": {
+    "perceptual_candidate": "The sound may have intermittent spectral gaps.",
+    "perceptual_candidate_status": "unverified",
+    "technical": "Random spectral bands above 4 kHz are zeroed with per-band/block probability 30.0%."
+  },
+  "measurements": {
+    "affected_frame_ratio": 1.0,
+    "affected_tf_ratio": 0.2578711405611166,
+    "audibility_interpretation": "none; objective measurements only",
+    "degraded_energy": 65.36274249372099,
+    "degraded_peak": 0.1575554652806915,
+    "degraded_rms": 0.019249339961844723,
+    "eligible_tf_selection_ratio": 0.3150392360847968,
+    "measured_change_definition": "magnitude change >=1 dB; floor=max(reference peak STFT magnitude *1e-4,1e-15); all analyzed cells",
+    "measured_changed_tf_ratio": 0.2965797264909065,
+    "measurement_grid_cells": 354650,
+    "net_energy_change": -1.2831410791091145,
+    "normalized_spectral_magnitude_error": 0.11825212201214763,
+    "reference_energy": 66.6458835728301,
+    "reference_peak": 0.15,
+    "reference_rms": 0.019437364311172694,
+    "relative_residual_energy": 0.015435634782724396,
+    "residual_energy": 1.0287215186021768,
+    "residual_peak": 0.06040267299254664,
+    "residual_rms": 0.0024149026151383227,
+    "rms_change_db": -0.08443064032163694,
+    "selected_cell_energy_change_db_after_istft": -12.670630619621353,
+    "selected_reference_spectral_energy_fraction": 0.01734257528835585,
+    "spectral_energy_change_db_by_band": {
+      "0-4000Hz": -0.00010205606005988537,
+      "10000-22051Hz": -2.022960374005386,
+      "4000-10000Hz": -1.7772797567028848
+    }
+  },
+  "perceptual_annotation": {
+    "audibility": null,
+    "human_mushra_score": null,
+    "perceived_severity": null,
+    "quality_category": null,
+    "status": "unverified"
+  },
+  "provenance": {
+    "configuration_sha256": "3e2621b4668fd3cece75c4544cbb9a5267123fa4fe7c9e303f823c97bf60d039",
+    "generator_profile_fingerprint": "41525d48b3fba0781cb6cf59e7ce445b53bfe7999bcb89ed3b3ed8452bb5a1f4",
+    "mapped_source_sha256": "8e111e14f88a991daf81912fe0e1b73d380f4dc4b65b128a954c54d05382f683",
+    "mapping_table_sha256": "a3c8a64d935b8ef9a70ee8e4783b2ca4468f0f400b2ddcbe129ee2bd5b2a7dd5"
+  },
+  "request": {
+    "kind": "parameters",
+    "value": 0.3
+  },
+  "sample_id": "28bf0f2191c0b2b4ba7c978f",
+  "sampling": {
+    "chosen_parameter": 0.3,
+    "component": "odaq_knots",
+    "deduplication_policy": {
+      "atol": 1e-12,
+      "enabled": false,
+      "rtol": 0.0,
+      "unit": "probability"
+    },
+    "inverse_mapped_parameter": null,
+    "inverse_policy": null,
+    "nominal_condition_id": "Q3",
+    "origins": [
+      {
+        "bridge": null,
+        "component": "odaq_knots",
+        "condition_id": "Q3",
+        "forward_estimated_quality": 51.60714285714285,
+        "inverse_policy": null,
+        "nominal_parameter": 30,
+        "nominal_unit": "%",
+        "parameter": 0.3,
+        "parameter_unit": "probability",
+        "quality_interval": null,
+        "requested_quality_target": null,
+        "target_forward_difference": null,
+        "target_forward_status": "not_quality_target"
+      }
+    ],
+    "parameter_axis": "hole_probability",
+    "parameter_interpolation_used": false,
+    "parameter_unit": "probability",
+    "profile_id": "mapped-poc-v2",
+    "requested_quality_target": null,
+    "sampling_mode": "odaq_knots",
+    "supported_parameter_range": [
+      0.1,
+      0.7000000000000001
+    ],
+    "supported_quality_range": [
+      25.20634920634921,
+      78.78174603174602
+    ],
+    "target_forward_difference": null,
+    "target_forward_tolerance": 1e-08
+  },
+  "sampling_mode": "odaq_knots",
+  "schema_version": "mapped-poc-v2",
+  "source": {
+    "channels": 1,
+    "content_category": "percussion_stem",
+    "duration_s": 4.0,
+    "is_functional_test_signal": false,
+    "sample_count": 176400,
+    "sample_rate": 44100,
+    "shared_source_gain": 0.6,
+    "source_checksum_sha256": "f3586cf2c35057515bf5ffd6e8a9fa9568c98116b1323d3406cc2ab2c13e5336",
+    "source_file": "clips/ec0454f3d8c70a99b48a889a.wav",
+    "source_id": "sampling-pilot-v2:musdb18hq:Auctioneer - Our Future Faces",
+    "source_provenance": {
+      "archive_member": "train/Auctioneer - Our Future Faces/drums.wav",
+      "archive_member_crc32": "a87ebe21",
+      "artist_and_track": "Auctioneer - Our Future Faces",
+      "audit_crop_offset_s": 0,
+      "audit_duration_s": 4,
+      "audit_shared_gain": 0.7628981188303222,
+      "category_basis": "MUSDB stem designation; other is a multi-instrument tonal-content proxy, not a verified solo instrument",
+      "dataset": "MUSDB18-HQ / MedleyDB",
+      "dataset_id": "sampling-v2-odaq_knots",
+      "excerpt_duration_s": 8,
+      "excerpt_start_s": 40,
+      "full_member_crc_verified": true,
+      "genre": "Singer/Songwriter",
+      "integrity_note": "Selected compressed member fully read and CRC verified; whole-archive MD5 not verified",
+      "license": "CC BY-NC-SA 4.0",
+      "license_evidence": "https://sigsep.github.io/datasets/musdb.html",
+      "license_url": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+      "modifications": "Excerpting and lossless DOUBLE WAV conversion; generator records any subsequent shared gain",
+      "mono_conversion": "Arithmetic channel mean before artifact generation",
+      "original_header": {
+        "channels": 2,
+        "sample_count": 9167616,
+        "sample_rate": 44100,
+        "subtype": "PCM_16"
+      },
+      "original_source_checksum_sha256": "70e4447a6c4717a25eebb2d731c97c0649410fe877602b0d6b9c2dd9ee5b843c",
+      "original_source_file": "inputs/musdb_3.wav",
+      "perceptual_cleanliness": "unverified; uncompressed release, not a human-quality certification",
+      "permitted_use": "Noncommercial research; retain attribution and share-alike obligations; no audio in Git",
+      "preparation": {
+        "downmix": "arithmetic channel mean",
+        "input_channels": 1,
+        "input_rate": 44100,
+        "input_samples": 176400,
+        "output_rate": 44100,
+        "output_samples": 176400,
+        "resampling": "identity",
+        "shared_preparation_gain": 1.0,
+        "start_sample": 0,
+        "version": "prepare-v1"
+      },
+      "prepared_sha256": "f3586cf2c35057515bf5ffd6e8a9fa9568c98116b1323d3406cc2ab2c13e5336",
+      "record_url": "https://zenodo.org/records/3338373",
+      "recording_id": "musdb18hq:Auctioneer - Our Future Faces",
+      "selection_rule": "Highest mean-square energy of fixed 8-second windows starting at 20,40,60 s; ties prefer earlier",
+      "stem": "drums",
+      "stereo_excerpt_sha256": "9512364079940764efda73956431310b83079ccaf617eff34f4e91f980259c4f"
+    },
+    "split": "train"
+  }
+}

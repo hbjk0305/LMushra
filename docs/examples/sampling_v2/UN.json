@@ -1,0 +1,320 @@
+{
+  "audio": {
+    "degraded": {
+      "path": "audio/fa439ccb7cb4f8673d1a3927/degraded.wav",
+      "sha256": "d66f5ab0cb1c44d3fe4cf17ecc71e889b1b80bfce0bfbd6f4f0997ffad280098",
+      "subtype": "DOUBLE"
+    },
+    "reference": {
+      "path": "audio/reference/930e8ac52160475744f43a6d459b1269623147ccbbecbad8de8f0a97fe052b95.wav",
+      "sha256": "087cda51125d83a1271edc1e16319722ff98050fd54cb097ecf17ebe6c52bc92",
+      "subtype": "DOUBLE"
+    },
+    "residual": {
+      "path": "audio/fa439ccb7cb4f8673d1a3927/residual.wav",
+      "sha256": "6cfda0bb77e483d2a3941b5b199639c025d24f4486866fc88ff9519e12bec6fc",
+      "subtype": "DOUBLE"
+    }
+  },
+  "calibration_estimate": {
+    "assumptions": [
+      "Original stereo quality means are transferred provisionally to mono.",
+      "Synthetic operators approximate the ODAQ artifact family.",
+      "QN uses measured mono QNMS median SNR, not an NMR-to-SNR identity."
+    ],
+    "band_interpretation": "conditional stereo-reference band; linearly interpolated between knots; not a mono/synthetic population CI",
+    "calibration_curve_provenance": {
+      "listener_split_sha256": "60c1f20d7335d595d282e2c7341fb8ed6be90302b26002b1eaf0bc5aac15f654",
+      "models_sha256": "3ee63890861e144aeb237c48e760abfcf7a418d3cc8d79a83359e30f1d39e328",
+      "qn_coordinates_sha256": "eff2c6e6720fb047181548ae5c250669b20317031b12a055e281740d842a0350"
+    },
+    "calibration_listeners": 9,
+    "conditional_reference_listener_weight_95_band": [
+      62.791580506035196,
+      73.08753924576375
+    ],
+    "estimated_quality_category": "Good",
+    "estimated_quality_loss_proxy": 32.071428571428584,
+    "estimated_quality_mean": 67.92857142857142,
+    "has_actual_human_ratings": false,
+    "human_mushra_score": null,
+    "mapping_id": "odaq-transferred-poc-1/UN",
+    "mono_transfer_validated": false,
+    "operator_transfer_validated": false,
+    "parameter_axis": "crossover_hz",
+    "parameter_interpolation_used": false,
+    "parameter_value": 7000.0,
+    "quality_domain": "ODAQ stereo reference-domain prior; synthetic mono transfer unverified",
+    "reference_group": "UN_original",
+    "reference_sources": 4,
+    "status": "odaq_informed_provisional_transfer",
+    "support_status": "inside",
+    "supported_parameter_range": [
+      3000.0,
+      10500.0
+    ],
+    "supported_quality_range": [
+      45.80555555555556,
+      89.95238095238095
+    ],
+    "synthetic_transfer_interval_95": null,
+    "table_sha256": "a3c8a64d935b8ef9a70ee8e4783b2ca4468f0f400b2ddcbe129ee2bd5b2a7dd5"
+  },
+  "degradation": {
+    "algorithm_evidence": {
+      "algorithm_version": "1.1",
+      "blend_definition": "linear complex blend, then per-frame/band/channel energy normalization",
+      "coverage_denominator": "all analyzed time-frequency-channel cells, including boundary padding",
+      "mapped_profile_version": "mapped-poc-1",
+      "mask_kind": "exact_applied_stft_replacement_selection",
+      "operator_transfer": "approximate_family",
+      "perceptual_equivalence_to_odaq": "unverified",
+      "replacement_band_width_hz": 1000,
+      "selection_policy": "bands containing a peak above the smoothed envelope; linked across channels",
+      "smoothing_definition": "square root of Gaussian-smoothed power; Gaussian standard deviation in Hz",
+      "stft": {
+        "axis_order": "time,frequency,channel",
+        "boundary": "zeros",
+        "hop_length": 512,
+        "n_fft": 2048,
+        "padded": true,
+        "scaling": "spectrum",
+        "window": "periodic_hann"
+      },
+      "transformation_applied": true
+    },
+    "artifact_type": "UN",
+    "mask": {
+      "path": "evidence/fa439ccb7cb4f8673d1a3927.npz",
+      "sha256": "e5b452a5f824809cd39ab1d58eb885e3bfde68fa96614bb0faf0e29297432fc4"
+    },
+    "parameters": {
+      "channel_mode": "linked",
+      "crossover_hz": 7000.0,
+      "smoothing_hz": 500,
+      "strength": 1.0,
+      "tonal_threshold_db": 12.0
+    },
+    "profile_version": "mapped-poc-1",
+    "random_seed": 13613151889656560150,
+    "regions": {
+      "frequency_regions_hz": [
+        [
+          7009.0576171875,
+          21996.1669921875
+        ]
+      ],
+      "region_interpretation": "projections of processing selections with STFT window support; not audible-event annotations; see full mask for joint structure",
+      "time_regions_s": [
+        [
+          0.0,
+          0.1509297052154195
+        ],
+        [
+          0.1277097505668934,
+          0.46439909297052157
+        ],
+        [
+          0.4643990929705216,
+          0.5804988662131519
+        ],
+        [
+          0.5688888888888888,
+          0.8243083900226758
+        ],
+        [
+          0.8243083900226756,
+          1.1261678004535147
+        ],
+        [
+          1.1145578231292517,
+          1.3815873015873017
+        ],
+        [
+          1.3583673469387754,
+          1.5209070294784581
+        ],
+        [
+          1.497687074829932,
+          1.7066666666666668
+        ],
+        [
+          1.7066666666666666,
+          3.006984126984127
+        ],
+        [
+          2.9837641723356008,
+          3.1463038548752835
+        ],
+        [
+          3.1346938775510202,
+          3.4597732426303853
+        ],
+        [
+          3.436553287981859,
+          3.541043083900227
+        ],
+        [
+          3.517823129251701,
+          4.0
+        ]
+      ]
+    }
+  },
+  "descriptions": {
+    "perceptual_candidate": "Selected high-frequency content may sound less tonal.",
+    "perceptual_candidate_status": "unverified",
+    "technical": "Peak-selected bands above 7.00 kHz are replaced with envelope-shaped noise."
+  },
+  "measurements": {
+    "affected_frame_ratio": 0.9277456647398844,
+    "affected_tf_ratio": 0.07107288876356972,
+    "audibility_interpretation": "none; objective measurements only",
+    "degraded_energy": 34.466950619909106,
+    "degraded_peak": 0.14493959389486355,
+    "degraded_rms": 0.013978228662105116,
+    "measured_change_definition": "magnitude change >=1 dB; floor=max(reference peak STFT magnitude *1e-4,1e-15); all analyzed cells",
+    "measured_changed_tf_ratio": 0.05095164246440152,
+    "measurement_grid_cells": 354650,
+    "net_energy_change": -0.03129897660187453,
+    "normalized_spectral_magnitude_error": 0.055413696066210334,
+    "reference_energy": 34.49824959651098,
+    "reference_peak": 0.15,
+    "reference_rms": 0.013984573943107585,
+    "reference_tonal_peak_mean_contrast_db_after": 1.4937976109571784,
+    "reference_tonal_peak_mean_contrast_db_before": 13.364969679746016,
+    "relative_residual_energy": 0.005019457740829235,
+    "residual_energy": 0.1731625059822661,
+    "residual_peak": 0.020014191599397477,
+    "residual_rms": 0.0009907809340666072,
+    "rms_change_db": -0.00394198051132959,
+    "selected_envelope_relative_error": 0.13086892407153408,
+    "selected_tonal_contrast_p95_db_after": 5.804910691587915,
+    "selected_tonal_contrast_p95_db_before": 9.19214872421579,
+    "spectral_energy_change_db_by_band": {
+      "0-4000Hz": -2.101346696325308e-09,
+      "10000-22051Hz": -0.8572266724251794,
+      "4000-10000Hz": -0.15224058596263845
+    }
+  },
+  "perceptual_annotation": {
+    "audibility": null,
+    "human_mushra_score": null,
+    "perceived_severity": null,
+    "quality_category": null,
+    "status": "unverified"
+  },
+  "provenance": {
+    "configuration_sha256": "3e2621b4668fd3cece75c4544cbb9a5267123fa4fe7c9e303f823c97bf60d039",
+    "generator_profile_fingerprint": "41525d48b3fba0781cb6cf59e7ce445b53bfe7999bcb89ed3b3ed8452bb5a1f4",
+    "mapped_source_sha256": "8e111e14f88a991daf81912fe0e1b73d380f4dc4b65b128a954c54d05382f683",
+    "mapping_table_sha256": "a3c8a64d935b8ef9a70ee8e4783b2ca4468f0f400b2ddcbe129ee2bd5b2a7dd5"
+  },
+  "request": {
+    "kind": "parameters",
+    "value": 7000.0
+  },
+  "sample_id": "fa439ccb7cb4f8673d1a3927",
+  "sampling": {
+    "chosen_parameter": 7000.0,
+    "component": "odaq_knots",
+    "deduplication_policy": {
+      "atol": 1e-06,
+      "enabled": false,
+      "rtol": 0.0,
+      "unit": "Hz"
+    },
+    "inverse_mapped_parameter": null,
+    "inverse_policy": null,
+    "nominal_condition_id": "Q3",
+    "origins": [
+      {
+        "bridge": null,
+        "component": "odaq_knots",
+        "condition_id": "Q3",
+        "forward_estimated_quality": 67.92857142857142,
+        "inverse_policy": null,
+        "nominal_parameter": 7,
+        "nominal_unit": "kHz",
+        "parameter": 7000.0,
+        "parameter_unit": "Hz",
+        "quality_interval": null,
+        "requested_quality_target": null,
+        "target_forward_difference": null,
+        "target_forward_status": "not_quality_target"
+      }
+    ],
+    "parameter_axis": "crossover_hz",
+    "parameter_interpolation_used": false,
+    "parameter_unit": "Hz",
+    "profile_id": "mapped-poc-v2",
+    "requested_quality_target": null,
+    "sampling_mode": "odaq_knots",
+    "supported_parameter_range": [
+      3000.0,
+      10500.0
+    ],
+    "supported_quality_range": [
+      45.80555555555556,
+      89.95238095238095
+    ],
+    "target_forward_difference": null,
+    "target_forward_tolerance": 1e-08
+  },
+  "sampling_mode": "odaq_knots",
+  "schema_version": "mapped-poc-v2",
+  "source": {
+    "channels": 1,
+    "content_category": "tonal_instrument",
+    "duration_s": 4.0,
+    "is_functional_test_signal": false,
+    "sample_count": 176400,
+    "sample_rate": 44100,
+    "shared_source_gain": 0.19017256055095566,
+    "source_checksum_sha256": "930e8ac52160475744f43a6d459b1269623147ccbbecbad8de8f0a97fe052b95",
+    "source_file": "clips/1e63f635c87c69f1f24ebf9d.wav",
+    "source_id": "sampling-pilot-v2:guitarset:guitarset_04_Jazz1-200-B_solo_mic",
+    "source_provenance": {
+      "archive_bytes": 656927981,
+      "archive_member": "04_Jazz1-200-B_solo_mic.wav",
+      "benchmark_overlap_screen": "Passed prior known-source-ID exclusion; no exhaustive audio identity guarantee",
+      "crop_samples": 176400,
+      "crop_start_sample": 0,
+      "dataset": "guitarset",
+      "dataset_id": "sampling-v2-odaq_knots",
+      "download_bytes": 1094463,
+      "excluded_ids_ledger_sha256": "955e8992bd874295fc5c973a747326eae69cd50d7b864bf35d3e17b406872d91",
+      "license": "CC BY 4.0",
+      "member_crc_verified": true,
+      "original_header": {
+        "channels": 1,
+        "sample_count": 635040,
+        "sample_rate": 44100,
+        "subtype": "PCM_16"
+      },
+      "original_recording_sha256": "4f567c6c6501ae25086ed7423eb3f9d3c653c002d3fb75373d17bf3136730bda",
+      "original_source_checksum_sha256": "b355eb99d9ca083c81672b6888f8813edd5e8bf4ea17b27023ad763ade963c35",
+      "original_source_file": "inputs/guitarset_04_Jazz1-200-B_solo_mic.wav",
+      "path": "data/external/clean_corpus_survey/samples/guitarset_04_Jazz1-200-B_solo_mic.wav",
+      "perceptual_cleanliness": "unverified source recording, not listening-certified",
+      "preparation": {
+        "downmix": "arithmetic channel mean",
+        "input_channels": 1,
+        "input_rate": 44100,
+        "input_samples": 176400,
+        "output_rate": 44100,
+        "output_samples": 176400,
+        "resampling": "identity",
+        "shared_preparation_gain": 1.0,
+        "start_sample": 0,
+        "version": "prepare-v1"
+      },
+      "prepared_sha256": "930e8ac52160475744f43a6d459b1269623147ccbbecbad8de8f0a97fe052b95",
+      "prior_lossy_coding": "unknown",
+      "recording_id": "guitarset:guitarset_04_Jazz1-200-B_solo_mic",
+      "scope": "single archive member only; archive checksum not verified",
+      "url": "https://zenodo.org/api/records/3371780/files/audio_mono-mic.zip/content"
+    },
+    "split": "test"
+  }
+}

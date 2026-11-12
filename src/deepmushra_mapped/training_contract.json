@@ -1,0 +1,19 @@
+{
+  "audio_placeholders": 2,
+  "audio_roles": [
+    "reference",
+    "degraded"
+  ],
+  "branch": "hwangbo/train",
+  "example": "data/dummy-100/train.jsonl",
+  "example_sha256": "0661a57f05f582d7f14e975ca60772e497fcf86db23fa2b191d79844e7c452cd",
+  "message_roles": [
+    "user",
+    "assistant"
+  ],
+  "revision": "34f4f54b5d4e96d2846cb703e9267dbcf953f686",
+  "top_level_keys": [
+    "messages",
+    "audios"
+  ]
+}

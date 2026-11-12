@@ -1,0 +1,138 @@
+{
+  "common_quality_support": [
+    45.80555555555556,
+    78.78174603174602
+  ],
+  "default_parameters": [
+    {
+      "artifact": "LP",
+      "display_unit": "kHz",
+      "display_value": 8.32646381379561,
+      "estimated_category": "Fair",
+      "parameter_axis": "cutoff_hz",
+      "parameter_internal_units": 8326.463813795612,
+      "requested_estimated_quality": 50
+    },
+    {
+      "artifact": "LP",
+      "display_unit": "kHz",
+      "display_value": 10.370462361482614,
+      "estimated_category": "Good",
+      "parameter_axis": "cutoff_hz",
+      "parameter_internal_units": 10370.462361482614,
+      "requested_estimated_quality": 65
+    },
+    {
+      "artifact": "LP",
+      "display_unit": "kHz",
+      "display_value": 11.095844155844155,
+      "estimated_category": "Good",
+      "parameter_axis": "cutoff_hz",
+      "parameter_internal_units": 11095.844155844155,
+      "requested_estimated_quality": 75
+    },
+    {
+      "artifact": "SH",
+      "display_unit": "%",
+      "display_value": 31.721206969825744,
+      "estimated_category": "Fair",
+      "parameter_axis": "hole_probability",
+      "parameter_internal_units": 0.31721206969825744,
+      "requested_estimated_quality": 50
+    },
+    {
+      "artifact": "SH",
+      "display_unit": "%",
+      "display_value": 21.050119331742252,
+      "estimated_category": "Good",
+      "parameter_axis": "hole_probability",
+      "parameter_internal_units": 0.2105011933174225,
+      "requested_estimated_quality": 65
+    },
+    {
+      "artifact": "SH",
+      "display_unit": "%",
+      "display_value": 13.097172570685734,
+      "estimated_category": "Good",
+      "parameter_axis": "hole_probability",
+      "parameter_internal_units": 0.13097172570685733,
+      "requested_estimated_quality": 75
+    },
+    {
+      "artifact": "UN",
+      "display_unit": "kHz",
+      "display_value": 3.6252587991718435,
+      "estimated_category": "Fair",
+      "parameter_axis": "crossover_hz",
+      "parameter_internal_units": 3625.2587991718433,
+      "requested_estimated_quality": 50
+    },
+    {
+      "artifact": "UN",
+      "display_unit": "kHz",
+      "display_value": 6.327256153144944,
+      "estimated_category": "Good",
+      "parameter_axis": "crossover_hz",
+      "parameter_internal_units": 6327.256153144944,
+      "requested_estimated_quality": 65
+    },
+    {
+      "artifact": "UN",
+      "display_unit": "kHz",
+      "display_value": 7.902735562310031,
+      "estimated_category": "Good",
+      "parameter_axis": "crossover_hz",
+      "parameter_internal_units": 7902.735562310031,
+      "requested_estimated_quality": 75
+    },
+    {
+      "artifact": "QN",
+      "display_unit": "dB SNR",
+      "display_value": 10.545634561036751,
+      "estimated_category": "Fair",
+      "parameter_axis": "waveform_snr_db",
+      "parameter_internal_units": 10.545634561036751,
+      "requested_estimated_quality": 50
+    },
+    {
+      "artifact": "QN",
+      "display_unit": "dB SNR",
+      "display_value": 14.803138241954303,
+      "estimated_category": "Good",
+      "parameter_axis": "waveform_snr_db",
+      "parameter_internal_units": 14.803138241954303,
+      "requested_estimated_quality": 65
+    },
+    {
+      "artifact": "QN",
+      "display_unit": "dB SNR",
+      "display_value": 17.81271794442947,
+      "estimated_category": "Good",
+      "parameter_axis": "waveform_snr_db",
+      "parameter_internal_units": 17.81271794442947,
+      "requested_estimated_quality": 75
+    }
+  ],
+  "default_targets": [
+    50,
+    65,
+    75
+  ],
+  "files": {
+    "figures/final_mapping/01_parameter_quality_curves.png": "131827ec4c534c456073216bf56afc33ebca42456c65f8558cbe1d13c5ff874b",
+    "figures/final_mapping/01_parameter_quality_curves.svg": "eb74374162b6173b168cff414ebd3eaf16cd04d3bb01b983aa618edcf634d6e2",
+    "figures/final_mapping/02_supported_quality_and_defaults.png": "e404aa587d2ed74542047487cf23c96d65daa0451bd81b3639d90288ba2972c7",
+    "figures/final_mapping/02_supported_quality_and_defaults.svg": "2cc3ea4c2a089f80ad289405ca0cfeff4ecab3cef0886aae544714029c9a5627",
+    "figures/final_mapping/03_qn_coordinate_and_sensitivity.png": "22623ba2f08054aac143b45e539fb10accdc7bec7daf7cc53b3da39be96a6b88",
+    "figures/final_mapping/03_qn_coordinate_and_sensitivity.svg": "a8beca629e279e779b636e4d29d7defb97cd590aa9176861300e2ba1f00514e2",
+    "figures/final_mapping/default_parameters.csv": "235b52b5ddbdbd62640c49cf2a1c0ecf557af0fdc2bac4f86defcb00a76baba1",
+    "final_mapping_report.html": "5bede00953b4c69c58ab8a85c3a2b427a5d66d1e33fe06f3f138ce450e014f99",
+    "final_mapping_report.md": "ec6dc829b93e96ac17cd737bec61683e53b506f9721b716366e4ab5e5fdb2ab0"
+  },
+  "generation_or_fitting_performed": false,
+  "heldout_ratings_read": false,
+  "mapping_sha256": "a3c8a64d935b8ef9a70ee8e4783b2ca4468f0f400b2ddcbe129ee2bd5b2a7dd5",
+  "profile_fingerprint": "3af2e4150a832daf855ab151ce1cdbbef5927ca5b49be016fb1af6163471a798",
+  "sampling_status": "provisional_engineering_pilot_not_final_dataset_decision",
+  "valid": true
+}

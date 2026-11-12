@@ -1,0 +1,16 @@
+{
+  "audios": [
+    "data/worker1/dataset/audio/reference/e0f11c2a12ce7b4f6a7d036152d8f2873ee1e73883ac65981f12acb8733ca701.wav",
+    "data/worker1/dataset/audio/04d5019f6825a00def0ec5ab/degraded.wav"
+  ],
+  "messages": [
+    {
+      "content": "Reference audio (original): <audio>\nDegraded audio (processed counterpart): <audio>\n\nCompare the processed audio with the reference. Describe the processing-related\nchanges concisely, making the direction of the comparison clear. Treat possible\nperceptual effects as uncertain unless verified. Do not invent audibility,\nperceived severity, MOS, MUSHRA ratings, or a codec identity. Do not transcribe\nspeech or summarize musical content.\n",
+      "role": "user"
+    },
+    {
+      "content": "Low-pass filtering has a passband edge of 8.33 kHz.",
+      "role": "assistant"
+    }
+  ]
+}

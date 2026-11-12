@@ -1,0 +1,413 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "DeepMUSHRA mapped generator metadata (v1 and v2)",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "sample_id",
+    "source",
+    "audio",
+    "degradation",
+    "measurements",
+    "calibration_estimate",
+    "request",
+    "perceptual_annotation",
+    "descriptions",
+    "provenance"
+  ],
+  "properties": {
+    "schema_version": {
+      "enum": [
+        "mapped-poc-1",
+        "mapped-poc-v2"
+      ]
+    },
+    "sample_id": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{24}$"
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "source_id",
+        "source_file",
+        "source_checksum_sha256",
+        "source_provenance",
+        "content_category",
+        "sample_rate",
+        "sample_count",
+        "channels",
+        "duration_s",
+        "split",
+        "shared_source_gain"
+      ],
+      "properties": {
+        "source_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_file": {
+          "type": "string",
+          "minLength": 1
+        },
+        "source_checksum_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "source_provenance": {
+          "type": "object"
+        },
+        "content_category": {
+          "type": "string"
+        },
+        "sample_rate": {
+          "const": 44100
+        },
+        "channels": {
+          "const": 1
+        },
+        "sample_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "duration_s": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 30
+        },
+        "split": {
+          "enum": [
+            "train",
+            "validation",
+            "test"
+          ]
+        },
+        "shared_source_gain": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "audio": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reference",
+        "degraded",
+        "residual"
+      ],
+      "properties": {
+        "reference": {
+          "type": "object",
+          "required": [
+            "path",
+            "sha256",
+            "subtype"
+          ],
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "subtype": {
+              "const": "DOUBLE"
+            }
+          }
+        },
+        "degraded": {
+          "type": "object",
+          "required": [
+            "path",
+            "sha256",
+            "subtype"
+          ],
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "subtype": {
+              "const": "DOUBLE"
+            }
+          }
+        },
+        "residual": {
+          "type": "object",
+          "required": [
+            "path",
+            "sha256",
+            "subtype"
+          ],
+          "properties": {
+            "path": {
+              "type": "string",
+              "minLength": 1
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "subtype": {
+              "const": "DOUBLE"
+            }
+          }
+        }
+      }
+    },
+    "degradation": {
+      "type": "object",
+      "required": [
+        "artifact_type",
+        "profile_version",
+        "parameters",
+        "random_seed",
+        "algorithm_evidence",
+        "mask",
+        "regions"
+      ],
+      "properties": {
+        "artifact_type": {
+          "enum": [
+            "LP",
+            "SH",
+            "UN",
+            "QN"
+          ]
+        },
+        "profile_version": {
+          "const": "mapped-poc-1"
+        },
+        "parameters": {
+          "type": "object"
+        },
+        "random_seed": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "algorithm_evidence": {
+          "type": "object"
+        },
+        "regions": {
+          "type": "object"
+        },
+        "mask": {
+          "type": "object",
+          "required": [
+            "path",
+            "sha256"
+          ],
+          "properties": {
+            "path": {
+              "type": "string"
+            },
+            "sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            }
+          }
+        }
+      }
+    },
+    "measurements": {
+      "type": "object"
+    },
+    "request": {
+      "type": "object",
+      "required": [
+        "kind",
+        "value"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "quality_targets",
+            "parameters"
+          ]
+        },
+        "value": {
+          "type": "number"
+        }
+      }
+    },
+    "calibration_estimate": {
+      "type": "object",
+      "required": [
+        "mapping_id",
+        "estimated_quality_mean",
+        "status",
+        "mono_transfer_validated",
+        "operator_transfer_validated",
+        "human_mushra_score"
+      ],
+      "properties": {
+        "mapping_id": {
+          "type": "string"
+        },
+        "estimated_quality_mean": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 100
+        },
+        "human_mushra_score": {
+          "type": "null"
+        },
+        "mono_transfer_validated": {
+          "const": false
+        },
+        "operator_transfer_validated": {
+          "const": false
+        },
+        "synthetic_transfer_interval_95": {
+          "type": "null"
+        }
+      }
+    },
+    "perceptual_annotation": {
+      "type": "object",
+      "required": [
+        "audibility",
+        "perceived_severity",
+        "quality_category",
+        "human_mushra_score",
+        "status"
+      ],
+      "properties": {
+        "audibility": {
+          "type": "null"
+        },
+        "perceived_severity": {
+          "type": "null"
+        },
+        "quality_category": {
+          "type": "null"
+        },
+        "human_mushra_score": {
+          "type": "null"
+        },
+        "status": {
+          "const": "unverified"
+        }
+      }
+    },
+    "descriptions": {
+      "type": "object",
+      "required": [
+        "technical",
+        "perceptual_candidate",
+        "perceptual_candidate_status"
+      ],
+      "properties": {
+        "technical": {
+          "type": "string",
+          "minLength": 1
+        },
+        "perceptual_candidate": {
+          "type": "string",
+          "minLength": 1
+        },
+        "perceptual_candidate_status": {
+          "const": "unverified"
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": [
+        "generator_profile_fingerprint",
+        "configuration_sha256",
+        "mapped_source_sha256",
+        "mapping_table_sha256"
+      ],
+      "properties": {
+        "generator_profile_fingerprint": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "configuration_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "mapped_source_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "mapping_table_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        }
+      }
+    },
+    "sampling_mode": {
+      "enum": [
+        "odaq_knots",
+        "quality_target",
+        "hybrid"
+      ]
+    },
+    "sampling": {
+      "type": "object",
+      "required": [
+        "sampling_mode",
+        "component",
+        "chosen_parameter",
+        "parameter_unit",
+        "origins",
+        "supported_quality_range",
+        "parameter_interpolation_used",
+        "target_forward_difference",
+        "inverse_policy"
+      ],
+      "properties": {
+        "sampling_mode": {
+          "enum": [
+            "odaq_knots",
+            "quality_target",
+            "hybrid"
+          ]
+        },
+        "component": {
+          "enum": [
+            "odaq_knots",
+            "quality_target"
+          ]
+        },
+        "origins": {
+          "type": "array",
+          "minItems": 1
+        },
+        "chosen_parameter": {
+          "type": "number"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "schema_version": {
+            "const": "mapped-poc-v2"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "sampling",
+          "sampling_mode"
+        ]
+      }
+    }
+  ]
+}

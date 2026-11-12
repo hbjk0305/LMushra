@@ -1,0 +1,408 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DeepMUSHRA final end-to-end verification</title><style>body{margin:0;background:#f2f5f7;color:#1c2b38;font:16px/1.58 system-ui,sans-serif;overflow-wrap:anywhere}main{max-width:1160px;margin:auto;background:white;padding:38px 42px 70px}h1{font-size:34px;line-height:1.2}h2{margin:42px 0 16px;border-top:1px solid #d8e1e8;padding-top:24px;font-size:25px}h3{margin-top:24px}p,li{max-width:1000px}table{border-collapse:collapse;width:100%;margin:18px 0;font-variant-numeric:tabular-nums}th,td{padding:10px 12px;text-align:left;border-bottom:1px solid #dfe6eb}thead{background:#eaf1f7}figure{margin:22px 0}svg{display:block;width:100%;height:auto}figcaption{font-size:13px;color:#556574;margin:8px 0}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#edf3f7;padding:18px;border-radius:8px;font:14px/1.6 ui-monospace,monospace}strong{color:#123c58}@media(max-width:700px){main{padding:20px 12px}h1{font-size:28px}th,td{padding:7px;font-size:13px}}@media print{body{background:white}main{padding:0;max-width:none}figure,table{break-inside:avoid}h2{break-after:avoid}}</style><main><h1>Final end-to-end verification: generators and ODAQ integration</h1>
+<p><strong>Result:</strong> the unchanged mapped-poc-1 implementation passed fresh generation, saved-file inspection, mapping round trips and training export. All 179 tests passed in 77.25s. No source code, calibration fit, listener split or sampling configuration was changed. The 77 protected file hashes match before/after.</p>
+<p>This verifies a provisional ODAQ-informed synthetic-quality POC. It does not establish human perceptual validation of our synthetic operators.</p>
+<h2>1. What was run</h2>
+<p>Existing profile: package 0.3.0, mapped-poc-1; unchanged 50/65/75 engineering pilot settings. These settings were not adopted as the final dataset design. Eight independent licensed MedleyDB/MUSDB excerpts from the earlier mono audit were used, four seconds each. No ODAQ audio was a synthetic source.</p>
+<p>Actual command, from the KNN checkout:</p>
+<pre>cd /data/tingyup2/projects/AudioLM/LMushra
+source /data/tingyup2/projects/AudioLM/env.sh
+python -m deepmushra_data build \
+  --manifest outputs/artifact-validation/mono_real_sources.jsonl \
+  --dataset-id final-e2e-poc --clip-seconds 4 \
+  --output data/final-e2e-poc-v1 \
+  --audio-prefix data/final-e2e-poc-v1</pre>
+<p>The output now exists; use a fresh output directory if rerunning. Logs/results: outputs/final_e2e_verification_v1/.</p>
+<h2>2. Actual saved-output checks</h2>
+<table><thead><tr><th>Check</th><th>Fresh observed result</th></tr></thead><tbody>
+<tr><td>Generated triplets</td><td>96: 24 per artifact</td></tr>
+<tr><td>WAV format</td><td>44100 Hz, mono, DOUBLE, 176400 samples / 4 seconds</td></tr>
+<tr><td>Reference/degraded/residual shape</td><td>Identical for every triplet</td></tr>
+<tr><td>Saved residual</td><td>Bit-exact equality to saved degraded−reference for all 96</td></tr>
+<tr><td>Reference+residual reconstruction</td><td>Maximum error 2.7755575615628914e-17; tolerance 1e-12</td></tr>
+<tr><td>Finite / clipping checks</td><td>All finite; maximum waveform peak 0.269097829, below .999</td></tr>
+<tr><td>Source lineage/alignment</td><td>Saved reference equals prepared source × recorded shared gain exactly</td></tr>
+<tr><td>Deterministic recomputation</td><td>Selected LP/SH/UN/QN degraded waveforms and evidence arrays rerender bit-exactly</td></tr>
+<tr><td>Calibration provenance</td><td>Correct mapping ID, table checksum, source group, panel count and profile fingerprint</td></tr>
+<tr><td>Transfer flags</td><td>mono_transfer_validated=false; operator_transfer_validated=false</td></tr>
+<tr><td>Human annotations</td><td>Human score, audibility, perceived severity and human category all null</td></tr>
+<tr><td>Export</td><td>92 paired records with complete aligned metadata sidecars</td></tr>
+<tr><td>Training contract</td><td>All 92 match the structure of all 100 dummy records on hwangbo/train at 34f4f54b5d4e96d2846cb703e9267dbcf953f686</td></tr>
+<tr><td>Source leakage</td><td>No source group crosses splits</td></tr>
+</tbody></table>
+<p>Alignment here means the same sampling grid, start index and sample count, with correct processing lineage. LP intentionally retains causal frequency-dependent phase/group delay. These checks do not establish identical acoustic feature phase or absence of SH/UN window spreading.</p>
+<h3>Exceptions and failed checks</h3>
+<p><strong>No output-integrity or mapping-consistency check failed.</strong> Important coverage observations remain:</p>
+<ul>
+<li>Four UN cases selected no eligible components: target 65/75 for Auctioneer–Our Future Faces and Clara Berry And Wooldog–Air Traffic. Their estimates are null, their human labels remain unknown, and they are omitted from model exports as designed.</li>
+<li>Export split counts are train 70, valid 0, test 22. The validation JSONL exists but is empty because the eight recording groups received no validation assignment under the stable hash split. This is not a structural/integrity failure; it is insufficient coverage for a training run requiring a nonempty validation set. Use a larger independent source pool rather than silently resplitting these recordings or changing their identities to force coverage.</li>
+<li>The five-condition proposal is accepted by the internal recipe validator, but intentionally rejected by the current shared-profile guard because it differs from the unchanged packaged recipe. A YAML-only edit would therefore not work.</li>
+</ul>
+<h2>3. Four complete mapping examples</h2>
+<p>A matched reference source was used for these four examples: final-e2e-poc:musdb18hq:Aimee Norwich - Child. Every example has actual WAVs, exact parameters/seeds, a metadata file and an independently recomputed trace.</p>
+<table><thead><tr><th>Artifact</th><th>Requested quality</th><th>Inverse-mapped control</th><th>Forward estimate in final metadata</th><th>Category</th><th>Rerender check</th></tr></thead><tbody>
+<tr><td>LP</td><td>65</td><td>10370.4623614826 Hz cutoff</td><td>65</td><td>Good</td><td>exact audio + evidence match</td></tr>
+<tr><td>SH</td><td>65</td><td>0.210501193317423 probability</td><td>65</td><td>Good</td><td>exact audio + evidence match</td></tr>
+<tr><td>UN</td><td>65</td><td>6327.25615314494 Hz crossover</td><td>65</td><td>Good</td><td>exact audio + evidence match</td></tr>
+<tr><td>QN</td><td>65</td><td>14.8031382419543 dB waveform SNR</td><td>65</td><td>Good</td><td>exact audio + evidence match</td></tr>
+</tbody></table>
+<p>Across all 92 non-null estimates, maximum target/forward absolute error was <strong>1.4210854715202004e-14</strong>, below the intended <strong>1e-8</strong> tolerance. Four intentional no-op nulls are excluded from this equality check.</p>
+<p>QN&#x27;s example requested 14.803138241954303 dB and measured 14.803138241954304 dB in the saved signals. The maximum requested-versus-saved SNR discrepancy across QN examples was 3.5527136788005009e-15 dB.</p>
+<p>This inverse/forward agreement is a software consistency check: both directions use the same frozen curve. It is not independent evidence that a listener would assign 65 to the synthetic output.</p>
+<h3>Parameters and versions actually recorded</h3>
+<table><thead><tr><th>Artifact</th><th>Underlying algorithm version</th><th>Profile version</th><th>Complete effect parameters for the example</th></tr></thead><tbody>
+<tr><td>LP</td><td>1.1</td><td>mapped-poc-1</td><td>{&quot;attenuation_db&quot;: 60, &quot;cutoff_hz&quot;: 10370.462361482614, &quot;filter_design&quot;: &quot;butterworth&quot;, &quot;passband_ripple_db&quot;: 0.5, &quot;transition_hz&quot;: 1500}</td></tr>
+<tr><td>SH</td><td>1.1</td><td>mapped-poc-1</td><td>{&quot;attenuation_db&quot;: &quot;zero&quot;, &quot;band_width_hz&quot;: 500, &quot;hole_probability&quot;: 0.2105011933174225, &quot;run_frames&quot;: 4, &quot;start_hz&quot;: 4000}</td></tr>
+<tr><td>UN</td><td>1.1</td><td>mapped-poc-1</td><td>{&quot;channel_mode&quot;: &quot;linked&quot;, &quot;crossover_hz&quot;: 6327.256153144944, &quot;smoothing_hz&quot;: 500, &quot;strength&quot;: 1.0, &quot;tonal_threshold_db&quot;: 12.0}</td></tr>
+<tr><td>QN</td><td>mapped-poc-1</td><td>mapped-poc-1</td><td>{&quot;activity_policy&quot;: &quot;exact_sample_support&quot;, &quot;smoothing_hz&quot;: 500, &quot;snr_db&quot;: 14.803138241954303}</td></tr>
+</tbody></table>
+<p>The active QN operator is local_spectral_additive_noise_v1. LP/SH/UN use shared algorithm 1.1 with the mapped profile&#x27;s fixed settings. No generator was rewritten in this verification.</p>
+<h2>4. Which artifacts emit provisional quality metadata?</h2>
+<table><thead><tr><th>Artifact</th><th>Generated examples</th><th>Non-null quality/category</th><th>Intentional nulls</th></tr></thead><tbody>
+<tr><td>LP</td><td>24</td><td>24</td><td>0</td></tr>
+<tr><td>SH</td><td>24</td><td>24</td><td>0</td></tr>
+<tr><td>UN</td><td>24</td><td>20</td><td>4</td></tr>
+<tr><td>QN</td><td>24</td><td>24</td><td>0</td></tr>
+</tbody></table>
+<p>All four can already emit estimated_quality_mean, estimated_quality_category, mapping provenance, conditional reference-listener bands and transfer flags. They emit provisional quality estimates, not measured human perceived-severity ratings.</p>
+<h2>5. QN bridge: independently reconstructed</h2>
+<h3>Audio observations</h3>
+<p>Four original <strong>QNMS main-study reference items</strong>, each at five released conditions, give 20 stereo degraded/reference pairs. For each pair:</p>
+<p>1. Read the original 48 kHz stereo reference and degraded files. 2. Downmix each independently with (L+R)/2. 3. Resample both to 44.1 kHz using scipy.signal.resample_poly, up 147/down 160, Kaiser beta 5, constant-zero boundary handling, without additional normalization. 4. Compute residual from the resulting mono pair and waveform SNR = 10log10(sum(reference²)/sum(residual²)). 5. Take the median SNR across the four reference items at each released condition.</p>
+<h3>Human-rating observations</h3>
+<p>The y coordinate is the <strong>original stereo</strong> QNMS calibration mean. It uses only the three frozen calibration listeners: two in cohort D, one in cohort E. Cohorts retain 9/16 and 7/16 total weights, and the four reference items are equally weighted. Thus each condition has 12 calibration scores; the five conditions use 60 scores. This audit recomputed those means without fitting a new model.</p>
+<table><thead><tr><th>Released QN condition label</th><th>Recomputed median mono SNR, dB</th><th>Min/max across four items</th><th>Frozen stereo quality mean</th><th>Calibration scores</th></tr></thead><tbody>
+<tr><td>0</td><td>2.228506302816</td><td>2.13563–2.24496</td><td>20.05468750</td><td>12</td></tr>
+<tr><td>6</td><td>6.661260379446</td><td>6.55800–6.68932</td><td>34.92187500</td><td>12</td></tr>
+<tr><td>12</td><td>12.065169538809</td><td>11.98916–12.23572</td><td>55.89843750</td><td>12</td></tr>
+<tr><td>18</td><td>17.724421587885</td><td>17.56263–18.04444</td><td>74.71093750</td><td>12</td></tr>
+<tr><td>24</td><td>23.205954857699</td><td>22.49199–23.98005</td><td>92.65625000</td><td>12</td></tr>
+</tbody></table>
+<p>All five recomputed medians and means match the packaged table within 1e-12. Source-level measurements are in outputs/final_e2e_verification_v1/qn_bridge_observations.csv.</p>
+<h3>Exclusions and validity</h3>
+<ul>
+<li>Only the evaluation method QNMS and its noiseMS conditions enter this bridge—not QNLR, mixed-context conditions, PE or TM.</li>
+<li>Combined rating CSVs contain multiple listener roles. The loader filters by the frozen calibration role before converting/using ratings. Only calibration records were returned and aggregated; no held-out 80% score was used for fitting, coordinate construction, selection or tuning.</li>
+<li>The audio stimuli are shared across calibration and held-out listeners by design. Using those waveforms is not using held-out listener scores, but this remains listener-held-out rather than stimulus-independent work.</li>
+<li>Original stereo conditions have human MUSHRA observations. <strong>The mono-SNR bridge itself has no mono listening validation, and our synthetic QN has no independent human quality validation.</strong></li>
+<li>The implemented link is measured mono-SNR coordinate → inherited stereo quality mean. It is not NMR=SNR, a psychoacoustic masking model, or proof that equal SNR means equal quality across different noise operators/content.</li>
+</ul>
+<p>No PE/TM condition, new ODAQ download, calibration-model change or new listener split was introduced.</p>
+<h2>6. Training JSONL: what is ready and what is not</h2>
+<p>The actual train/valid/test files have exactly messages and audios. Messages are user then assistant, both string contents. There are two user audio placeholders and two model paths ordered reference then degraded. Residuals and the complete metadata are in copied dataset files and matching sidecars, not a third model input. All exported paths, file/evidence hashes, source splits and metadata correspondence were checked.</p>
+<p><strong>Current assistant targets are technical processing descriptions only.</strong> Estimated quality and category are in sidecars; they are not currently written into assistant text. Therefore structural AudioLM compatibility is ready, but joint description-plus-quality supervision would still need an agreed target formatter/prompt update if the model team wants the score/category in its output. No new generator or calibration fit is needed for that later text-format change. No LLM paraphrasing or model training was run.</p>
+<h2>7. Three requests versus five supported conditions</h2>
+<table><thead><tr><th>Aspect</th><th>Existing 50/65/75 pilot</th><th>Proposed five-condition Phase 1 POC</th></tr></thead><tbody>
+<tr><td>Chosen starting point</td><td>Three requested quality values</td><td>Five supported physical conditions per artifact</td></tr>
+<tr><td>Mapping direction</td><td>Inverse curve selects parameter; forward query confirms label</td><td>Physical parameter → forward estimated quality/category</td></tr>
+<tr><td>Variants per excerpt</td><td>12</td><td>20</td></tr>
+<tr><td>Eight-source nominal triplets</td><td>96</td><td>160 before no-op filtering</td></tr>
+<tr><td>Category coverage</td><td>Fair and Good</td><td>Poor/Fair/Good/Excellent, depending on artifact; no supported Bad means</td></tr>
+<tr><td>DSP changes</td><td>None for this audit</td><td>None required</td></tr>
+<tr><td>Calibration/model changes</td><td>None</td><td>None required</td></tr>
+<tr><td>Shared recipe changes</td><td>None performed</td><td>Two synchronized recipe copies plus recipe-dependent checks/reports</td></tr>
+</tbody></table>
+<p>Q1–Q5 below are ordered processing conditions within each family, most to least degraded. They must not be relabeled automatically as Bad through Excellent. Categories come from the actual forward mean estimate. In particular, UN&#x27;s worst mean is Fair, and SH&#x27;s best mean is Good.</p>
+<table><thead><tr><th>Artifact</th><th>Recommended parameters in Q1→Q5 order</th><th>Internal axis</th></tr></thead><tbody>
+<tr><td>LP</td><td>5000, 9000, 10500, 12000, 15000</td><td>cutoff_hz</td></tr>
+<tr><td>SH</td><td>0.7, 0.5, 0.3, 0.2, 0.1</td><td>hole_probability</td></tr>
+<tr><td>UN</td><td>3000, 5000, 7000, 9000, 10500</td><td>crossover_hz</td></tr>
+<tr><td>QN</td><td>2.22850630282, 6.66126037945, 12.0651695388, 17.7244215879, 23.2059548577</td><td>waveform_snr_db</td></tr>
+</tbody></table>
+<p>For QN these are the five <strong>empirical mono-SNR coordinates</strong>, not the raw NMR labels 0/6/12/18/24. The proposed recipe passed validation in memory only. No five-condition audio dataset was generated.</p>
+<h2>8. Minimum change and exact next-pilot proposal</h2>
+<p>The existing code already supports parameters lists. After approval:</p>
+<p>1. Replace the artifact settings in configs/generator.yaml with the proposed list below. 2. Put the identical artifact settings into src/deepmushra_mapped/profile.json under config.artifacts. Updating YAML alone is rejected by check_shared_config(). Keep the generator operators and frozen mapping_table.json unchanged. 3. Refresh recipe-dependent tests/fixtures and report expectations: tests/test_mapped_poc.py currently injects quality_targets into the default setting; tests/test_team_workflow.py expects 36 examples for three sources; scripts/report_final_mapping.py asserts 50/65/75; scripts/report_mapped_poc.py selects those requests explicitly. These assumptions need to follow the five-condition recipe; this is not algorithm development. 4. Rerun the small pilot/tests and distribute the updated shared recipe fingerprint to all workers. Do not merge old/new recipe fingerprints.</p>
+<p><strong>Proposed configuration only—not applied:</strong></p>
+<pre>schema_version: mapped-poc-1
+seed: 20261111
+input:
+  sample_rates: [44100]
+  channels: [1]
+  min_duration_s: 1
+  max_duration_s: 30
+  source_peak_limit: 0.15
+  output_peak_limit: 0.999
+splits: {train: 0.7, validation: 0.15, test: 0.15}
+artifacts:
+  LP:
+    parameters: [5000, 9000, 10500, 12000, 15000]
+  SH:
+    parameters: [0.7, 0.5, 0.3, 0.2, 0.1]
+  UN:
+    parameters: [3000, 5000, 7000, 9000, 10500]
+  QN:
+    parameters:
+      - 2.228506302815756
+      - 6.661260379445558
+      - 12.06516953880947
+      - 17.724421587884798
+      - 23.205954857698543</pre>
+<p><strong>Recommended command after those shared recipe/check updates:</strong></p>
+<pre>cd /data/tingyup2/projects/AudioLM/LMushra
+source /data/tingyup2/projects/AudioLM/env.sh
+python -m deepmushra_data build \
+  --manifest outputs/artifact-validation/mono_real_sources.jsonl \
+  --dataset-id final-e2e-poc --clip-seconds 4 \
+  --output data/final-e2e-five-condition-v1 \
+  --audio-prefix data/final-e2e-five-condition-v1
+python -m deepmushra_data check-export \
+  --bundle data/final-e2e-five-condition-v1 --relative-to .</pre>
+<p>Keep dataset-id fixed when comparing recipes on the same corpus so source group identities/splits do not change. With the currently unchanged packaged profile, the command would still use the old pilot recipe; it does not become five-condition merely because its output directory says so. The validation-coverage limitation of this tiny source pool remains for that controlled comparison.</p>
+<h2>9. Remaining transfer assumptions</h2>
+<ul>
+<li>LP: nominal frequency alignment does not establish identical ODAQ edge convention, response/transition or phase.</li>
+<li>SH: published probability does not establish identical time/frequency masks, eligible regions, block/window behavior or stereo MS processing.</li>
+<li>UN: crossover alignment does not validate our peak selector/envelope or the 12 dB threshold as ODAQ-equivalent.</li>
+<li>QN: the empirical SNR coordinate does not equate NMR with SNR or validate the new local noise operator perceptually.</li>
+<li>All families: stereo ratings are provisionally transferred to 44.1 kHz mono and new content. Perception and source dependence require independent validation. Conditional reference-listener bands do not include that transfer error, especially with QN&#x27;s three listeners.</li>
+</ul>
+<p>These are unverified scientific assumptions, not missing pipeline modules. Do not duplicate already implemented generators, fitting, lookup, metadata or export code to address them.</p>
+<h2>Appendix A. Actual audio/metadata paths</h2>
+<p>All paths below are relative to /data/tingyup2/projects/AudioLM/LMushra/ and exist on KNN. Generated audio is Git-ignored.</p>
+<h3>LP: 111224f0f0615dd30bebca7e</h3>
+<ul>
+<li>degraded: data/final-e2e-poc-v1/dataset/audio/111224f0f0615dd30bebca7e/degraded.wav</li>
+<li>reference: data/final-e2e-poc-v1/dataset/audio/reference/8db4a3a6a9c0819d755cd3d5123098bdb16a65d6432743856caadc61462a8f6d.wav</li>
+<li>residual: data/final-e2e-poc-v1/dataset/audio/111224f0f0615dd30bebca7e/residual.wav</li>
+<li>Full metadata: data/final-e2e-poc-v1/dataset/metadata/111224f0f0615dd30bebca7e.json</li>
+<li>Independent trace: outputs/final_e2e_verification_v1/examples/LP.trace.json</li>
+</ul>
+<h3>SH: a15cbb5df074c997ce124232</h3>
+<ul>
+<li>degraded: data/final-e2e-poc-v1/dataset/audio/a15cbb5df074c997ce124232/degraded.wav</li>
+<li>reference: data/final-e2e-poc-v1/dataset/audio/reference/8db4a3a6a9c0819d755cd3d5123098bdb16a65d6432743856caadc61462a8f6d.wav</li>
+<li>residual: data/final-e2e-poc-v1/dataset/audio/a15cbb5df074c997ce124232/residual.wav</li>
+<li>Full metadata: data/final-e2e-poc-v1/dataset/metadata/a15cbb5df074c997ce124232.json</li>
+<li>Independent trace: outputs/final_e2e_verification_v1/examples/SH.trace.json</li>
+</ul>
+<h3>UN: 8b6124d58b18cb5517c5e9d8</h3>
+<ul>
+<li>degraded: data/final-e2e-poc-v1/dataset/audio/8b6124d58b18cb5517c5e9d8/degraded.wav</li>
+<li>reference: data/final-e2e-poc-v1/dataset/audio/reference/8db4a3a6a9c0819d755cd3d5123098bdb16a65d6432743856caadc61462a8f6d.wav</li>
+<li>residual: data/final-e2e-poc-v1/dataset/audio/8b6124d58b18cb5517c5e9d8/residual.wav</li>
+<li>Full metadata: data/final-e2e-poc-v1/dataset/metadata/8b6124d58b18cb5517c5e9d8.json</li>
+<li>Independent trace: outputs/final_e2e_verification_v1/examples/UN.trace.json</li>
+</ul>
+<h3>QN: 35b2888d0d80607b5ad955d8</h3>
+<ul>
+<li>degraded: data/final-e2e-poc-v1/dataset/audio/35b2888d0d80607b5ad955d8/degraded.wav</li>
+<li>reference: data/final-e2e-poc-v1/dataset/audio/reference/8db4a3a6a9c0819d755cd3d5123098bdb16a65d6432743856caadc61462a8f6d.wav</li>
+<li>residual: data/final-e2e-poc-v1/dataset/audio/35b2888d0d80607b5ad955d8/residual.wav</li>
+<li>Full metadata: data/final-e2e-poc-v1/dataset/metadata/35b2888d0d80607b5ad955d8.json</li>
+<li>Independent trace: outputs/final_e2e_verification_v1/examples/QN.trace.json</li>
+</ul>
+<h2>Appendix B. Complete example metadata extracts</h2>
+<p>Full original records are preserved in each sample&#x27;s metadata JSON and the audit examples directory. These extracts show the complete calibration and human-annotation blocks, not fabricated ratings.</p>
+<h3>LP — actual metadata extract</h3>
+<pre>{
+  &quot;calibration_estimate&quot;: {
+    &quot;assumptions&quot;: [
+      &quot;Original stereo quality means are transferred provisionally to mono.&quot;,
+      &quot;Synthetic operators approximate the ODAQ artifact family.&quot;,
+      &quot;QN uses measured mono QNMS median SNR, not an NMR-to-SNR identity.&quot;
+    ],
+    &quot;band_interpretation&quot;: &quot;conditional stereo-reference band; linearly interpolated between knots; not a mono/synthetic population CI&quot;,
+    &quot;calibration_listeners&quot;: 9,
+    &quot;conditional_reference_listener_weight_95_band&quot;: [
+      60.587173517443226,
+      69.70943045936527
+    ],
+    &quot;estimated_quality_category&quot;: &quot;Good&quot;,
+    &quot;estimated_quality_loss_proxy&quot;: 35.0,
+    &quot;estimated_quality_mean&quot;: 65.0,
+    &quot;human_mushra_score&quot;: null,
+    &quot;mapping_id&quot;: &quot;odaq-transferred-poc-1/LP&quot;,
+    &quot;mono_transfer_validated&quot;: false,
+    &quot;operator_transfer_validated&quot;: false,
+    &quot;parameter_axis&quot;: &quot;cutoff_hz&quot;,
+    &quot;parameter_value&quot;: 10370.462361482614,
+    &quot;reference_group&quot;: &quot;LP_original&quot;,
+    &quot;reference_sources&quot;: 4,
+    &quot;status&quot;: &quot;odaq_informed_provisional_transfer&quot;,
+    &quot;support_status&quot;: &quot;inside&quot;,
+    &quot;synthetic_transfer_interval_95&quot;: null,
+    &quot;table_sha256&quot;: &quot;a3c8a64d935b8ef9a70ee8e4783b2ca4468f0f400b2ddcbe129ee2bd5b2a7dd5&quot;
+  },
+  &quot;parameters&quot;: {
+    &quot;attenuation_db&quot;: 60,
+    &quot;cutoff_hz&quot;: 10370.462361482614,
+    &quot;filter_design&quot;: &quot;butterworth&quot;,
+    &quot;passband_ripple_db&quot;: 0.5,
+    &quot;transition_hz&quot;: 1500
+  },
+  &quot;perceptual_annotation&quot;: {
+    &quot;audibility&quot;: null,
+    &quot;human_mushra_score&quot;: null,
+    &quot;perceived_severity&quot;: null,
+    &quot;quality_category&quot;: null,
+    &quot;status&quot;: &quot;unverified&quot;
+  },
+  &quot;request&quot;: {
+    &quot;kind&quot;: &quot;quality_targets&quot;,
+    &quot;value&quot;: 65
+  },
+  &quot;sample_id&quot;: &quot;111224f0f0615dd30bebca7e&quot;,
+  &quot;source_id&quot;: &quot;final-e2e-poc:musdb18hq:Aimee Norwich - Child&quot;
+}</pre>
+<h3>SH — actual metadata extract</h3>
+<pre>{
+  &quot;calibration_estimate&quot;: {
+    &quot;assumptions&quot;: [
+      &quot;Original stereo quality means are transferred provisionally to mono.&quot;,
+      &quot;Synthetic operators approximate the ODAQ artifact family.&quot;,
+      &quot;QN uses measured mono QNMS median SNR, not an NMR-to-SNR identity.&quot;
+    ],
+    &quot;band_interpretation&quot;: &quot;conditional stereo-reference band; linearly interpolated between knots; not a mono/synthetic population CI&quot;,
+    &quot;calibration_listeners&quot;: 9,
+    &quot;conditional_reference_listener_weight_95_band&quot;: [
+      59.366249004724416,
+      70.73125680401844
+    ],
+    &quot;estimated_quality_category&quot;: &quot;Good&quot;,
+    &quot;estimated_quality_loss_proxy&quot;: 35.0,
+    &quot;estimated_quality_mean&quot;: 65.0,
+    &quot;human_mushra_score&quot;: null,
+    &quot;mapping_id&quot;: &quot;odaq-transferred-poc-1/SH&quot;,
+    &quot;mono_transfer_validated&quot;: false,
+    &quot;operator_transfer_validated&quot;: false,
+    &quot;parameter_axis&quot;: &quot;hole_probability&quot;,
+    &quot;parameter_value&quot;: 0.2105011933174225,
+    &quot;reference_group&quot;: &quot;SH_original&quot;,
+    &quot;reference_sources&quot;: 4,
+    &quot;status&quot;: &quot;odaq_informed_provisional_transfer&quot;,
+    &quot;support_status&quot;: &quot;inside&quot;,
+    &quot;synthetic_transfer_interval_95&quot;: null,
+    &quot;table_sha256&quot;: &quot;a3c8a64d935b8ef9a70ee8e4783b2ca4468f0f400b2ddcbe129ee2bd5b2a7dd5&quot;
+  },
+  &quot;parameters&quot;: {
+    &quot;attenuation_db&quot;: &quot;zero&quot;,
+    &quot;band_width_hz&quot;: 500,
+    &quot;hole_probability&quot;: 0.2105011933174225,
+    &quot;run_frames&quot;: 4,
+    &quot;start_hz&quot;: 4000
+  },
+  &quot;perceptual_annotation&quot;: {
+    &quot;audibility&quot;: null,
+    &quot;human_mushra_score&quot;: null,
+    &quot;perceived_severity&quot;: null,
+    &quot;quality_category&quot;: null,
+    &quot;status&quot;: &quot;unverified&quot;
+  },
+  &quot;request&quot;: {
+    &quot;kind&quot;: &quot;quality_targets&quot;,
+    &quot;value&quot;: 65
+  },
+  &quot;sample_id&quot;: &quot;a15cbb5df074c997ce124232&quot;,
+  &quot;source_id&quot;: &quot;final-e2e-poc:musdb18hq:Aimee Norwich - Child&quot;
+}</pre>
+<h3>UN — actual metadata extract</h3>
+<pre>{
+  &quot;calibration_estimate&quot;: {
+    &quot;assumptions&quot;: [
+      &quot;Original stereo quality means are transferred provisionally to mono.&quot;,
+      &quot;Synthetic operators approximate the ODAQ artifact family.&quot;,
+      &quot;QN uses measured mono QNMS median SNR, not an NMR-to-SNR identity.&quot;
+    ],
+    &quot;band_interpretation&quot;: &quot;conditional stereo-reference band; linearly interpolated between knots; not a mono/synthetic population CI&quot;,
+    &quot;calibration_listeners&quot;: 9,
+    &quot;conditional_reference_listener_weight_95_band&quot;: [
+      60.3823819737879,
+      69.61355595431282
+    ],
+    &quot;estimated_quality_category&quot;: &quot;Good&quot;,
+    &quot;estimated_quality_loss_proxy&quot;: 35.0,
+    &quot;estimated_quality_mean&quot;: 65.0,
+    &quot;human_mushra_score&quot;: null,
+    &quot;mapping_id&quot;: &quot;odaq-transferred-poc-1/UN&quot;,
+    &quot;mono_transfer_validated&quot;: false,
+    &quot;operator_transfer_validated&quot;: false,
+    &quot;parameter_axis&quot;: &quot;crossover_hz&quot;,
+    &quot;parameter_value&quot;: 6327.256153144944,
+    &quot;reference_group&quot;: &quot;UN_original&quot;,
+    &quot;reference_sources&quot;: 4,
+    &quot;status&quot;: &quot;odaq_informed_provisional_transfer&quot;,
+    &quot;support_status&quot;: &quot;inside&quot;,
+    &quot;synthetic_transfer_interval_95&quot;: null,
+    &quot;table_sha256&quot;: &quot;a3c8a64d935b8ef9a70ee8e4783b2ca4468f0f400b2ddcbe129ee2bd5b2a7dd5&quot;
+  },
+  &quot;parameters&quot;: {
+    &quot;channel_mode&quot;: &quot;linked&quot;,
+    &quot;crossover_hz&quot;: 6327.256153144944,
+    &quot;smoothing_hz&quot;: 500,
+    &quot;strength&quot;: 1.0,
+    &quot;tonal_threshold_db&quot;: 12.0
+  },
+  &quot;perceptual_annotation&quot;: {
+    &quot;audibility&quot;: null,
+    &quot;human_mushra_score&quot;: null,
+    &quot;perceived_severity&quot;: null,
+    &quot;quality_category&quot;: null,
+    &quot;status&quot;: &quot;unverified&quot;
+  },
+  &quot;request&quot;: {
+    &quot;kind&quot;: &quot;quality_targets&quot;,
+    &quot;value&quot;: 65
+  },
+  &quot;sample_id&quot;: &quot;8b6124d58b18cb5517c5e9d8&quot;,
+  &quot;source_id&quot;: &quot;final-e2e-poc:musdb18hq:Aimee Norwich - Child&quot;
+}</pre>
+<h3>QN — actual metadata extract</h3>
+<pre>{
+  &quot;calibration_estimate&quot;: {
+    &quot;actual_saved_waveform_snr_db&quot;: 14.803138241954304,
+    &quot;assumptions&quot;: [
+      &quot;Original stereo quality means are transferred provisionally to mono.&quot;,
+      &quot;Synthetic operators approximate the ODAQ artifact family.&quot;,
+      &quot;QN uses measured mono QNMS median SNR, not an NMR-to-SNR identity.&quot;
+    ],
+    &quot;band_interpretation&quot;: &quot;conditional stereo-reference band; linearly interpolated between knots; not a mono/synthetic population CI&quot;,
+    &quot;calibration_listeners&quot;: 3,
+    &quot;conditional_reference_listener_weight_95_band&quot;: [
+      62.001105226606434,
+      68.0267826605333
+    ],
+    &quot;estimated_quality_category&quot;: &quot;Good&quot;,
+    &quot;estimated_quality_loss_proxy&quot;: 35.0,
+    &quot;estimated_quality_mean&quot;: 65.0,
+    &quot;human_mushra_score&quot;: null,
+    &quot;mapping_id&quot;: &quot;odaq-transferred-poc-1/QN&quot;,
+    &quot;mono_transfer_validated&quot;: false,
+    &quot;operator_transfer_validated&quot;: false,
+    &quot;parameter_axis&quot;: &quot;waveform_snr_db&quot;,
+    &quot;parameter_value&quot;: 14.803138241954304,
+    &quot;reference_group&quot;: &quot;QNMS&quot;,
+    &quot;reference_sources&quot;: 4,
+    &quot;status&quot;: &quot;odaq_informed_provisional_transfer&quot;,
+    &quot;support_status&quot;: &quot;inside&quot;,
+    &quot;synthetic_transfer_interval_95&quot;: null,
+    &quot;table_sha256&quot;: &quot;a3c8a64d935b8ef9a70ee8e4783b2ca4468f0f400b2ddcbe129ee2bd5b2a7dd5&quot;
+  },
+  &quot;parameters&quot;: {
+    &quot;activity_policy&quot;: &quot;exact_sample_support&quot;,
+    &quot;smoothing_hz&quot;: 500,
+    &quot;snr_db&quot;: 14.803138241954303
+  },
+  &quot;perceptual_annotation&quot;: {
+    &quot;audibility&quot;: null,
+    &quot;human_mushra_score&quot;: null,
+    &quot;perceived_severity&quot;: null,
+    &quot;quality_category&quot;: null,
+    &quot;status&quot;: &quot;unverified&quot;
+  },
+  &quot;request&quot;: {
+    &quot;kind&quot;: &quot;quality_targets&quot;,
+    &quot;value&quot;: 65
+  },
+  &quot;sample_id&quot;: &quot;35b2888d0d80607b5ad955d8&quot;,
+  &quot;source_id&quot;: &quot;final-e2e-poc:musdb18hq:Aimee Norwich - Child&quot;
+}</pre>
+<h2>Evidence and unchanged-state record</h2>
+<ul>
+<li>outputs/final_e2e_verification_v1/pilot.log and tests.log.</li>
+<li>actual_output_verification.json and per_sample_checks.csv: all 96 saved-triplet checks and mapping errors.</li>
+<li>qn_bridge_verification.json and qn_bridge_observations.csv: 20 original QNMS waveform observations and calibration-only mean verification.</li>
+<li>protected_before.json / protected_after.json:77 source/config/model/split/input hashes unchanged.</li>
+<li>Example files under outputs/final_e2e_verification_v1/examples/.</li>
+<li>Profile fingerprint: 3af2e4150a832daf855ab151ce1cdbbef5927ca5b49be016fb1af6163471a798.</li>
+</ul>
+<p>No production source, calibration model, frozen split or sampling configuration was modified. Only the requested small pilot, verification artifacts and this report were created. No commit or push was performed.</p></main></html>

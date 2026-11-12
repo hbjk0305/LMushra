@@ -1,0 +1,111 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DeepMUSHRA sampling recipe</title><style>body{margin:0;background:#f2f5f7;color:#1c2b38;font:16px/1.58 system-ui,sans-serif;overflow-wrap:anywhere}main{max-width:1160px;margin:auto;background:white;padding:38px 42px 70px}h1{font-size:34px;line-height:1.2}h2{margin:42px 0 16px;border-top:1px solid #d8e1e8;padding-top:24px;font-size:25px}h3{margin-top:24px}p,li{max-width:1000px}table{border-collapse:collapse;width:100%;margin:18px 0;font-variant-numeric:tabular-nums}th,td{padding:10px 12px;text-align:left;border-bottom:1px solid #dfe6eb}thead{background:#eaf1f7}figure{margin:22px 0}svg{display:block;width:100%;height:auto}figcaption{font-size:13px;color:#556574;margin:8px 0}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#edf3f7;padding:18px;border-radius:8px;font:14px/1.6 ui-monospace,monospace}strong{color:#123c58}@media(max-width:700px){main{padding:20px 12px}h1{font-size:28px}th,td{padding:7px;font-size:13px}}@media print{body{background:white}main{padding:0;max-width:none}figure,table{break-inside:avoid}h2{break-after:avoid}}</style><main><h1>Unified synthetic sampling recipe: mapped-poc-v2</h1>
+<p>DeepMUSHRA uses the existing LP, SH, UN and QN operators and frozen ODAQ-informed curves. V2 adds request sampling, skip/deduplication accounting and provenance; it does not refit a curve or change an audio algorithm. PE and TM remain excluded. No ODAQ recording is a synthetic source.</p>
+<h2>Profiles and compatibility</h2>
+<ul>
+<li><code>mapped-poc-1</code> remains the CLI default: its unchanged packaged recipe uses quality targets 50/65/75. These are historical engineering defaults, not the final dataset decision. Its parameter, seed and waveform behavior is preserved. V1 custom configurations remain rejected by the public shared-profile guard.</li>
+<li><code>mapped-poc-v2</code> accepts a validated sampling recipe. Every resolved recipe, source-code release, frozen table, training contract and numerical environment enters the generator fingerprint. Workers must use identical fingerprints; mixed profiles/recipes cannot be merged.</li>
+<li>The package release is 0.4.0. The reused operator profile remains <code>mapped-poc-1</code> in degradation metadata; the sampling profile/schema is <code>mapped-poc-v2</code>. LP/SH/UN algorithm 1.1 and QN <code>local_spectral_additive_noise_v1</code> are unchanged.</li>
+<li>Adding sampler code changes release fingerprints and sample IDs even when a v1 waveform remains identical. Previous outputs are immutable and are not rewritten or relabeled.</li>
+</ul>
+<h2>Three modes</h2>
+<table><thead><tr><th>Mode</th><th>Selection</th><th>Intended use</th></tr></thead><tbody>
+<tr><td><code>odaq_knots</code></td><td>Five nominal Q1–Q5 conditions, then forward quality lookup</td><td>Operator checks, clear five-condition Phase 1 baseline</td></tr>
+<tr><td><code>quality_target</code></td><td>Explicit targets or continuous supported targets, bounded inverse, generation, forward lookup</td><td>Controlled exploration of the supported quality-prior axis</td></tr>
+<tr><td><code>hybrid</code></td><td>Knot requests followed by additional quality requests, optional parameter deduplication</td><td>Diverse follow-up POC and future scaling after transfer validation</td></tr>
+</tbody></table>
+<p>Q1–Q5 order denotes five nominal processing conditions, most to least degraded within each family. They are not labels Bad/Poor/Fair/Good/Excellent and do not certify relative human severity on new content.</p>
+<table><thead><tr><th>Artifact</th><th>Nominal Q1→Q5</th><th>Generator control / semantics</th></tr></thead><tbody>
+<tr><td>LP</td><td>5, 9, 10.5, 12, 15 kHz</td><td>5000, 9000, 10500, 12000, 15000 Hz Butterworth passband edge; fixed 1500 Hz transition, .5 dB passband ripple, 60 dB stop specification; causal SOS phase</td></tr>
+<tr><td>SH</td><td>70, 50, 30, 20, 10%</td><td>Frozen probabilities .7000000000000001, .5, .3, .2, .1; above 4 kHz, 500 Hz bands, four-frame runs, zero attenuation. This is per-band/block selection probability, not actual modified TF ratio.</td></tr>
+<tr><td>UN</td><td>3, 5, 7, 9, 10.5 kHz</td><td>Crossover 3000, 5000, 7000, 9000, 10500 Hz; replacement strength 1; existing 12 dB peak selector and 500 Hz smoothing</td></tr>
+<tr><td>QN</td><td>NMR labels 0, 6, 12, 18, 24 dB</td><td>Empirical mono-SNR proxies 2.228506302815756, 6.661260379445558, 12.06516953880947, 17.724421587884798, 23.205954857698543 dB</td></tr>
+</tbody></table>
+<p>All five QN conditions exist in the frozen bridge. The sampler matches the nominal labels to the packaged <code>released_parameter_knots</code> and takes the corresponding <code>x</code> coordinate. A missing bridge condition is reported as unsupported, never converted by numeric NMR=SNR substitution. LP Hz conversion and SH percentage conversion are cross-checked against the frozen coordinates. The tiny floating difference .7000000000000001 versus .7 preserves the table coordinate exactly.</p>
+<p>The QN bridge uses 20 released QNMS stereo audio pairs (four sources × five conditions), separate arithmetic downmix, 48→44.1 kHz resampling and the median waveform SNR across four sources per condition. Its quality coordinates are the original stereo means from 60 calibration ratings by three listeners. It uses no held-out 80% ratings or PE/TM data. There is no mono or synthetic-QN human listening validation. NMR is not SNR; equal SNR across operators/content need not mean equal quality.</p>
+<h2>Configuration</h2>
+<p>Use the existing seed/input/splits/artifacts structure. V2 uses empty artifact objects and a shared sampling section. The schema and CLI reject unknown effects, extrapolation and clipping policies.</p>
+<pre>schema_version: mapped-poc-v2
+seed: 20261111
+input:
+  sample_rates: [44100]
+  channels: [1]
+  min_duration_s: 1
+  max_duration_s: 30
+  source_peak_limit: 0.15
+  output_peak_limit: 0.999
+splits: {train: 0.7, validation: 0.15, test: 0.15}
+artifacts: {LP: {}, SH: {}, UN: {}, QN: {}}
+sampling:
+  mode: hybrid
+  odaq_knots:
+    conditions: [Q1, Q2, Q3, Q4, Q5]
+  quality_target:
+    strategy: continuous_stratified
+    targets_per_artifact: 5
+    allow_extrapolation: false
+    unsupported_target_policy: skip_with_report
+  hybrid:
+    deduplicate_parameters: true
+    parameter_atol: {LP: 0.000001, SH: 0.000000000001, UN: 0.000001, QN: 0.000000001}
+    parameter_rtol: 0</pre>
+<p>The configuration key is <code>odaq_knots</code>, as shown above. Mode determines which request groups are enabled; separate enabled flags are unnecessary. Choose a subset of conditions and <code>targets_per_artifact</code> to control the knot/quality count ratio. Setting zero continuous targets permits a knot-only hybrid; no new DSP configuration is introduced.</p>
+<p>Ready-to-run configurations:</p>
+<ul>
+<li><code>configs/sampling_odaq_knots.yaml</code></li>
+<li><code>configs/sampling_quality_target.yaml</code> (five continuous stratified targets)</li>
+<li><code>configs/sampling_hybrid.yaml</code> (five knots + five continuous targets)</li>
+<li><code>configs/sampling_quality_explicit.yaml</code> (10/30/50/70/90, unsupported requests skipped)</li>
+</ul>
+<p>For explicit sampling, replace the complete <code>quality_target</code> block with:</p>
+<pre>quality_target:
+  strategy: explicit
+  targets: [10, 30, 50, 70, 90]
+  allow_extrapolation: false
+  unsupported_target_policy: skip_with_report</pre>
+<p>For uniform continuous sampling, choose <code>strategy: continuous_uniform</code> and a count. <code>continuous_stratified</code> defaults to equal-width strata across that artifact&#x27;s supported quality range, one draw per stratum when count is five. Optional <code>intervals: [[0,20],[20,40],[40,60],[60,80],[80,100]]</code> instead intersects each requested interval with support, reports zero-width/unsupported intersections and distributes draws round-robin among remaining intervals. These are sampling intervals, not newly validated perceptual classes.</p>
+<p>Targets outside support are never extrapolated or clipped. Current supported mean ranges are LP 22.7778–97.9484, SH 25.2063–78.7817, UN 45.8056–89.9524 and QN 20.0547–92.6563. No supported mean lies in Bad [0,20). Categories use the existing 20-point boundaries and are derived from the forward estimate, with no forced category coverage.</p>
+<h2>Determinism, inverse policy and deduplication</h2>
+<p>Sampling RNG is keyed by the configured seed, stable source recording group, exact prepared-clip checksum and artifact. Worker order and shard boundaries do not alter a clip&#x27;s requests. Knot order is canonical Q1→Q5, followed by quality-target order. B and C use the same continuous requests on the same source/seed, and A/C use the same knot seeds.</p>
+<p>The existing bounded piecewise-linear inverse is used. Current frozen curves are strictly monotone and have unique inverses. The lookup API additionally handles an exact monotone plateau deterministically by choosing the lowest parameter on that plateau; non-flat segments interpolate normally. No frozen curve was changed. Out-of-support values raise or become reported skips.</p>
+<p>Hybrid deduplication retains the first parameter realization and appends all original request provenance. It never averages scores or contexts. Defaults: absolute parameter tolerance LP/UN 1e-6 Hz, SH 1e-12 probability, QN 1e-9 dB; relative tolerance zero. Near-duplicate target requests retain their original inverse parameter and requested target, alongside the actual retained parameter and actual forward difference. Exact duplicate-knot tests exercise 10 candidates → 5 retained examples per artifact. Independent stochastic realizations at the same parameter can be requested by disabling deduplication.</p>
+<p>The three runs are alternative recipes: hybrid intentionally reuses the knot and continuous realizations from A/B on the same recording. Do not concatenate all three into one training set or count them as independent stimuli; cross-recipe fingerprints prevent normal team merging.</p>
+<h2>Metadata and export</h2>
+<p>Common source/audio/degradation/measurements/calibration/descriptions fields remain. V2 adds <code>sampling_mode</code> and a <code>sampling</code> block with:</p>
+<ul>
+<li>Sampling profile and component; original nominal condition/parameter/unit/bridge, if applicable.</li>
+<li>Exact chosen generator parameter, axis and unit; requested quality and inverse parameter/policy.</li>
+<li>Complete <code>origins</code> including requests merged by deduplication.</li>
+<li>Supported parameter/quality ranges; whether the parameter falls between calibration knots.</li>
+<li>Forward estimate, signed forward-minus-target difference, 1e-8 numerical tolerance and no-effect status.</li>
+</ul>
+<p>Calibration metadata retains mapping ID/version, frozen table hash, fitted-model/listener-split/coordinate provenance hashes, reference context, conditional reference-listener bands, both transfer-validation flags false, actual human rating null and <code>has_actual_human_ratings: false</code>. Bands are conditional stereo-reference bands, not synthetic-domain confidence intervals. A no-effect sample retains exact processing facts but has null quality/category and no fabricated rating.</p>
+<p><code>dataset/sampling_report.jsonl</code> gives per-source/artifact skipped requests, reasons, deduplication pairs and interval exclusions. <code>sampling_summary.json</code> records attempted, supported-before-deduplication, skipped, deduplicated and retained counts. Retained is generated audio count, not training export count. Existing no-op export filtering can reduce training rows further.</p>
+<p>Fully rejected requests still write a diagnostic bundle with <code>training_ready: false</code>, source clips and skip reports; no empty model JSONL is presented as usable training data.</p>
+<p>AudioLM rows remain exactly <code>messages</code> + <code>audios</code>: user then assistant and reference then degraded. Residual audio, rich metadata and quality estimates stay in aligned sidecars. Assistant text is currently the existing technical template; LLM paraphrasing and a future joint description/quality target format are separate work, not implemented here.</p>
+<h2>Commands</h2>
+<p>On KNN:</p>
+<pre>cd /data/tingyup2/projects/AudioLM/LMushra
+source /data/tingyup2/projects/AudioLM/env.sh
+python -m pip install --no-deps --no-build-isolation -e .
+python -m pytest -q</pre>
+<p>For another installation: create a Python 3.10 environment, install <code>requirements-generator.txt</code>, then <code>pip install --no-deps -e .</code>. Preserve the numerical environment when byte reproduction or team merging is required.</p>
+<p>Inspect a selected recipe:</p>
+<pre>python -m deepmushra_data profile --profile mapped-poc-v2 --sampling-mode hybrid</pre>
+<p>Reproduce each completed pilot in a <strong>fresh</strong> output directory; existing paths are refused:</p>
+<pre>for mode in odaq_knots quality_target hybrid; do
+  python -m deepmushra_data build \
+    --config &quot;configs/sampling_${mode}.yaml&quot; \
+    --manifest data/multi_mode_sources_v2/sources.jsonl \
+    --dataset-id &quot;sampling-v2-${mode}&quot; --clip-seconds 4 \
+    --output &quot;data/sampling-v2-${mode}&quot; \
+    --audio-prefix &quot;data/sampling-v2-${mode}&quot;
+  python -m deepmushra_data check-export \
+    --bundle &quot;data/sampling-v2-${mode}&quot; --relative-to .
+done</pre>
+<p>Alternatively, use <code>--profile mapped-poc-v2 --sampling-mode MODE</code> instead of <code>--config</code>. <code>generate</code> supports the same options for already prepared mono input. <code>prepare</code>, <code>build</code>, source sharding and merge retain their existing interfaces. Use a fresh destination suffix for a repeat; keep the same dataset ID, recording group IDs and final audio-prefix if comparing bytes.</p>
+<p>Teammates can supply their own manifest or <code>--input-dir</code> using native ≥44.1 kHz mono/stereo WAV/FLAC. Preparation preserves lineage, downmixes/resamples before degradation, and exports 44.1 kHz mono. Keep a shared <code>recording_group_id</code> for excerpts/stems of one original production even across dataset IDs. Grouping omissions cannot be inferred automatically. Check licensing/attribution and benchmark exclusions before generation; no audio is committed to Git.</p>
+<p>The eight pilot references are existing EARS/VCTK speech, GuitarSet guitar, three independent MUSDB/MedleyDB productions and two ESC-50 environmental recordings. The VCTK excerpt is 1.242375 seconds; the other seven are four seconds. Environmental inclusion is explicitly authorized for this pilot and does not initiate a broader acquisition program. Native headers, licenses, source URLs, crop lineage and checksums remain in the ignored source manifest and output sidecars. High native rate is not a cleanliness/bandwidth guarantee; prior lossy encoding may be unknown. No new data was downloaded.</p>
+<h2>Recommendations and remaining scientific limits</h2>
+<p>Use knots for generator validation and the first interpretable Phase 1 baseline. Use hybrid for a subsequent POC/large-scale candidate recipe once independent listening establishes useful severity/content coverage; continuous targeting gives finer parameter coverage but does not add human evidence. Quality-only sampling is useful for ablations and supported-range exploration.</p>
+<p>All current labels are ODAQ-informed reference-domain priors transferred provisionally to different synthetic operators, mono listening and unseen content. Stereo-to-mono changes, algorithmic differences, three-listener QN uncertainty and content-specific no-ops remain unresolved. Do not tune this recipe using the held-out 80% scores or call the resulting study a fully independent ODAQ benchmark. PE/TM are absent from generation, descriptions and calibration. No model training or full dataset generation was performed.</p>
+<p>Actual experimental counts/plots and complete example metadata: <a href="synthetic_sampling_pilot_report.md">pilot report</a>.</p></main></html>

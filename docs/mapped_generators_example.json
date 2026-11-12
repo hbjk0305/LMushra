@@ -1,0 +1,361 @@
+{
+  "audio": {
+    "degraded": {
+      "path": "audio/04d5019f6825a00def0ec5ab/degraded.wav",
+      "sha256": "91230cfb04775c1db92a170d34f9d60d16764b1776f574f6c3492d3e8de1594a",
+      "subtype": "DOUBLE"
+    },
+    "reference": {
+      "path": "audio/reference/e0f11c2a12ce7b4f6a7d036152d8f2873ee1e73883ac65981f12acb8733ca701.wav",
+      "sha256": "a3d8b101af4c2e2b58e0cbe925d9e61f91218787ccd440c3a45aa50dc29b1288",
+      "subtype": "DOUBLE"
+    },
+    "residual": {
+      "path": "audio/04d5019f6825a00def0ec5ab/residual.wav",
+      "sha256": "ec35dd34153876f59fee4bd18e4e7b824379f91338e498edd0c630faa13207c7",
+      "subtype": "DOUBLE"
+    }
+  },
+  "calibration_estimate": {
+    "assumptions": [
+      "Original stereo quality means are transferred provisionally to mono.",
+      "Synthetic operators approximate the ODAQ artifact family.",
+      "QN uses measured mono QNMS median SNR, not an NMR-to-SNR identity."
+    ],
+    "band_interpretation": "conditional stereo-reference band; linearly interpolated between knots; not a mono/synthetic population CI",
+    "calibration_listeners": 9,
+    "conditional_reference_listener_weight_95_band": [
+      43.84240755421709,
+      56.217933971001955
+    ],
+    "estimated_quality_category": "Fair",
+    "estimated_quality_loss_proxy": 49.99999999999999,
+    "estimated_quality_mean": 50.00000000000001,
+    "human_mushra_score": null,
+    "mapping_id": "odaq-transferred-poc-1/LP",
+    "mono_transfer_validated": false,
+    "operator_transfer_validated": false,
+    "parameter_axis": "cutoff_hz",
+    "parameter_value": 8326.463813795612,
+    "reference_group": "LP_original",
+    "reference_sources": 4,
+    "status": "odaq_informed_provisional_transfer",
+    "support_status": "inside",
+    "synthetic_transfer_interval_95": null,
+    "table_sha256": "a3c8a64d935b8ef9a70ee8e4783b2ca4468f0f400b2ddcbe129ee2bd5b2a7dd5"
+  },
+  "degradation": {
+    "algorithm_evidence": {
+      "algorithm_version": "1.1",
+      "coverage_denominator": "all analyzed time-frequency-channel cells, including boundary padding",
+      "cutoff_definition": "passband edge",
+      "filter_order": 36,
+      "mapped_profile_version": "mapped-poc-1",
+      "mask_kind": "filter_response_projection_not_applied_stft_mask",
+      "operator_transfer": "approximate_family",
+      "perceptual_equivalence_to_odaq": "unverified",
+      "phase_policy": "causal IIR; frequency-dependent group delay; no delay compensation or look-ahead",
+      "response_passband_loss_max_db": 0.4938210567027282,
+      "response_stopband_attenuation_min_db": 60.53974595020502,
+      "sos_coefficients": [
+        [
+          5.005907973306773e-13,
+          1.0011815946613546e-12,
+          5.005907973306773e-13,
+          1.0,
+          -0.3612621210584914,
+          0.03307314749363901
+        ],
+        [
+          1.0,
+          2.0,
+          1.0,
+          1.0,
+          -0.36259627541534045,
+          0.0368883247855011
+        ],
+        [
+          1.0,
+          2.0,
+          1.0,
+          1.0,
+          -0.3652840234363138,
+          0.04457426844203852
+        ],
+        [
+          1.0,
+          2.0,
+          1.0,
+          1.0,
+          -0.3693648370706946,
+          0.05624385332199379
+        ],
+        [
+          1.0,
+          2.0,
+          1.0,
+          1.0,
+          -0.3748994382018327,
+          0.07207072106532136
+        ],
+        [
+          1.0,
+          2.0,
+          1.0,
+          1.0,
+          -0.3819717035178932,
+          0.09229472730368873
+        ],
+        [
+          1.0,
+          2.0,
+          1.0,
+          1.0,
+          -0.3906913585903838,
+          0.11722964570698907
+        ],
+        [
+          1.0,
+          2.0,
+          1.0,
+          1.0,
+          -0.4011976089887158,
+          0.14727355159881078
+        ],
+        [
+          1.0,
+          2.0,
+          1.0,
+          1.0,
+          -0.41366391475423075,
+          0.18292247514790688
+        ],
+        [
+          1.0,
+          2.0,
+          1.0,
+          1.0,
+          -0.42830419088404237,
+          0.22478813240886206
+        ],
+        [
+          1.0,
+          2.0,
+          1.0,
+          1.0,
+          -0.44538081832894333,
+          0.2736208337487951
+        ],
+        [
+          1.0,
+          2.0,
+          1.0,
+          1.0,
+          -0.4652149883171708,
+          0.3303390647042753
+        ],
+        [
+          1.0,
+          2.0,
+          1.0,
+          1.0,
+          -0.4882000933431359,
+          0.3960677791487137
+        ],
+        [
+          1.0,
+          2.0,
+          1.0,
+          1.0,
+          -0.5148191439574998,
+          0.4721882047302841
+        ],
+        [
+          1.0,
+          2.0,
+          1.0,
+          1.0,
+          -0.5456675656543556,
+          0.5604030333544626
+        ],
+        [
+          1.0,
+          2.0,
+          1.0,
+          1.0,
+          -0.5814832656327309,
+          0.6628224007598744
+        ],
+        [
+          1.0,
+          2.0,
+          1.0,
+          1.0,
+          -0.623186631935286,
+          0.782078268939548
+        ],
+        [
+          1.0,
+          2.0,
+          1.0,
+          1.0,
+          -0.67193425457412,
+          0.9214780482598347
+        ]
+      ],
+      "stft": {
+        "axis_order": "time,frequency,channel",
+        "boundary": "zeros",
+        "hop_length": 512,
+        "n_fft": 2048,
+        "padded": true,
+        "scaling": "spectrum",
+        "window": "periodic_hann"
+      },
+      "transformation_applied": true
+    },
+    "artifact_type": "LP",
+    "mask": {
+      "path": "evidence/04d5019f6825a00def0ec5ab.npz",
+      "sha256": "8bf77fd4544b1ad575524b0d47afd74679fba099160dbb2a546892cef610b1e4"
+    },
+    "parameters": {
+      "attenuation_db": 60,
+      "cutoff_hz": 8326.463813795612,
+      "filter_design": "butterworth",
+      "passband_ripple_db": 0.5,
+      "transition_hz": 1500
+    },
+    "profile_version": "mapped-poc-1",
+    "random_seed": 6213856592549331385,
+    "regions": {
+      "frequency_regions_hz": [
+        [
+          8387.1826171875,
+          22050.0
+        ]
+      ],
+      "region_interpretation": "projections of processing selections with STFT window support; not audible-event annotations; see full mask for joint structure",
+      "time_regions_s": [
+        [
+          0.0,
+          4.0
+        ]
+      ]
+    }
+  },
+  "descriptions": {
+    "perceptual_candidate": "High-frequency detail may be reduced.",
+    "perceptual_candidate_status": "unverified",
+    "technical": "Low-pass filtering has a passband edge of 8.33 kHz."
+  },
+  "measurements": {
+    "affected_frame_ratio": 1.0,
+    "affected_tf_ratio": 0.6195121951219512,
+    "audibility_interpretation": "none; objective measurements only",
+    "degraded_energy": 214.37875361628457,
+    "degraded_peak": 0.15154550760016405,
+    "degraded_rms": 0.03486113963687445,
+    "measured_change_definition": "magnitude change >=1 dB; floor=max(reference peak STFT magnitude *1e-4,1e-15); all analyzed cells",
+    "measured_changed_tf_ratio": 0.511853940504723,
+    "measurement_grid_cells": 354650,
+    "net_energy_change": -0.43422785912667905,
+    "normalized_spectral_magnitude_error": 0.044225081082399705,
+    "passband_magnitude_relative_error": 0.01486524030586418,
+    "reference_energy": 214.81298147541125,
+    "reference_peak": 0.15,
+    "reference_rms": 0.03489642769626113,
+    "relative_residual_energy": 2.8125690029092754,
+    "residual_energy": 604.176333120266,
+    "residual_peak": 0.26909782918869285,
+    "residual_rms": 0.05852380628464219,
+    "rms_change_db": -0.008787812627003238,
+    "spectral_energy_change_db_by_band": {
+      "0-4000Hz": -0.0005319104517354118,
+      "10000-22051Hz": -26.078358438821883,
+      "4000-10000Hz": -0.4162993926047772
+    },
+    "stopband_spectral_energy_change_db": -26.472597321361448
+  },
+  "perceptual_annotation": {
+    "audibility": null,
+    "human_mushra_score": null,
+    "perceived_severity": null,
+    "quality_category": null,
+    "status": "unverified"
+  },
+  "provenance": {
+    "configuration_sha256": "87dc87f4277de55310989697bdf5fb58296fc032a1b7a948f505177b0e9d6fde",
+    "generator_profile_fingerprint": "3af2e4150a832daf855ab151ce1cdbbef5927ca5b49be016fb1af6163471a798",
+    "mapped_source_sha256": "eb1fd3e341d9f056554d4ba95dd5df2754f2bef6b24688bf8adca55cb78d7ef5",
+    "mapping_table_sha256": "a3c8a64d935b8ef9a70ee8e4783b2ca4468f0f400b2ddcbe129ee2bd5b2a7dd5"
+  },
+  "request": {
+    "kind": "quality_targets",
+    "value": 50
+  },
+  "sample_id": "04d5019f6825a00def0ec5ab",
+  "schema_version": "mapped-poc-1",
+  "source": {
+    "channels": 1,
+    "content_category": "vocal_stem",
+    "duration_s": 4.0,
+    "is_functional_test_signal": false,
+    "sample_count": 176400,
+    "sample_rate": 44100,
+    "shared_source_gain": 0.6,
+    "source_checksum_sha256": "e0f11c2a12ce7b4f6a7d036152d8f2873ee1e73883ac65981f12acb8733ca701",
+    "source_file": "clips/6a1a0102ac485fb7a32b1e8c.wav",
+    "source_id": "medley-team-pilot:musdb18hq:Creepoid - OldTree",
+    "source_provenance": {
+      "archive_member": "train/Creepoid - OldTree/vocals.wav",
+      "archive_member_crc32": "fd357eed",
+      "artist_and_track": "Creepoid - OldTree",
+      "audit_crop_offset_s": 0,
+      "audit_duration_s": 4,
+      "audit_shared_gain": 0.5403872159372011,
+      "category_basis": "MUSDB stem designation; other is a multi-instrument tonal-content proxy, not a verified solo instrument",
+      "dataset": "MUSDB18-HQ / MedleyDB",
+      "dataset_id": "medley-team-pilot",
+      "excerpt_duration_s": 8,
+      "excerpt_start_s": 60,
+      "full_member_crc_verified": true,
+      "genre": "Rock",
+      "integrity_note": "Selected compressed member fully read and CRC verified; whole-archive MD5 not verified",
+      "license": "CC BY-NC-SA 4.0",
+      "license_evidence": "https://sigsep.github.io/datasets/musdb.html",
+      "license_url": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+      "modifications": "Excerpting and lossless DOUBLE WAV conversion; generator records any subsequent shared gain",
+      "mono_conversion": "Arithmetic channel mean before artifact generation",
+      "original_header": {
+        "channels": 2,
+        "sample_count": 13327360,
+        "sample_rate": 44100,
+        "subtype": "PCM_16"
+      },
+      "original_source_checksum_sha256": "e0f11c2a12ce7b4f6a7d036152d8f2873ee1e73883ac65981f12acb8733ca701",
+      "original_source_file": "/data/tingyup2/projects/AudioLM/LMushra/outputs/artifact-validation/inputs/recording_06.wav",
+      "perceptual_cleanliness": "unverified; uncompressed release, not a human-quality certification",
+      "permitted_use": "Noncommercial research; retain attribution and share-alike obligations; no audio in Git",
+      "preparation": {
+        "downmix": "arithmetic channel mean",
+        "input_channels": 1,
+        "input_rate": 44100,
+        "input_samples": 176400,
+        "output_rate": 44100,
+        "output_samples": 176400,
+        "resampling": "identity",
+        "shared_preparation_gain": 1.0,
+        "start_sample": 0,
+        "version": "prepare-v1"
+      },
+      "prepared_sha256": "e0f11c2a12ce7b4f6a7d036152d8f2873ee1e73883ac65981f12acb8733ca701",
+      "record_url": "https://zenodo.org/records/3338373",
+      "recording_id": "musdb18hq:Creepoid - OldTree",
+      "selection_rule": "Highest mean-square energy of fixed 8-second windows starting at 20,40,60 s; ties prefer earlier",
+      "stem": "vocals",
+      "stereo_excerpt_sha256": "a68e8b63d9bdc9f298a8770be8529d5bd8cb8800449e79be1c14729829aa132b"
+    },
+    "split": "train"
+  }
+}
