@@ -15,17 +15,17 @@ projector.
 ## Setup
 
 Run commands from the repository root. Use Python 3.12 and a CUDA-capable GPU
-for training the 7B model.
+for training the 7B model. Requires [`uv`](https://docs.astral.sh/uv/).
 
 ```bash
 git submodule update --init --recursive
-python -m venv .venv
+uv venv --python 3.12 .venv
 source .venv/bin/activate
 
 # Example for CUDA 12.4; adjust for your CUDA environment.
-python -m pip install torch==2.6.0 torchaudio==2.6.0 torchvision==0.21.0 \
+uv pip install torch==2.6.0 torchaudio==2.6.0 torchvision==0.21.0 \
   --index-url https://download.pytorch.org/whl/cu124
-python -m pip install -r requirements_hwangbo.txt
+uv pip install -r requirements_hwangbo.txt
 ```
 
 ## Prepare data
