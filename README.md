@@ -12,6 +12,13 @@ projector.
 | DAC | 44.1 kHz mono | `qwen2_audio_dac` |
 | EnCodec | 24 kHz mono | `qwen2_audio_encodec` |
 
+## Experiment notes
+
+For DAC/EnCodec, early joint SFT (random projector + LoRA) can look unstable or
+ignore audio. A staged **projector-only CE warmup** on NISQA captions before
+full quality-description SFT is documented in
+[`docs/projector_warmup_plan.md`](docs/projector_warmup_plan.md).
+
 ## Setup
 
 Run commands from the repository root. Use Python 3.12 and a CUDA-capable GPU
