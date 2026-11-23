@@ -19,6 +19,21 @@ ignore audio. A staged **projector-only CE warmup** on NISQA captions before
 full quality-description SFT is documented in
 [`docs/projector_warmup_plan.md`](docs/projector_warmup_plan.md).
 
+```bash
+# Stage 1a: frozen LLM, trainable projector, single-audio NISQA captions.
+bash scripts/train_projector_warmup.sh dac
+# Stage 1b: two-audio A/B captions after 1a.
+CAPTION_TASK=ab bash scripts/train_projector_warmup.sh dac \
+  --max_steps 1500 --learning_rate 2e-4 --output_dir ./output/dac-projector-warmup-ab
+# Stage 2: LoRA read-in. Pass the saved projector, not the full checkpoint as --model.
+bash scripts/train_lora_readin.sh dac \
+  ./output/dac-projector-warmup/v0-*/checkpoint-3000/multi_modal_projector.pt
+```
+
+Warmup logs `audio_use_probes.jsonl`. Continue only when normal CE is below both
+the silence and shuffled-audio controls. `PROJECTOR_CHECKPOINT` reloads the
+projector after the codec loader rebuilds it.
+
 ## Setup
 
 Run commands from the repository root. Use Python 3.12 and a CUDA-capable GPU

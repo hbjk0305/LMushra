@@ -1,9 +1,15 @@
 """Frozen, pre-quantization DAC features for Qwen2-Audio (Transformers 4.48)."""
 
+import logging
+import os
+
 import torch
 from torch import nn
 from torch.nn import functional as F
 from transformers import Qwen2AudioForConditionalGeneration
+
+logger = logging.getLogger(__name__)
+PROJECTOR_FILENAME = 'multi_modal_projector.pt'
 
 
 class DacAudioTower(nn.Module):
@@ -62,6 +68,34 @@ class DacProjector(nn.Sequential):
     def __init__(self, latent_dim, hidden_size):
         super().__init__(nn.LayerNorm(latent_dim), nn.Linear(latent_dim, hidden_size),
                          nn.GELU(), nn.Linear(hidden_size, hidden_size))
+
+
+def maybe_zero_init_last_linear(projector: nn.Module) -> None:
+    """Near-zero final linear so audio tokens start neutral. Set PROJECTOR_ZERO_INIT_LAST=1."""
+    if os.environ.get('PROJECTOR_ZERO_INIT_LAST', '') != '1':
+        return
+    last = projector[-1]
+    nn.init.zeros_(last.weight)
+    if last.bias is not None:
+        nn.init.zeros_(last.bias)
+
+
+def save_projector_state(projector: nn.Module, directory: str) -> str:
+    os.makedirs(directory, exist_ok=True)
+    path = os.path.join(directory, PROJECTOR_FILENAME)
+    torch.save(projector.state_dict(), path)
+    return path
+
+
+def load_projector_checkpoint(projector: nn.Module, model_dir: str) -> bool:
+    """Load a warmup projector. PROJECTOR_CHECKPOINT overrides a file beside model_dir."""
+    path = os.environ.get('PROJECTOR_CHECKPOINT') or os.path.join(model_dir, PROJECTOR_FILENAME)
+    if not path or not os.path.isfile(path):
+        return False
+    state = torch.load(path, map_location='cpu', weights_only=True)
+    projector.load_state_dict(state)
+    logger.info('Loaded projector weights from %s', path)
+    return True
 
 
 class Qwen2AudioDac(Qwen2AudioForConditionalGeneration):
