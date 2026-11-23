@@ -1,0 +1,139 @@
+{
+  "checked_at_utc": "2026-11-23T20:00:45.844693+00:00",
+  "scope": "Read-only current handoff inspection; no inference, training, audio modification, or new listening study",
+  "datasets": {
+    "production_matched_1025": {
+      "root": "/scratch/tingyup2/projects/AudioLM/annotations/caption-poc-fast-v3/run/snapshots/population_1000000/matched_ablations",
+      "strategies": {
+        "technical_template": {
+          "counts": {
+            "LP": 271,
+            "SH": 243,
+            "UN": 259,
+            "QN": 252,
+            "train": 982,
+            "val": 43
+          },
+          "statuses": {
+            "deterministic_baseline": 1025
+          },
+          "unique_source_groups": 417
+        },
+        "metadata_llm": {
+          "counts": {
+            "LP": 271,
+            "SH": 243,
+            "UN": 259,
+            "QN": 252,
+            "train": 982,
+            "val": 43
+          },
+          "statuses": {
+            "unchecked": 969,
+            "warning": 56
+          },
+          "unique_source_groups": 417
+        },
+        "calibrated_llm": {
+          "counts": {
+            "LP": 271,
+            "SH": 243,
+            "UN": 259,
+            "QN": 252,
+            "train": 982,
+            "val": 43
+          },
+          "statuses": {
+            "warning": 871,
+            "unchecked": 154
+          },
+          "unique_source_groups": 417
+        }
+      },
+      "checks": [
+        "publication/view file hashes match",
+        "model/sidecar row binding",
+        "same IDs/splits/audio/user messages across strategies",
+        "source-group-disjoint splits",
+        "absolute existing reference/degraded paths",
+        "metadata specifies 44100 Hz mono 441000 samples",
+        "no duplicate IDs"
+      ],
+      "same_ids_in_million_ledger": {
+        "warning": 871,
+        "unchecked": 154
+      }
+    },
+    "strict_reasoned_44": {
+      "root": "/scratch/tingyup2/projects/AudioLM/annotations/reasoned-caption-32b-v13-pilot/registry/runs/reasoned-caption-v10-2bd3cd87099f/exports/unique64_absolute",
+      "strategies": {
+        "technical_template": {
+          "counts": {
+            "LP": 11,
+            "SH": 15,
+            "QN": 5,
+            "UN": 13,
+            "train": 36,
+            "val": 8
+          },
+          "statuses": {
+            "processing_facts": 44
+          },
+          "unique_source_groups": 44
+        },
+        "metadata_llm": {
+          "counts": {
+            "LP": 11,
+            "SH": 15,
+            "QN": 5,
+            "UN": 13,
+            "train": 36,
+            "val": 8
+          },
+          "statuses": {
+            "unverified_metadata_inference": 44
+          },
+          "unique_source_groups": 44
+        },
+        "calibrated_llm": {
+          "counts": {
+            "LP": 11,
+            "SH": 15,
+            "QN": 5,
+            "UN": 13,
+            "train": 36,
+            "val": 8
+          },
+          "statuses": {
+            "unverified_metadata_inference": 44
+          },
+          "unique_source_groups": 44
+        }
+      },
+      "checks": [
+        "publication/view file hashes match",
+        "model/sidecar row binding",
+        "same IDs/splits/audio/user messages across strategies",
+        "source-group-disjoint splits",
+        "absolute existing reference/degraded paths",
+        "metadata specifies 44100 Hz mono 441000 samples",
+        "no duplicate IDs"
+      ],
+      "same_ids_in_million_ledger": {
+        "warning": 33,
+        "unchecked": 11
+      }
+    }
+  },
+  "knn_live_verification": {
+    "passed": false,
+    "reason": "Stored KNN SSH credential rejected; KNN paths and listener assignments are documented evidence, not a current filesystem verification."
+  },
+  "million_current_ledger_counts": {
+    "accepted": 53,
+    "rejected": 227,
+    "unchecked": 167164,
+    "warning": 832556
+  },
+  "small_set_overlap_ids": 5
+}

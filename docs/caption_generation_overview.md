@@ -1,5 +1,7 @@
 # DeepMUSHRA caption generation: process, prompt, and validation
 
+For dataset locations, calibration listeners, training usage, and small POC sets, see the [Dataset handoff guide](dataset_handoff_guide.md).
+
 **Report date:** 2026-11-23. **Scope:** the completed `caption-poc-fast-v3` million-input run, not a new experiment or a claim about later pipeline revisions.
 
 **Result:** 1,000,000 original examples processed; **999,773 calibrated captions exported** and **227 rejected**. Captions are **metadata-grounded, LLM-generated pseudo-labels**, not human-verified perceptual annotations.
