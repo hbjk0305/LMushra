@@ -76,3 +76,30 @@ Processed pairs only (n=140; the "55% Δ > 0" above also counts the 20 controls,
 - So CLAP doesn't support calling 16400 an improvement. The gain in the text classification (34% → 44% naming only the correct method) is not reflected in CLAP.
 
 In short, CLAP is useful here as an audio-only sanity check of how far each degraded clip is from its reference. It is a weak signal for whether a description is correct, and Δ is better than the raw CLAPScore for that.
+
+## Comparison with ODAQ listener ratings (MUSHRA)
+
+`compare_mushra.py` joins each pair to `ODAQ_results.csv` (26 listeners per pair, scores 0–100, higher means better quality) on (item, condition), then correlates the ratings with three things: a severity score from the response text, the CLAP Δ, and the CLAP audio↔audio similarity.
+`word_severity` is the explicit "level N" in the response if one is given. Otherwise it is the average of severity words mapped to a 1–5 scale (minimal = 1 … severe = 5; see `WORD_LEVEL`).
+Per-pair output: `result/infer_dac/*_mushra.csv`.
+
+For reference, the designed severity level alone gives Spearman 0.84 with MUSHRA.
+
+Spearman with mean MUSHRA, processed pairs (n=140). A useful severity score should be **negative** and audio similarity **positive**:
+
+| | 14200 | 16400 |
+|---|---:|---:|
+| word_severity, pooled | −0.35 (p<.001) | −0.27 (p=.001) |
+| word_severity, **within method** (ranks taken inside each method, then pooled) | **−0.29 (p=.001)** | −0.06 (p=.50) |
+| CLAP Δ, pooled | −0.32 | −0.24 |
+| CLAP Δ, within method | −0.11 (p=.18) | −0.06 (p=.45) |
+| CLAP audio ref↔deg, pooled / within method | +0.68 / +0.60 | same (it uses audio only) |
+
+Within each method, the word_severity correlation at 14200 is PE −0.58, SH −0.44, LP −0.24, TM −0.04, UN +0.17. At 16400 it is LP −0.25 and PE −0.21, with SH, TM and UN *positive* (+0.22 to +0.32).
+
+- **Checkpoint 14200's wording tracked how bad listeners found a pair; 16400's mostly doesn't.** Within a method, 14200 used stronger words for pairs rated worse (−0.29). At 16400 this is gone (−0.06): its responses got more varied, but the variation doesn't follow perceived quality. This is the clearest regression found so far.
+- **Both checkpoints use strong words for identical pairs.** Those pairs get MUSHRA 98.7, but the word severity is about the same as for processed pairs (14200: 2.24 vs 2.44; 16400: 2.54 vs 2.49).
+- **The pooled correlations mostly reflect differences between methods.** LP and SH get the lowest ratings (about 39) and the most "loss"-type wording. Use the within-method rows.
+- **"Correct method named" vs. MUSHRA** (38.7 named vs 54.4 missed) is also mostly a between-method effect: LP is always named and rated low. The only real within-method contrast is UN: the 4 UN pairs where it named UN were rated 30–33, against about 70 for the 16 misses (p≈.01). So it names UN only when the noise is easy to hear.
+- **CLAP audio↔audio similarity follows the listeners closely** (+0.60 within method, +0.97 on PE). The model's descriptions carry much less of this information than a generic audio embedding does. This fits the linear-probe result that the information is present before the LLM.
+- **CLAP Δ doesn't follow the ratings within a method**, so it isn't a useful measure of perceived quality either.
