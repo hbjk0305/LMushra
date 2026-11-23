@@ -10,6 +10,14 @@ Choose a published audio–text export on **NNN**. Each example pairs a 10-secon
 | [Matched POC Dataset](docs/dataset_handoff_guide.md#matched-poc-dataset) | 1,025 | 982 / 43 | Technical template, metadata LLM, calibrated LLM | Small-scale training and controlled ablations |
 | [Strict Reasoned Pilot](docs/dataset_handoff_guide.md#strict-reasoned-pilot) | 44 retained from 64 attempted | 36 / 8 | Technical template, metadata LLM, calibrated LLM | Projector smoke test and caption diagnostics |
 
+### Caption strategies
+
+| Strategy | Teacher input | Training target |
+|---|---|---|
+| `technical_template` | DSP parameters | Technical processing description |
+| `metadata_llm` | Processing metadata + signal evidence | Acoustic difference description |
+| `calibrated_llm` | Metadata + ODAQ quality prior | Acoustic difference + provisional quality impact |
+
 The two small sets overlap the full population. Choose one dataset and one caption strategy per experiment. The LLM descriptions are metadata-grounded pseudo-labels with no independent human perceptual verification.
 
 - **[Caption strategies and real examples](docs/dataset_handoff_guide.md#caption-strategies)** — compare three targets for the same audio.
