@@ -36,6 +36,7 @@ RATINGS = "/mnt/data2/hwangbo5/data/ODAQ/ODAQ_listening_test/ODAQ_results.csv"
 # (column in *_mushra.csv, sign that turns it into "higher = better quality")
 METRICS = {
     "word_severity": ("word_severity", -1),
+    "expected_severity": ("expected_severity", -1),  # from severity_probs.py
     "clap_delta": ("clap_delta", -1),        # larger delta = text fits the degraded clip = more change
     "clap_audio_ref_deg": ("clap_audio_ref_deg", +1),
 }
