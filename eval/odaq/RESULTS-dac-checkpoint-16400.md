@@ -103,3 +103,23 @@ Within each method, the word_severity correlation at 14200 is PE −0.58, SH −
 - **"Correct method named" vs. MUSHRA** (38.7 named vs 54.4 missed) is also mostly a between-method effect: LP is always named and rated low. The only real within-method contrast is UN: the 4 UN pairs where it named UN were rated 30–33, against about 70 for the 16 misses (p≈.01). So it names UN only when the noise is easy to hear.
 - **CLAP audio↔audio similarity follows the listeners closely** (+0.60 within method, +0.97 on PE). The model's descriptions carry much less of this information than a generic audio embedding does. This fits the linear-probe result that the information is present before the LLM.
 - **CLAP Δ doesn't follow the ratings within a method**, so it isn't a useful measure of perceived quality either.
+
+## Within-item ranking accuracy and listener ceiling
+
+`ranking_accuracy.py` (summary: `result/infer_dac/ranking_accuracy.csv`). Each of the 20 items has 8 conditions rated by the same 26 listeners, which gives 28 pairs per item and 560 pairs in total. A metric is right on a pair when it orders the two conditions the same way as the listeners' mean. 516 of the pairs (92%) differ significantly between listeners (paired Wilcoxon, p < .05). Model ties and pairs without a severity score count as 0.5. Chance is 0.50.
+
+| | all pairs | significant pairs | significant, no reference | significant, metric decides | ties / missing | 95% CI (significant; items resampled) |
+|---|---:|---:|---:|---:|---:|---|
+| designed severity level (by construction) | .941 | .967 | .955 | .967 | 0 / 0 | |
+| **single listener vs. the other 25** | .902 | .933 | .924 | | | .888–.976 (spread) |
+| **split half, 13 vs. 13 listeners** | .968 | 1.000 | .999 | | | |
+| CLAP audio ref↔deg (audio only) | .843 | .868 | .823 | .870 | .01 / 0 | .804–.928 |
+| 14200 CLAP Δ | .648 | .656 | .659 | .656 | 0 / 0 | .607–.704 |
+| 16400 CLAP Δ | .625 | .639 | .633 | .639 | 0 / 0 | .577–.701 |
+| 14200 severity wording | .584 | .588 | .606 | .695 | .31 / .23 | .540–.642 |
+| 16400 severity wording | .557 | .560 | .596 | .606 | .33 / .10 | .508–.618 |
+
+- **The ceiling is high.** A single listener orders 93% of the significant pairs like the rest of the panel. Two 13-listener halves agree on essentially all of them. The rank order in ODAQ is very clear, so there is plenty of room for a model to improve.
+- **The model's severity wording is close to chance.** 16400 gets 0.56 (CI lower bound 0.51) and 14200 0.59. This is partly because the wording often gives two pairs the same severity (about 31% of pairs) or has no severity words at all. On the pairs where the wording does differ, 14200 gets 0.70 and 16400 0.61. This matches the MUSHRA correlation result: 16400's wording follows perceived quality less well than 14200's.
+- **A generic audio embedding beats the model by a wide margin.** CLAP's reference↔degraded similarity orders 87% of significant pairs correctly with no training for this task. The model's text loses most of what is in the audio.
+- **Next:** get a continuous severity number from the model itself (e.g. the expected value over its probabilities for "1"–"5" in a separate rating question). That removes ties and missing values and gives a fairer measure of what the model knows. Add ViSQOL/PEAQ as standard baselines.
