@@ -63,12 +63,20 @@ audio {{ width:100%; height:36px; }}
   <label>Detected <select id="d"><option value="">any</option>
     <option value="hit">correct method matched</option><option value="miss">not matched</option></select></label>
   <label>Search <input id="q" placeholder="text in response"></label>
+  <label>Sort <select id="s"><option value="">file order</option>
+    <option value="delta">CLAP Δ (deg − ref), low first</option>
+    <option value="sim">reference↔degraded, low first</option></select></label>
   <span id="count"></span>
 </header>
 <main id="list">{cards}</main>
 <script>
 const cards=[...document.querySelectorAll('.card')], m=document.getElementById('m'),
-  d=document.getElementById('d'), q=document.getElementById('q'), c=document.getElementById('count');
+  d=document.getElementById('d'), q=document.getElementById('q'), c=document.getElementById('count'),
+  so=document.getElementById('s'), list=document.getElementById('list');
+// Cards without CLAP scores sort last.
+function sortCards(){{ const k=so.value, v=el=>k&&el.dataset[k]!==''?+el.dataset[k]:Infinity;
+  const order=k?[...cards].sort((a,b)=>v(a)-v(b)):cards; for (const el of order) list.appendChild(el); }}
+so.addEventListener('input',sortCards);
 function f(){{ let n=0; const s=q.value.toLowerCase();
   for (const el of cards) {{ const ok=(!m.value||el.dataset.m===m.value)&&(!d.value||el.dataset.d===d.value)
       &&(!s||el.dataset.t.includes(s)); el.hidden=!ok; n+=ok; }}
@@ -180,11 +188,15 @@ def main():
         rel = lambda p: "audio/" + "/".join(html.escape(x) for x in Path(p).relative_to(root).parts)
         c = clap.get((ref, deg), {})
         meta = [f"actual severity: {sev}", f"predicted severity: {predicted_severity(resp) or '–'}"]
+        delta = sim = ""
         if c:
+            delta = f"{float(c['clap_text_degraded']) - float(c['clap_text_reference']):+.4f}"
+            sim = c["clap_audio_ref_deg"]
             meta += [f"CLAP text↔degraded {c['clap_text_degraded']}",
                      f"text↔reference {c['clap_text_reference']}",
-                     f"reference↔degraded {c['clap_audio_ref_deg']}"]
-        cards.append(f"""<article class="card" data-m="{method}" data-d="{hit}" data-t="{html.escape(resp.lower())}">
+                     f"Δ {delta}",
+                     f"reference↔degraded {sim}"]
+        cards.append(f"""<article class="card" data-m="{method}" data-d="{hit}" data-delta="{delta}" data-sim="{sim}" data-t="{html.escape(resp.lower())}">
 <div class="top"><span class="clip">{html.escape(Path(ref).parent.name)}</span>
 <span class="cond">{html.escape(cond)}</span><span class="chip">{method}</span>
 <span class="chip {hit}">matched: {', '.join(found) or 'none'}</span></div>
