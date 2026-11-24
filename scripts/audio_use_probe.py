@@ -18,10 +18,17 @@ from swift.utils import get_logger
 logger = get_logger()
 
 
+def _distributed() -> bool:
+    return torch.distributed.is_available() and torch.distributed.is_initialized()
+
+
 def _rank() -> int:
-    if torch.distributed.is_available() and torch.distributed.is_initialized():
-        return torch.distributed.get_rank()
-    return 0
+    return torch.distributed.get_rank() if _distributed() else 0
+
+
+def _barrier() -> None:
+    if _distributed():
+        torch.distributed.barrier()
 
 
 def _unwrap(trainer):
@@ -62,6 +69,9 @@ class AudioUseProbeCallback(TrainerCallback):
                 logger.warning('Skipping audio-use probe: no eval dataset')
             return
         self._ensure_rows()
+        # Every rank must run the same forwards, then meet again before the next
+        # training collective. Returning early on rank 0 deadlocks DDP.
+        _barrier()
         model = self.trainer.model
         was_training = model.training
         model.eval()
@@ -70,19 +80,18 @@ class AudioUseProbeCallback(TrainerCallback):
                 ('normal', self._normal), ('silence', self._silence), ('shuffle', self._shuffled))}
         finally:
             model.train(was_training)
-        if _rank() != 0:
-            return
-        used = losses['normal'] < losses['silence'] and losses['normal'] < losses['shuffle']
-        record = {'step': state.global_step, **losses, 'audio_used': used}
-        logger.info(
-            'audio_probe step=%s normal=%.4f silence=%.4f shuffle=%.4f audio_used=%s',
-            state.global_step, losses['normal'], losses['silence'], losses['shuffle'], used)
-        path = os.path.join(args.output_dir, 'audio_use_probes.jsonl')
-        with open(path, 'a') as stream:
-            stream.write(json.dumps(record) + '\n')
-        log = getattr(self.trainer, 'log', None)
-        if log is not None:
-            log({f'probe/{name}_ce': value for name, value in losses.items()})
+        _barrier()
+        if _rank() == 0:
+            used = losses['normal'] < losses['silence'] and losses['normal'] < losses['shuffle']
+            record = {'step': state.global_step, **losses, 'audio_used': used}
+            logger.info(
+                'audio_probe step=%s normal=%.4f silence=%.4f shuffle=%.4f audio_used=%s',
+                state.global_step, losses['normal'], losses['silence'], losses['shuffle'], used)
+            path = os.path.join(args.output_dir, 'audio_use_probes.jsonl')
+            with open(path, 'a') as stream:
+                stream.write(json.dumps(record) + '\n')
+        # Rank 0 logging must finish before either rank enters the next collective.
+        _barrier()
 
     def _save_projector(self, directory):
         if _rank() != 0:
