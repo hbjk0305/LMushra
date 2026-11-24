@@ -132,6 +132,65 @@ DAC requires the official 44 kHz/8 kbps checkpoint, tag `0.0.1`; EnCodec
 requires the official 24 kHz mono state dict. Use the same codec weights for
 training and inference. Local codec weights alone do not provide an offline
 copy of the Qwen model.
+## Two-stage MUSHRA training
+
+Run both stages in sequence with `dac` or `encodec`.
+
+```bash
+bash scripts/train_mushra_two_stage.sh serial dac --max_steps 500
+```
+
+Serial mode uses `/data/hwangbo5/calibrated_llm_sev` for the projector and
+`/data/hwangbo5/matched_ablations/calibrated_llm_sev` for LoRA. Optional
+`--max_steps` limits projector optimizer steps. Set `STAGE1_DATASET_DIR` or
+`NISQA_DATASET_DIR` to override the projector or LoRA source, respectively.
+The launcher starts stage two after stage one succeeds and supplies the last
+projector checkpoint from that run. Stage one saves under
+`output/serial-<encoder>-stage1.*/`, and stage two saves under
+`output/serial-<encoder>-stage2.*/`. Both directories have a random suffix.
+
+To run stage one separately:
+
+```bash
+bash scripts/train_mushra_two_stage.sh projector dac
+```
+
+This prepares manifests under `output/` from the train and validation splits in
+`/data/hwangbo5/matched_ablations/calibrated_llm_sev`. The targets contain
+`artifact` and `estimated_severity`. Only the projector is trainable. Inputs
+are Reference and Processed by default. Set `INCLUDE_RESIDUAL=1` if the next
+stage also uses Residual. Set `NISQA_DATASET_DIR` and `NISQA_AUDIO_ROOT` to
+override the data locations.
+
+Pass a stage-one checkpoint to stage two. By default, stage two prepares
+train and validation manifests from the matched calibrated severity data and
+trains on JSON targets with `artifact`, `estimated_severity`, and the original
+caption in `description`. Use the same codec, codec weights, Qwen base model,
+and `INCLUDE_RESIDUAL` setting for both stages.
+
+```bash
+bash scripts/train_mushra_two_stage.sh lora dac \
+  output/mushra-projector-dac-pair/runs/RUN_DIRECTORY/checkpoint-N
+```
+
+To use custom SFT manifests, pass both paths after the stage-one checkpoint.
+The launcher uses their prompts and targets as supplied.
+
+Stage one saves a full safetensors checkpoint. Stage two reads only its
+projector tensors into the codec plugin and trains LoRA in the LLM. Keep the
+stage-one checkpoint alongside the final adapter. When loading the stage-two
+adapter for inference, set `LMUSHRA_PROJECTOR_CHECKPOINT` to the same
+stage-one checkpoint directory.
+
+```bash
+LMUSHRA_PROJECTOR_CHECKPOINT=/path/to/stage-one/checkpoint-N \
+  bash scripts/infer_dac.sh /path/to/stage-two/checkpoint-N \
+  --val_dataset output/mushra-lora-caption-dac-pair/manifests/valid.jsonl
+```
+
+Both training commands accept additional Swift flags at the end, including
+`--max_steps` for a smoke run.
+
 ## NISQA quality-description pretraining
 
 Use the published single-audio MOS captions and two-audio A/B captions for SFT

@@ -13,6 +13,7 @@ import torch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from lmushra.dac_audio import DacAudioTower, DacProjector, Qwen2AudioDac
+from lmushra.projector_checkpoint import load_stage_one_projector
 from swift.model import ModelArch, ModelGroup, ModelLoader, ModelMeta, register_model
 from swift.template import Template, register_template
 from swift.template.templates.qwen import Qwen2AudioTemplate, QwenTemplateMeta
@@ -50,6 +51,7 @@ class DacQwenLoader(ModelLoader):
             sample_rate=SAMPLE_RATE, hop_length=HOP_LENGTH, latent_dim=LATENT_DIM,
             pool_size=POOL_SIZE, model_type='44khz', model_bitrate='8kbps', tag='0.0.1',
             representation='encoder_pre_quantization')
+        load_stage_one_projector(model, 'dac')
         return model
 
 

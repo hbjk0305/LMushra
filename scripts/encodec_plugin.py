@@ -11,6 +11,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from lmushra.dac_audio import DacProjector
 from lmushra.encodec_audio import EncodecAudioTower, Qwen2AudioEncodec
 from scripts.dac_plugin import DacQwenTemplate
+from lmushra.projector_checkpoint import load_stage_one_projector
 from swift.model import ModelArch, ModelGroup, ModelLoader, ModelMeta, register_model
 from swift.template import register_template
 from swift.template.templates.qwen import QwenTemplateMeta
@@ -47,6 +48,7 @@ class EncodecQwenLoader(ModelLoader):
         model.config.lmushra_encodec = dict(
             sample_rate=SAMPLE_RATE, hop_length=HOP_LENGTH, latent_dim=LATENT_DIM, pool_size=POOL_SIZE,
             checkpoint='encodec_24khz-d7cc33bc.th', representation='encoder_pre_quantization')
+        load_stage_one_projector(model, 'encodec')
         return model
 
 
