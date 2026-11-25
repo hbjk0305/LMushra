@@ -62,16 +62,20 @@ audio {{ width:100%; height:36px; }}
   <label>Method <select id="m"><option value="">all</option>{method_opts}</select></label>
   <label>Detected <select id="d"><option value="">any</option>
     <option value="hit">correct method matched</option><option value="miss">not matched</option></select></label>
+  <label>Severity <select id="v"><option value="">all</option>
+    <option value="high">high (level 1, LP35, LP70)</option><option value="mid">medium (levels 2–3)</option>
+    <option value="low">low (levels 4–5)</option><option value="none">identical pairs</option></select></label>
   <label>Search <input id="q" placeholder="text in response"></label>
   <label>Sort <select id="s"><option value="">file order</option>
     <option value="delta">CLAP Δ (deg − ref), low first</option>
-    <option value="sim">reference↔degraded, low first</option></select></label>
+    <option value="sim">reference↔degraded, low first</option>
+    <option value="mushra">listener MUSHRA, worst first</option></select></label>
   <span id="count"></span>
 </header>
 <main id="list">{cards}</main>
 <script>
 const cards=[...document.querySelectorAll('.card')], m=document.getElementById('m'),
-  d=document.getElementById('d'), q=document.getElementById('q'), c=document.getElementById('count'),
+  d=document.getElementById('d'), v=document.getElementById('v'), q=document.getElementById('q'), c=document.getElementById('count'),
   so=document.getElementById('s'), list=document.getElementById('list');
 // Cards without CLAP scores sort last.
 function sortCards(){{ const k=so.value, v=el=>k&&el.dataset[k]!==''?+el.dataset[k]:Infinity;
@@ -79,9 +83,9 @@ function sortCards(){{ const k=so.value, v=el=>k&&el.dataset[k]!==''?+el.dataset
 so.addEventListener('input',sortCards);
 function f(){{ let n=0; const s=q.value.toLowerCase();
   for (const el of cards) {{ const ok=(!m.value||el.dataset.m===m.value)&&(!d.value||el.dataset.d===d.value)
-      &&(!s||el.dataset.t.includes(s)); el.hidden=!ok; n+=ok; }}
+      &&(!v.value||el.dataset.v===v.value)&&(!s||el.dataset.t.includes(s)); el.hidden=!ok; n+=ok; }}
   c.textContent=n+' / '+cards.length+' pairs'; }}
-[m,d,q].forEach(e=>e.addEventListener('input',f)); f();
+[m,d,v,q].forEach(e=>e.addEventListener('input',f)); f();
 // Only one clip plays at a time.
 document.addEventListener('play',e=>{{ for (const a of document.querySelectorAll('audio')) if(a!==e.target) a.pause(); }},true);
 </script></body></html>
@@ -154,6 +158,10 @@ def main():
 
     records = [json.loads(l) for l in args.predictions.open() if l.strip()]
     clap = read_csv(args.predictions.with_name(args.predictions.stem + "_clap.csv"))
+    # Mean listener score per (item, condition), from compare_mushra.py output if present.
+    mushra_csv = args.predictions.with_name(args.predictions.stem + "_mushra.csv")
+    mushra = ({(r["item"], r["process"]): r["mushra"] for r in csv.DictReader(mushra_csv.open())}
+              if mushra_csv.exists() else {})
     root = Path(os.path.commonpath([a for r in records for a in r["audios"]]))
     if root.suffix:  # single file; use its parent
         root = root.parent
@@ -188,6 +196,12 @@ def main():
         rel = lambda p: "audio/" + "/".join(html.escape(x) for x in Path(p).relative_to(root).parts)
         c = clap.get((ref, deg), {})
         meta = [f"actual severity: {sev}", f"predicted severity: {predicted_severity(resp) or '–'}"]
+        band = ("none" if method == "reference" else "high" if sev != "" and sev <= 1.5
+                else "mid" if sev != "" and sev <= 3 else "low")
+        score = mushra.get((Path(ref).parent.name, "reference" if ref == deg else Path(deg).stem), "")
+        if score:
+            score = f"{float(score):.1f}"
+            meta.append(f"listener MUSHRA {score}")
         delta = sim = ""
         if c:
             delta = f"{float(c['clap_text_degraded']) - float(c['clap_text_reference']):+.4f}"
@@ -196,7 +210,7 @@ def main():
                      f"text↔reference {c['clap_text_reference']}",
                      f"Δ {delta}",
                      f"reference↔degraded {sim}"]
-        cards.append(f"""<article class="card" data-m="{method}" data-d="{hit}" data-delta="{delta}" data-sim="{sim}" data-t="{html.escape(resp.lower())}">
+        cards.append(f"""<article class="card" data-m="{method}" data-d="{hit}" data-delta="{delta}" data-sim="{sim}" data-v="{band}" data-mushra="{score}" data-t="{html.escape(resp.lower())}">
 <div class="top"><span class="clip">{html.escape(Path(ref).parent.name)}</span>
 <span class="cond">{html.escape(cond)}</span><span class="chip">{method}</span>
 <span class="chip {hit}">matched: {', '.join(found) or 'none'}</span></div>
