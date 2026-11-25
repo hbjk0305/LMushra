@@ -17,6 +17,7 @@ Model-side measures:
 """
 
 import argparse
+import os
 import re
 import sys
 from pathlib import Path
@@ -27,7 +28,7 @@ from scipy.stats import mannwhitneyu, spearmanr
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from analyze import EXPLICIT_LEVEL, METHOD_PATTERNS, SEVERITY_PHRASE  # noqa: E402
 
-RATINGS = "/mnt/data2/hwangbo5/data/ODAQ/ODAQ_listening_test/ODAQ_results.csv"
+RATINGS = os.environ.get("ODAQ_RATINGS", "/mnt/data2/hwangbo5/data/ODAQ/ODAQ_listening_test/ODAQ_results.csv")
 # Ordinal for every word SEVERITY_PHRASE can match: higher = more severe.
 WORD_LEVEL = {
     "minimal": 1, "very subtle": 1, "very slight": 1, "very mild": 1, "barely perceptible": 1,

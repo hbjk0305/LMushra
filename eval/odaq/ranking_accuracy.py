@@ -25,6 +25,7 @@ A model compared with the full 26-listener mean can in principle exceed both.
 """
 
 import argparse
+import os
 import itertools
 from pathlib import Path
 
@@ -32,7 +33,7 @@ import numpy as np
 import pandas as pd
 from scipy.stats import wilcoxon
 
-RATINGS = "/mnt/data2/hwangbo5/data/ODAQ/ODAQ_listening_test/ODAQ_results.csv"
+RATINGS = os.environ.get("ODAQ_RATINGS", "/mnt/data2/hwangbo5/data/ODAQ/ODAQ_listening_test/ODAQ_results.csv")
 # (column in *_mushra.csv, sign that turns it into "higher = better quality")
 METRICS = {
     "word_severity": ("word_severity", -1),
