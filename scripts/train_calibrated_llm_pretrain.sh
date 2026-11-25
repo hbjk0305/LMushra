@@ -26,6 +26,8 @@ for split in train valid; do
     exit 2
   fi
 done
+# shellcheck source=scripts/audiolm_data_dir.sh
+source "$REPO_ROOT/scripts/audiolm_data_dir.sh"
 export PYTHONPATH="${REPO_ROOT}/ms-swift:${REPO_ROOT}${PYTHONPATH:+:${PYTHONPATH}}"
 export NUMBA_CACHE_DIR="${NUMBA_CACHE_DIR:-/tmp/lmushra-numba}"
 export CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-0,1}"
