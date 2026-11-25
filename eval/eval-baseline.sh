@@ -11,16 +11,19 @@ set -euo pipefail
 # Outputs go next to REQUESTS_JSONL in TRAINING_DIR--RUN_DIR--CHECKPOINT_DIR.
 # Override the default GPU (0) or Python interpreter with CUDA_VISIBLE_DEVICES
 # or SWIFT_PYTHON.
+# Decoding defaults to greedy. Extra arguments go to swift infer and override it;
+# set DECODE_TAG to write predictions_TAG.jsonl / inference_TAG.log instead, e.g.
+#   DECODE_TAG=beam4 bash eval/eval-baseline.sh dac CKPT REQUESTS --num_beams 4
 
 usage() {
-  echo "Usage: bash $0 ENCODER CHECKPOINT_DIR REQUESTS_JSONL"
+  echo "Usage: [DECODE_TAG=name] bash $0 ENCODER CHECKPOINT_DIR REQUESTS_JSONL [swift infer arguments]"
 }
 
 if [[ ${1:-} == --help || ${1:-} == -h ]]; then
   usage
   exit 0
 fi
-if [[ $# -ne 3 ]]; then
+if [[ $# -lt 3 ]]; then
   usage >&2
   exit 2
 fi
@@ -43,6 +46,8 @@ repo_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)
 run_dir=$(dirname -- "$checkpoint")
 training_name=$(basename -- "$(dirname -- "$run_dir")")
 out=$(dirname -- "$requests")/"$training_name--$(basename -- "$run_dir")--$(basename -- "$checkpoint")"
+shift 3
+suffix=${DECODE_TAG:+_$DECODE_TAG}
 
 python_bin=${SWIFT_PYTHON:-/home/hwangbo5/miniconda3/envs/swift/bin/python}
 export PATH="$(dirname -- "$python_bin"):$PATH"
@@ -59,7 +64,7 @@ echo "Writing evaluation results to $out"
   --use_hf true \
   --infer_backend transformers \
   --val_dataset "$requests" \
-  --result_path "$out/predictions.jsonl" \
+  --result_path "$out/predictions$suffix.jsonl" \
   --max_batch_size 1 \
   --max_new_tokens 160 \
   --temperature 0 \
@@ -68,4 +73,5 @@ echo "Writing evaluation results to $out"
   --external_plugins "$repo_dir/scripts/${encoder}_plugin.py" \
   --model_type "qwen2_audio_$encoder" \
   --template "qwen2_audio_$encoder" \
-  > "$out/inference.log" 2>&1
+  "$@" \
+  > "$out/inference$suffix.log" 2>&1
