@@ -1,0 +1,302 @@
+[
+ {
+  "clip": "/data/aisaro2/ODAQ/ODAQ_listening_test/DE_CosmosLandromat_remix1_LD6/reference.wav",
+  "removed_dB@4k": -17.39107894897461,
+  "dz@4k": 0.1047559455037117,
+  "removed_dB@8k": -24.992273330688477,
+  "dz@8k": 0.058440785855054855,
+  "removed_dB@11k": -34.2750244140625,
+  "dz@11k": 0.021659132093191147,
+  "dz@shift64": 0.10608211904764175
+ },
+ {
+  "clip": "/data/aisaro2/ODAQ/ODAQ_listening_test/DE_CosmosLandromat_remix3_LD3/reference.wav",
+  "removed_dB@4k": -14.568063735961914,
+  "dz@4k": 0.10521159321069717,
+  "removed_dB@8k": -20.466022491455078,
+  "dz@8k": 0.05751452222466469,
+  "removed_dB@11k": -32.858360290527344,
+  "dz@11k": 0.023214304819703102,
+  "dz@shift64": 0.10390879213809967
+ },
+ {
+  "clip": "/data/aisaro2/ODAQ/ODAQ_listening_test/DE_ElephantsDream_LD0/reference.wav",
+  "removed_dB@4k": -13.998299598693848,
+  "dz@4k": 0.10779859125614166,
+  "removed_dB@8k": -18.582664489746094,
+  "dz@8k": 0.0656498596072197,
+  "removed_dB@11k": -28.693647384643555,
+  "dz@11k": 0.023600880056619644,
+  "dz@shift64": 0.10511244088411331
+ },
+ {
+  "clip": "/data/aisaro2/ODAQ/ODAQ_listening_test/DE_Meridian_remix1_LD3/reference.wav",
+  "removed_dB@4k": -14.361763000488281,
+  "dz@4k": 0.10044919699430466,
+  "removed_dB@8k": -25.955265045166016,
+  "dz@8k": 0.03907666727900505,
+  "removed_dB@11k": -41.894081115722656,
+  "dz@11k": 0.012856035493314266,
+  "dz@shift64": 0.09920671582221985
+ },
+ {
+  "clip": "/data/aisaro2/ODAQ/ODAQ_listening_test/DE_Meridian_remix2_LD6/reference.wav",
+  "removed_dB@4k": -13.188638687133789,
+  "dz@4k": 0.11742906272411346,
+  "removed_dB@8k": -22.644954681396484,
+  "dz@8k": 0.05219685286283493,
+  "removed_dB@11k": -39.50822830200195,
+  "dz@11k": 0.01222648099064827,
+  "dz@shift64": 0.10318326205015182
+ },
+ {
+  "clip": "/data/aisaro2/ODAQ/ODAQ_listening_test/DE_SitaSings_remix1_LD0/reference.wav",
+  "removed_dB@4k": -17.060487747192383,
+  "dz@4k": 0.0911048948764801,
+  "removed_dB@8k": -22.17574119567871,
+  "dz@8k": 0.05013326182961464,
+  "removed_dB@11k": -38.16035461425781,
+  "dz@11k": 0.012957397848367691,
+  "dz@shift64": 0.09290862083435059
+ },
+ {
+  "clip": "/data/aisaro2/ODAQ/ODAQ_listening_test/DE_SitaSings_remix2_LD6/reference.wav",
+  "removed_dB@4k": -14.556485176086426,
+  "dz@4k": 0.11794223636388779,
+  "removed_dB@8k": -21.929323196411133,
+  "dz@8k": 0.06607110053300858,
+  "removed_dB@11k": -33.21753692626953,
+  "dz@11k": 0.021149689331650734,
+  "dz@shift64": 0.1300445795059204
+ },
+ {
+  "clip": "/data/aisaro2/ODAQ/ODAQ_listening_test/DE_female_speech_music_1_LD0/reference.wav",
+  "removed_dB@4k": -19.159032821655273,
+  "dz@4k": 0.09203123301267624,
+  "removed_dB@8k": -24.282167434692383,
+  "dz@8k": 0.05980133265256882,
+  "removed_dB@11k": -34.32515335083008,
+  "dz@11k": 0.020483296364545822,
+  "dz@shift64": 0.10552850365638733
+ },
+ {
+  "clip": "/data/aisaro2/ODAQ/ODAQ_listening_test/DE_female_speech_music_2_LD9/reference.wav",
+  "removed_dB@4k": -20.74846076965332,
+  "dz@4k": 0.09131386131048203,
+  "removed_dB@8k": -22.850311279296875,
+  "dz@8k": 0.07129998505115509,
+  "removed_dB@11k": -34.74192428588867,
+  "dz@11k": 0.02172871120274067,
+  "dz@shift64": 0.11481664329767227
+ },
+ {
+  "clip": "/data/aisaro2/ODAQ/ODAQ_listening_test/DE_female_speech_music_3_LD3/reference.wav",
+  "removed_dB@4k": -19.418479919433594,
+  "dz@4k": 0.08395653963088989,
+  "removed_dB@8k": -30.389034271240234,
+  "dz@8k": 0.04201608523726463,
+  "removed_dB@11k": -41.89445114135742,
+  "dz@11k": 0.014455274678766727,
+  "dz@shift64": 0.10721713304519653
+ },
+ {
+  "clip": "/data/aisaro2/ODAQ/ODAQ_listening_test/LP_11_guitar/reference.wav",
+  "removed_dB@4k": -30.841520309448242,
+  "dz@4k": 0.07279904931783676,
+  "removed_dB@8k": -38.118499755859375,
+  "dz@8k": 0.03335927799344063,
+  "removed_dB@11k": -44.92933654785156,
+  "dz@11k": 0.01692337356507778,
+  "dz@shift64": 0.11003950983285904
+ },
+ {
+  "clip": "/data/aisaro2/ODAQ/ODAQ_listening_test/LP_23_jazz/reference.wav",
+  "removed_dB@4k": -21.466482162475586,
+  "dz@4k": 0.0811607614159584,
+  "removed_dB@8k": -30.04345703125,
+  "dz@8k": 0.04616909474134445,
+  "removed_dB@11k": -44.76239013671875,
+  "dz@11k": 0.0114916255697608,
+  "dz@shift64": 0.09628891199827194
+ },
+ {
+  "clip": "/data/aisaro2/ODAQ/ODAQ_listening_test/LP_AmateurOnPurpose/reference.wav",
+  "removed_dB@4k": -16.675413131713867,
+  "dz@4k": 0.1115446388721466,
+  "removed_dB@8k": -22.42896842956543,
+  "dz@8k": 0.07046741247177124,
+  "removed_dB@11k": -30.392940521240234,
+  "dz@11k": 0.03435720130801201,
+  "dz@shift64": 0.11210443824529648
+ },
+ {
+  "clip": "/data/aisaro2/ODAQ/ODAQ_listening_test/LP_CreatureFromTheBlackjackTable/reference.wav",
+  "removed_dB@4k": -9.883869171142578,
+  "dz@4k": 0.16078265011310577,
+  "removed_dB@8k": -14.349662780761719,
+  "dz@8k": 0.10137820988893509,
+  "removed_dB@11k": -24.380020141601562,
+  "dz@11k": 0.03571007028222084,
+  "dz@shift64": 0.09933702647686005
+ },
+ {
+  "clip": "/data/aisaro2/ODAQ/ODAQ_listening_test/PE_27_castanets/reference.wav",
+  "removed_dB@4k": -5.750659942626953,
+  "dz@4k": 0.1334829479455948,
+  "removed_dB@8k": -10.215192794799805,
+  "dz@8k": 0.08717194944620132,
+  "removed_dB@11k": -26.40713882446289,
+  "dz@11k": 0.013797375373542309,
+  "dz@shift64": 0.091432124376297
+ },
+ {
+  "clip": "/data/aisaro2/ODAQ/ODAQ_listening_test/PE_39_clapping/reference.wav",
+  "removed_dB@4k": -17.32210922241211,
+  "dz@4k": 0.056382112205028534,
+  "removed_dB@8k": -27.37106704711914,
+  "dz@8k": 0.030148079618811607,
+  "removed_dB@11k": -33.81400680541992,
+  "dz@11k": 0.007014153059571981,
+  "dz@shift64": 0.08012692630290985
+ },
+ {
+  "clip": "/data/aisaro2/ODAQ/ODAQ_listening_test/PE_AmateurOnPurpose/reference.wav",
+  "removed_dB@4k": -16.675413131713867,
+  "dz@4k": 0.1115446388721466,
+  "removed_dB@8k": -22.42896842956543,
+  "dz@8k": 0.07046741247177124,
+  "removed_dB@11k": -30.392940521240234,
+  "dz@11k": 0.03435720130801201,
+  "dz@shift64": 0.11210443824529648
+ },
+ {
+  "clip": "/data/aisaro2/ODAQ/ODAQ_listening_test/PE_CreatureFromTheBlackjackTable/reference.wav",
+  "removed_dB@4k": -9.883869171142578,
+  "dz@4k": 0.16078265011310577,
+  "removed_dB@8k": -14.349662780761719,
+  "dz@8k": 0.10137820988893509,
+  "removed_dB@11k": -24.380020141601562,
+  "dz@11k": 0.03571007028222084,
+  "dz@shift64": 0.09933702647686005
+ },
+ {
+  "clip": "/data/aisaro2/ODAQ/ODAQ_listening_test/SH_04_choral/reference.wav",
+  "removed_dB@4k": -28.610685348510742,
+  "dz@4k": 0.057161275297403336,
+  "removed_dB@8k": -37.716678619384766,
+  "dz@8k": 0.025828257203102112,
+  "removed_dB@11k": -49.569950103759766,
+  "dz@11k": 0.006719731260091066,
+  "dz@shift64": 0.08957601338624954
+ },
+ {
+  "clip": "/data/aisaro2/ODAQ/ODAQ_listening_test/SH_13_glockenspiel/reference.wav",
+  "removed_dB@4k": -12.391368865966797,
+  "dz@4k": 0.11173786967992783,
+  "removed_dB@8k": -20.13911247253418,
+  "dz@8k": 0.0726955384016037,
+  "removed_dB@11k": -23.07966423034668,
+  "dz@11k": 0.06587521731853485,
+  "dz@shift64": 0.05776403099298477
+ },
+ {
+  "clip": "/data/aisaro2/ODAQ/ODAQ_listening_test/SH_AmateurOnPurpose/reference.wav",
+  "removed_dB@4k": -16.675413131713867,
+  "dz@4k": 0.1115446388721466,
+  "removed_dB@8k": -22.42896842956543,
+  "dz@8k": 0.07046741247177124,
+  "removed_dB@11k": -30.392940521240234,
+  "dz@11k": 0.03435720130801201,
+  "dz@shift64": 0.11210443824529648
+ },
+ {
+  "clip": "/data/aisaro2/ODAQ/ODAQ_listening_test/SH_CreatureFromTheBlackjackTable/reference.wav",
+  "removed_dB@4k": -9.883869171142578,
+  "dz@4k": 0.16078265011310577,
+  "removed_dB@8k": -14.349662780761719,
+  "dz@8k": 0.10137820988893509,
+  "removed_dB@11k": -24.380020141601562,
+  "dz@11k": 0.03571007028222084,
+  "dz@shift64": 0.09933702647686005
+ },
+ {
+  "clip": "/data/aisaro2/ODAQ/ODAQ_listening_test/TM_01b_trumpet/reference.wav",
+  "removed_dB@4k": -14.831974029541016,
+  "dz@4k": 0.084874726831913,
+  "removed_dB@8k": -27.519166946411133,
+  "dz@8k": 0.02916545793414116,
+  "removed_dB@11k": -41.72748947143555,
+  "dz@11k": 0.003487058449536562,
+  "dz@shift64": 0.07846279442310333
+ },
+ {
+  "clip": "/data/aisaro2/ODAQ/ODAQ_listening_test/TM_02_violin/reference.wav",
+  "removed_dB@4k": -20.943328857421875,
+  "dz@4k": 0.09124615788459778,
+  "removed_dB@8k": -36.977928161621094,
+  "dz@8k": 0.03263016790151596,
+  "removed_dB@11k": -44.032257080078125,
+  "dz@11k": 0.01784062571823597,
+  "dz@shift64": 0.07031591236591339
+ },
+ {
+  "clip": "/data/aisaro2/ODAQ/ODAQ_listening_test/TM_AmateurOnPurpose/reference.wav",
+  "removed_dB@4k": -16.675413131713867,
+  "dz@4k": 0.1115446388721466,
+  "removed_dB@8k": -22.42896842956543,
+  "dz@8k": 0.07046741247177124,
+  "removed_dB@11k": -30.392940521240234,
+  "dz@11k": 0.03435720130801201,
+  "dz@shift64": 0.11210443824529648
+ },
+ {
+  "clip": "/data/aisaro2/ODAQ/ODAQ_listening_test/TM_CreatureFromTheBlackjackTable/reference.wav",
+  "removed_dB@4k": -9.883869171142578,
+  "dz@4k": 0.16078265011310577,
+  "removed_dB@8k": -14.349662780761719,
+  "dz@8k": 0.10137820988893509,
+  "removed_dB@11k": -24.380020141601562,
+  "dz@11k": 0.03571007028222084,
+  "dz@shift64": 0.09933702647686005
+ },
+ {
+  "clip": "/data/aisaro2/ODAQ/ODAQ_listening_test/UN_20c_accordion/reference.wav",
+  "removed_dB@4k": -19.046897888183594,
+  "dz@4k": 0.10878335684537888,
+  "removed_dB@8k": -35.73965072631836,
+  "dz@8k": 0.03744896873831749,
+  "removed_dB@11k": -50.91929626464844,
+  "dz@11k": 0.008228792808949947,
+  "dz@shift64": 0.10706690698862076
+ },
+ {
+  "clip": "/data/aisaro2/ODAQ/ODAQ_listening_test/UN_21_violin/reference.wav",
+  "removed_dB@4k": -15.269661903381348,
+  "dz@4k": 0.10186802595853806,
+  "removed_dB@8k": -32.42735290527344,
+  "dz@8k": 0.03656621277332306,
+  "removed_dB@11k": -49.69237518310547,
+  "dz@11k": 0.005112685728818178,
+  "dz@shift64": 0.06144234538078308
+ },
+ {
+  "clip": "/data/aisaro2/ODAQ/ODAQ_listening_test/UN_AmateurOnPurpose/reference.wav",
+  "removed_dB@4k": -16.675413131713867,
+  "dz@4k": 0.1115446388721466,
+  "removed_dB@8k": -22.42896842956543,
+  "dz@8k": 0.07046741247177124,
+  "removed_dB@11k": -30.392940521240234,
+  "dz@11k": 0.03435720130801201,
+  "dz@shift64": 0.11210443824529648
+ },
+ {
+  "clip": "/data/aisaro2/ODAQ/ODAQ_listening_test/UN_CreatureFromTheBlackjackTable/reference.wav",
+  "removed_dB@4k": -9.883869171142578,
+  "dz@4k": 0.16078265011310577,
+  "removed_dB@8k": -14.349662780761719,
+  "dz@8k": 0.10137820988893509,
+  "removed_dB@11k": -24.380020141601562,
+  "dz@11k": 0.03571007028222084,
+  "dz@shift64": 0.09933702647686005
+ }
+]
